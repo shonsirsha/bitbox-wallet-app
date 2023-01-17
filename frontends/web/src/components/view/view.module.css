@@ -77,6 +77,10 @@
         padding-bottom: var(--space-half);
         padding-top: 2vh;
     }
+
+    .verticallyCentered .inner {
+        flex-grow: 0;
+    }
 }
 @media (min-width: 769px) {
     .fullscreen .inner {
