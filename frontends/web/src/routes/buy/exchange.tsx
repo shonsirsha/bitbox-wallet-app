@@ -211,7 +211,7 @@ export const Exchange = ({ code, accounts }: TProps) => {
                   <InfoButton onClick={() => setInfo('region')} />
                 </div>
 
-                <div>
+                <div className={style.exchangesSelectionContainer}>
                   {noExchangeAvailable && (
                     <p className={style.noExchangeText}>{t('buy.exchange.noExchanges')}</p>
                   )}

@@ -50,6 +50,10 @@
     padding-left: calc(var(--space-quarter) + var(--space-default)) !important;
 }
 
+.exchangesSelectionContainer {
+    min-height: 180px;
+}
+
 .header {
     position: relative;
     z-index: 2200;
