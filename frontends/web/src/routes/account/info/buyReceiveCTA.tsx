@@ -29,7 +29,10 @@ type TBuyReceiveCTAProps = {
 
 type CoinWithSAT = Coin | 'sat' | 'tsat';
 
+const isBitcoinCoin = (coin: CoinWithSAT) => (coin === 'BTC') || (coin === 'TBTC') || (coin === 'sat') || (coin === 'tsat');
+
 export const BuyReceiveCTA = ({ code, unit, balanceList }: TBuyReceiveCTAProps) => {
+  unit = isBitcoinCoin(unit as CoinWithSAT) ? 'BTC' : unit;
   const { t } = useTranslation();
   const onBuyCTA = () => route(code ? `/buy/exchange/${code}` : '/buy/info');
   const onReceiveCTA = () => {
@@ -53,7 +56,6 @@ export const BuyReceiveCTA = ({ code, unit, balanceList }: TBuyReceiveCTAProps) 
     </div>);
 };
 
-const isBitcoinCoin = (coin: CoinWithSAT) => (coin === 'BTC') || (coin === 'TBTC') || (coin === 'sat') || (coin === 'tsat');
 
 export const AddBuyReceiveOnEmptyBalances = ({ balances }: {balances?: Balances}) => {
   if (balances === undefined) {
