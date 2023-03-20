@@ -362,6 +362,7 @@ class Chart extends Component<Props, State> {
       return;
     }
     const rangeFrom = Math.max(Math.floor(visiblerange.barsBefore), 0);
+    console.log('chart1 rangeFrom ', rangeFrom);
     if (!data[rangeFrom]) {
       // when data series have changed it triggers subscribeVisibleLogicalRangeChange
       // but at this point the setVisibleRange has not executed what the new range
@@ -371,6 +372,9 @@ class Chart extends Component<Props, State> {
       return;
     }
     const valueFrom = data[rangeFrom].value;
+    console.log('sourceData chart1', { data });
+
+    console.log('chart1 valueFrom ', valueFrom);
     const valueTo = this.props.data.chartTotal;
     const valueDiff = valueTo ? valueTo - valueFrom : 0;
     this.setState({

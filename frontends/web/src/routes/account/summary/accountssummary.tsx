@@ -29,6 +29,7 @@ import Logo from '../../../components/icon/logo';
 import Spinner from '../../../components/spinner/ascii';
 import { debug } from '../../../utils/env';
 import { Chart } from './chart';
+import { Chart2 } from './chart2';
 import { AddBuyReceiveOnEmptyBalances } from '../info/buyReceiveCTA';
 import { apiPost } from '../../../utils/request';
 import style from './accountssummary.module.css';
@@ -102,6 +103,7 @@ class AccountsSummary extends Component<Props, State> {
   }
 
   private getAccountSummary = () => {
+    console.log('getget');
     return accountApi.getSummary().then(data => {
       this.setState({ data }, () => {
         if (this.summaryReqTimerID) {
@@ -329,6 +331,14 @@ class AccountsSummary extends Component<Props, State> {
                     <AddBuyReceiveOnEmptyBalances balances={balances} />
                   ) : undefined
                 } />
+              {data && <Chart2
+                data={data}
+                noDataPlaceholder={
+                  (accounts.length === Object.keys(balances || {}).length) ? (
+                    <AddBuyReceiveOnEmptyBalances balances={balances} />
+                  ) : undefined
+                } />}
+
               <div className={style.balanceTable}>
                 <table className={style.table}>
                   <colgroup>
