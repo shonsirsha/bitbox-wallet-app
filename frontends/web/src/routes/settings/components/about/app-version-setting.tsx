@@ -39,7 +39,7 @@ export const AppVersion = () => {
 
   return (
     <SettingsItem
-      settingName="App version"
+      settingName={t('newSettings.about.appVersion.title')}
       secondaryText={secondaryText}
       displayedValue={versionNumber}
       extraComponent={icon}
