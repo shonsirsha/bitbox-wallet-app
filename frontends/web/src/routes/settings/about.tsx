@@ -19,7 +19,7 @@ import { Main, Header } from '../../components/layout';
 import { View, ViewContent } from '../../components/view/view';
 import { WithSettingsTabs } from './components/tabs';
 import { AppVersion } from './components/about/app-version-setting';
-import { TPagePropsWithSettingsTabs } from './type';
+import { TPagePropsWithSettingsTabs } from './types';
 
 
 export const About = ({ deviceIDs, hasAccounts }: TPagePropsWithSettingsTabs) => {

@@ -20,7 +20,7 @@ import { Header, Main } from '../../components/layout';
 import { route } from '../../utils/route';
 import { useMediaQuery } from '../../hooks/mediaquery';
 import { Tabs } from './components/tabs';
-import { TPagePropsWithSettingsTabs } from './type';
+import { TPagePropsWithSettingsTabs } from './types';
 
 /**
  * The "index" page of the settings
@@ -34,7 +34,7 @@ export const MobileSettings = ({ deviceIDs, hasAccounts }: TPagePropsWithSetting
   const isMobile = useMediaQuery('(max-width: 768px)');
   useEffect(() => {
     if (!isMobile) {
-      route('/new-settings/appearance');
+      route('/settings/appearance');
     }
   }, [isMobile]);
   return (

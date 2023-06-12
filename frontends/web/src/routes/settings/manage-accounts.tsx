@@ -26,7 +26,7 @@ import { Toggle } from '../../components/toggle/toggle';
 import { Dialog, DialogButtons } from '../../components/dialog/dialog';
 import { Message } from '../../components/message/message';
 import { translate, TranslateProps } from '../../decorators/translate';
-import { WithSettingsTabs } from '../new-settings/components/tabs';
+import { WithSettingsTabs } from './components/tabs';
 import { View, ViewContent } from '../../components/view/view';
 import style from './manage-accounts.module.css';
 

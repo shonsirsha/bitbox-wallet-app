@@ -23,7 +23,7 @@ import { DisplaySatsToggleSetting } from './components/appearance/displaySatsTog
 import { LanguageDropdownSetting } from './components/appearance/languageDropdownSetting';
 import { ActiveCurrenciesDropdownSettingWithStore } from './components/appearance/activeCurrenciesDropdownSetting';
 import { WithSettingsTabs } from './components/tabs';
-import { TPagePropsWithSettingsTabs } from './type';
+import { TPagePropsWithSettingsTabs } from './types';
 
 export const Appearance = ({ deviceIDs, hasAccounts }: TPagePropsWithSettingsTabs) => {
   const { t } = useTranslation();
