@@ -70,6 +70,9 @@ func NewHandlers(
 	handleFunc("/has-secure-output", handlers.ensureAccountInitialized(handlers.getHasSecureOutput)).Methods("GET")
 	handleFunc("/propose-tx-note", handlers.ensureAccountInitialized(handlers.postProposeTxNote)).Methods("POST")
 	handleFunc("/notes/tx", handlers.ensureAccountInitialized(handlers.postSetTxNote)).Methods("POST")
+	handleFunc("/eth-sign-msg", handlers.ensureAccountInitialized(handlers.postEthSignMsg)).Methods("POST")
+	handleFunc("/eth-sign-typed-msg", handlers.ensureAccountInitialized(handlers.postEthSignTypedMsg)).Methods("POST")
+	handleFunc("/eth-sign-wc-tx", handlers.ensureAccountInitialized(handlers.postEthSignWcTx)).Methods("POST")
 	return handlers
 }
 
@@ -579,4 +582,87 @@ func (handlers *Handlers) postSetTxNote(r *http.Request) (interface{}, error) {
 	}
 
 	return nil, handlers.account.SetTxNote(args.InternalTxID, args.Note)
+}
+
+func (handlers *Handlers) postEthSignMsg(r *http.Request) (interface{}, error) {
+	var signInput string
+	if err := json.NewDecoder(r.Body).Decode(&signInput); err != nil {
+		return nil, errp.WithStack(err)
+	}
+	ethAccount, ok := handlers.account.(*eth.Account)
+	if !ok {
+		return nil, errp.New("Must be an ETH based account")
+	}
+	signedMessage, err := ethAccount.EthSignMsg(signInput)
+	if errp.Cause(err) == keystore.ErrSigningAborted {
+		return map[string]interface{}{"success": false, "aborted": true}, nil
+	}
+	if err != nil {
+		handlers.log.WithError(err).Error("Failed to sign message")
+		result := map[string]interface{}{"success": false, "errorMessage": err.Error()}
+		return result, nil
+	}
+	return map[string]interface{}{
+		"success": true,
+		"message": signedMessage,
+	}, nil
+}
+
+func (handlers *Handlers) postEthSignTypedMsg(r *http.Request) (interface{}, error) {
+	var args struct {
+		ChainId uint64 `json:"chainId"`
+		Data    string `json:"data"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&args); err != nil {
+		return nil, errp.WithStack(err)
+	}
+	ethAccount, ok := handlers.account.(*eth.Account)
+	if !ok {
+		return nil, errp.New("Must be an ETH based account")
+	}
+	signedMessage, err := ethAccount.EthSignTypedMsg(args.ChainId, args.Data)
+	if errp.Cause(err) == keystore.ErrSigningAborted {
+		return map[string]interface{}{"success": false, "aborted": true}, nil
+	}
+	if err != nil {
+		handlers.log.WithError(err).Error("Failed to sign typed data")
+		result := map[string]interface{}{"success": false, "errorMessage": err.Error()}
+		return result, nil
+	}
+	return map[string]interface{}{
+		"success": true,
+		"message": signedMessage,
+	}, nil
+}
+
+func (handlers *Handlers) postEthSignWcTx(r *http.Request) (interface{}, error) {
+	var args struct {
+		Send    bool       `json:"send"`
+		ChainId uint64     `json:"chainId"`
+		Tx      eth.WcArgs `json:"tx"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&args); err != nil {
+		return nil, errp.WithStack(err)
+	}
+	ethAccount, ok := handlers.account.(*eth.Account)
+	if !ok {
+		return nil, errp.New("Must be an ETH based account")
+	}
+	signedTx, txHash, err := ethAccount.EthSignWcTx(args.Send, args.ChainId, args.Tx)
+	if errp.Cause(err) == keystore.ErrSigningAborted {
+		return map[string]interface{}{"success": false, "aborted": true}, nil
+	}
+	if err != nil {
+		handlers.log.WithError(err).Error("Failed to send transaction")
+		result := map[string]interface{}{"success": false, "errorMessage": err.Error()}
+		if err.Error() == etherscan.ERC20GasErr {
+			result["errorCode"] = errors.ERC20InsufficientGasFunds.Error()
+		}
+		return result, nil
+	}
+	return map[string]interface{}{
+		"success":   true,
+		"signature": signedTx,
+		"txHash":    txHash,
+	}, nil
 }

@@ -21,6 +21,7 @@ import (
 	"github.com/btcsuite/btcd/btcutil/hdkeychain"
 	"github.com/digitalbitbox/bitbox-wallet-app/backend/coins/coin"
 	"github.com/digitalbitbox/bitbox-wallet-app/backend/signing"
+	"github.com/ethereum/go-ethereum/core/types"
 )
 
 // Type denotes the type of a keystore.
@@ -95,8 +96,15 @@ type Keystore interface {
 	// 65 byte signature. The first 64 bytes are the secp256k1 signature in / compact format (R and
 	// S values), and the last byte is the recoverable id (recid).
 	SignETHMessage(message []byte, keypath signing.AbsoluteKeypath) ([]byte, error)
+	// ETHSignTypedMessage signs an Ethereum EIP-612 typed message. 27 is added to the recID to denote
+	// an uncompressed pubkey.
+	SignETHTypedMessage(chainID uint64, data []byte, keypath signing.AbsoluteKeypath) ([]byte, error)
 
 	// SignTransaction signs the given transaction proposal. Returns ErrSigningAborted if the user
 	// aborts.
 	SignTransaction(interface{}) error
+
+	// SignETHWCTransaction signs a transaction proposed by Wallet Connect. Returns ErrSigningAborted if the user
+	// aborts.
+	SignETHWCTransaction(chainID uint64, tx *types.Transaction, keypath signing.AbsoluteKeypath) ([]byte, error)
 }
