@@ -28,8 +28,8 @@ import { Dialog, DialogButtons } from '../../../components/dialog/dialog';
 import useInitialization, { SUPPORTED_CHAINS, pair, web3wallet } from './utils';
 import React from 'react';
 import { EIP155_SIGNING_METHODS } from './utils';
-import { apiPost } from '../../../utils/request';
 import { alertUser } from '../../../components/alert/Alert';
+import { ethSignMessage, ethSignTypedMessage, ethSignWalletConnectTx } from '../../../api/account';
 
 type TProps = {
   code: string;
@@ -151,7 +151,7 @@ export const WalletConnect = ({
     async (requestEvent: SignClientTypes.EventArguments['session_request']) => {
       const { topic, params, id } = requestEvent;
       const { request } = params;
-      let message: any;
+      let message: string;
       const activeSessions = Object.values(web3wallet?.getActiveSessions());
       const currentSession = activeSessions.find((session) => session.topic === topic);
 
@@ -164,8 +164,7 @@ export const WalletConnect = ({
         message = request.params[1];
         if (currentSession) {
           handleSessionRequest(async () => {
-            const result = await apiPost(`account/${code}/eth-sign-msg`, message);
-            console.log('ApiCaller: ', result);
+            const result = await ethSignMessage(code, message);
             if (result.success) {
               const response = { id, jsonrpc: '2.0', result: result.signature };
               return { response, success: true };
@@ -180,7 +179,7 @@ export const WalletConnect = ({
         message = request.params[0];
         if (currentSession) {
           handleSessionRequest(async () => {
-            const result = await apiPost(`account/${code}/eth-sign-msg`, message);
+            const result = await ethSignMessage(code, message);
             if (result.success) {
               const response = { id, jsonrpc: '2.0', result: result.signature };
               return { response, success: true };
@@ -194,15 +193,14 @@ export const WalletConnect = ({
       case EIP155_SIGNING_METHODS.ETH_SIGN_TYPED_DATA:
       case EIP155_SIGNING_METHODS.ETH_SIGN_TYPED_DATA_V3:
       case EIP155_SIGNING_METHODS.ETH_SIGN_TYPED_DATA_V4:
-        let typedData = JSON.parse(request.params[1]);
+        const typedData = JSON.parse(request.params[1]);
         if (currentSession) {
           handleSessionRequest(async () => {
-            const result = await apiPost(`account/${code}/eth-sign-typed-msg`, {
-              chainId: typedData.domain.chainId ?
-                typedData.domain.chainId :
-                +params.chainId.split(':')[1],
-              data: request.params[1] });
-
+            // If the typed data to be signed includes its own chainId, we use that, otherwise use the id in the params
+            const chainId = typedData.domain.chainId ?
+              typedData.domain.chainId :
+              +params.chainId.split(':')[1];
+            const result = await ethSignTypedMessage(code, chainId, request.params[1]);
             if (result.success) {
               const response = { id, jsonrpc: '2.0', result: result.signature };
               return { response, success: true };
@@ -217,11 +215,7 @@ export const WalletConnect = ({
       case EIP155_SIGNING_METHODS.ETH_SEND_TRANSACTION:
         if (currentSession) {
           handleSessionRequest(async () => {
-            const result = await apiPost(`account/${code}/eth-sign-wallet-connect-tx`, {
-              send: true,
-              chainId: +params.chainId.split(':')[1],
-              tx: request.params[0]
-            });
+            const result = await ethSignWalletConnectTx(code, true, +params.chainId.split(':')[1], request.params[0]);
             if (result.success) {
               const response = { id, jsonrpc: '2.0', result: result.txHash };
               return { response, success: true };
@@ -234,13 +228,9 @@ export const WalletConnect = ({
       case EIP155_SIGNING_METHODS.ETH_SIGN_TRANSACTION:
         if (currentSession) {
           handleSessionRequest(async () => {
-            const result = await apiPost(`account/${code}/eth-sign-wallet-connect-tx`, {
-              send: false,
-              chainId: +params.chainId.split(':')[1],
-              tx: request.params[0]
-            });
+            const result = await ethSignWalletConnectTx(code, false, +params.chainId.split(':')[1], request.params[0]);
             if (result.success) {
-              const response = { id, jsonrpc: '2.0', result: result.signedTx };
+              const response = { id, jsonrpc: '2.0', result: result.signature };
               return { response, success: true };
             }
             return { success: false, error: result };
@@ -257,8 +247,8 @@ export const WalletConnect = ({
 
   const onSessionDelete = useCallback(
     (deleteRequest: SignClientTypes.EventArguments['session_delete']) => {
-      console.log('session delete: ', deleteRequest);
-      updateSessions();
+      const { topic } = deleteRequest;
+      setSessions(sessions => sessions.filter(session => session.topic !== topic));
     },
     []
   );
