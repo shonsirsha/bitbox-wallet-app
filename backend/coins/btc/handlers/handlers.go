@@ -655,6 +655,11 @@ func (handlers *Handlers) postEthSignWalletConnectTx(r *http.Request) (interface
 		ChainId uint64                `json:"chainId"`
 		Tx      eth.WalletConnectArgs `json:"tx"`
 	}
+	type response struct {
+		Success   bool   `json:"success"`
+		Signature string `json:"signature"`
+		TxHash    string `json:"txHash"`
+	}
 	if err := json.NewDecoder(r.Body).Decode(&args); err != nil {
 		return nil, errp.WithStack(err)
 	}
@@ -662,7 +667,7 @@ func (handlers *Handlers) postEthSignWalletConnectTx(r *http.Request) (interface
 	if !ok {
 		return errorResponse{Success: false, ErrorMessage: "Must be an ETH based account"}, nil
 	}
-	signedTx, txHash, err := ethAccount.EthSignWalletConnectTx(args.Send, args.ChainId, args.Tx)
+	signature, txHash, err := ethAccount.EthSignWalletConnectTx(args.Send, args.ChainId, args.Tx)
 	if errp.Cause(err) == keystore.ErrSigningAborted {
 		return signingResponse{Success: false, Aborted: true}, nil
 	}
@@ -674,9 +679,9 @@ func (handlers *Handlers) postEthSignWalletConnectTx(r *http.Request) (interface
 		}
 		return result, nil
 	}
-	return map[string]interface{}{
-		"success":   true,
-		"signature": signedTx,
-		"txHash":    txHash,
+	return response{
+		Success:   true,
+		Signature: signature,
+		TxHash:    txHash,
 	}, nil
 }
