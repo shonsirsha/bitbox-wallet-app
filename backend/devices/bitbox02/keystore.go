@@ -535,8 +535,8 @@ func (keystore *keystore) SignETHTypedMessage(chainId uint64, data []byte, keypa
 	return signature, nil
 }
 
-// SignETHWCTransaction implements keystore.Keystore.
-func (keystore *keystore) SignETHWCTransaction(chainId uint64, tx *ethTypes.Transaction, keypath signing.AbsoluteKeypath) ([]byte, error) {
+// SignETHWalletConnectTransaction implements keystore.Keystore.
+func (keystore *keystore) SignETHWalletConnectTransaction(chainId uint64, tx *ethTypes.Transaction, keypath signing.AbsoluteKeypath) ([]byte, error) {
 	signature, err := keystore.device.ETHSign(
 		chainId,
 		keypath.ToUInt32(),

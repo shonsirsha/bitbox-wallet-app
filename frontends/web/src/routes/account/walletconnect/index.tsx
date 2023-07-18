@@ -167,7 +167,7 @@ export const WalletConnect = ({
             const result = await apiPost(`account/${code}/eth-sign-msg`, message);
             console.log('ApiCaller: ', result);
             if (result.success) {
-              const response = { id, jsonrpc: '2.0', result: result.message };
+              const response = { id, jsonrpc: '2.0', result: result.signature };
               return { response, success: true };
             }
 
@@ -182,7 +182,7 @@ export const WalletConnect = ({
           handleSessionRequest(async () => {
             const result = await apiPost(`account/${code}/eth-sign-msg`, message);
             if (result.success) {
-              const response = { id, jsonrpc: '2.0', result: result.message };
+              const response = { id, jsonrpc: '2.0', result: result.signature };
               return { response, success: true };
             }
 
@@ -204,7 +204,7 @@ export const WalletConnect = ({
               data: request.params[1] });
 
             if (result.success) {
-              const response = { id, jsonrpc: '2.0', result: result.message };
+              const response = { id, jsonrpc: '2.0', result: result.signature };
               return { response, success: true };
             }
 
@@ -217,7 +217,7 @@ export const WalletConnect = ({
       case EIP155_SIGNING_METHODS.ETH_SEND_TRANSACTION:
         if (currentSession) {
           handleSessionRequest(async () => {
-            const result = await apiPost(`account/${code}/eth-sign-wc-tx`, {
+            const result = await apiPost(`account/${code}/eth-sign-wallet-connect-tx`, {
               send: true,
               chainId: +params.chainId.split(':')[1],
               tx: request.params[0]
@@ -234,7 +234,7 @@ export const WalletConnect = ({
       case EIP155_SIGNING_METHODS.ETH_SIGN_TRANSACTION:
         if (currentSession) {
           handleSessionRequest(async () => {
-            const result = await apiPost(`account/${code}/eth-sign-wc-tx`, {
+            const result = await apiPost(`account/${code}/eth-sign-wallet-connect-tx`, {
               send: false,
               chainId: +params.chainId.split(':')[1],
               tx: request.params[0]

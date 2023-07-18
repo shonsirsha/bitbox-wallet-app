@@ -815,8 +815,8 @@ func (account *Account) CanVerifyAddresses() (bool, bool, error) {
 	return account.Config().Keystore.CanVerifyAddress(account.Coin())
 }
 
-// EthSignMsg is used for personal_sign and eth_sign messages in BBApp via WalletConnect
-func (account *Account) EthSignMsg(
+// SignMsg is used for personal_sign and eth_sign messages in BBApp via WalletConnect
+func (account *Account) SignMsg(
 	message string,
 ) (string, error) {
 	bytesMessage, err := hex.DecodeString(strings.TrimPrefix(message, "0x"))
@@ -830,8 +830,8 @@ func (account *Account) EthSignMsg(
 	return "0x" + hex.EncodeToString(signedMessage), nil
 }
 
-// EthSignTypedMsg signs an Ethereum EIP-612 typed message in BBApp via WalletConnect
-func (account *Account) EthSignTypedMsg(
+// SignTypedMsg signs an Ethereum EIP-612 typed message in BBApp via WalletConnect
+func (account *Account) SignTypedMsg(
 	chainId uint64,
 	data string,
 ) (string, error) {
@@ -843,7 +843,7 @@ func (account *Account) EthSignTypedMsg(
 }
 
 // TX proposal arguments received from Wallet Connect with Gas, GasPrice, Value and Nonce being optional
-type WcArgs struct {
+type WalletConnectArgs struct {
 	From     string `json:"from"`
 	To       string `json:"to"`
 	Data     string `json:"data"`
@@ -854,10 +854,12 @@ type WcArgs struct {
 }
 
 // EthSignTypedMsg signs an Ethereum Tx received from WalletConnect
-func (account *Account) EthSignWcTx(
+func (account *Account) EthSignWalletConnectTx(
+	// send: whether transaction should be broadcast after signing
 	send bool,
+	// chainId: allow specifying other IDs than 1 (ETH mainnet) for other EVM networks
 	chainId uint64,
-	proposedTx WcArgs,
+	proposedTx WalletConnectArgs,
 ) (string, string, error) {
 	var nonce uint64
 	var message ethereum.CallMsg
@@ -925,7 +927,7 @@ func (account *Account) EthSignWcTx(
 		*message.To,
 		message.Value, gasLimit, gasPrice, message.Data)
 	//TODO edit signer to match chainID proposed by wallet connect
-	signature, err := account.Config().Keystore.SignETHWCTransaction(chainId, tx, account.signingConfiguration.AbsoluteKeypath())
+	signature, err := account.Config().Keystore.SignETHWalletConnectTransaction(chainId, tx, account.signingConfiguration.AbsoluteKeypath())
 	if err != nil {
 		return "", "", err
 	}
