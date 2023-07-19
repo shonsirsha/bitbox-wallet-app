@@ -99,14 +99,14 @@ export const WalletConnect = ({
     modalPromiseResolve?.(false);
   };
 
-  const openSignModal = () => {
+  const openSignModal = useCallback(() => {
     setSignModal(true);
     return new Promise<boolean>((resolve) => {
       setModalPromiseResolve(() => resolve);
     });
-  };
+  }, []);
 
-  const handleSessionRequest = async (
+  const handleSessionRequest = useCallback(async (
     apiCaller: () => Promise<any>,
     currentSession: SessionTypes.Struct,
     topic: string,
@@ -145,7 +145,7 @@ export const WalletConnect = ({
     setSigningSession(null);
     setSigningData('');
     setSignModalTitle('');
-  };
+  }, [openSignModal]);
 
   const onSessionRequest = useCallback(
     async (requestEvent: SignClientTypes.EventArguments['session_request']) => {
@@ -242,7 +242,7 @@ export const WalletConnect = ({
         console.log('not supported');
       }
     },
-    [code]
+    [code, handleSessionRequest]
   );
 
   const onSessionDelete = useCallback(
@@ -261,7 +261,7 @@ export const WalletConnect = ({
     updateSessions();
   }
 
-  async function onApprove() {
+  const onApprove = useCallback(async () => {
     if (currentProposal && currentAddresses) {
       const { id, params } = currentProposal;
       const { requiredNamespaces } = params;
@@ -294,7 +294,7 @@ export const WalletConnect = ({
       setCurrentProposal(undefined);
       updateSessions();
     }
-  }
+  }, [currentAddresses, currentProposal]);
 
   async function onReject() {
     if (currentProposal) {
@@ -338,6 +338,7 @@ export const WalletConnect = ({
       web3wallet?.off('session_delete', onSessionDelete);
       web3wallet?.off('auth_request', onAuthRequest);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     onApprove,
     onAuthRequest,
@@ -355,10 +356,9 @@ export const WalletConnect = ({
           <Header title={<h2>{t('accountInfo.title')}</h2>} />
           <div className="content padded">
             <div className="box larger">
-
               <Button
                 primary
-                onClick={() => web3wallet?.core.pairing.getPairings().map((pairing) => {
+                onClick={() => web3wallet?.core.pairing.getPairings().forEach((pairing) => {
                   web3wallet.core.pairing.disconnect({ topic: pairing.topic });
                 })}>
                   REMOVE PAIRINGS
