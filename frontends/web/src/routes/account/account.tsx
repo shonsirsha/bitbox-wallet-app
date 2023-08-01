@@ -228,13 +228,7 @@ export function Account({
                 <label className="labelXLarge flex-self-start-mobile show-on-small">
                   {t('accountSummary.availableBalance')}
                 </label>
-                {!isAccountEmpty ?
-                  <ActionButtons {...actionButtonsProps} /> :
-                  code.includes('eth') && !code.includes('erc20') && (
-                    <Link key="wallet-connect" to={`/account/${code}/wallet-connect`} className={style.walletConnect}>
-                      <span>Wallet Connect</span>
-                    </Link>
-                  )}
+                {!isAccountEmpty && <ActionButtons {...actionButtonsProps} />}
               </div>
             </div>
             {isAccountEmpty && (

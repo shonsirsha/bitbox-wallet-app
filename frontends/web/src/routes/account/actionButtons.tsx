@@ -16,6 +16,8 @@
 
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { WalletConnectLight } from '../../components/icon';
+import { useMediaQuery } from '../../hooks/mediaquery';
 import style from './account.module.css';
 
 type TProps = {
@@ -26,8 +28,10 @@ type TProps = {
 
 export const ActionButtons = ({ canSend, code, exchangeBuySupported }: TProps) => {
   const { t } = useTranslation();
+  const walletConnectEnabled = code.includes('eth');
+  const isLargeTablet = useMediaQuery('(max-width: 830px)');
   return (
-    <div className={style.actionsContainer}>
+    <div className={`${style.actionsContainer} ${walletConnectEnabled ? style.withWalletConnect : ''}`}>
       {canSend ? (
         <Link key="sendLink" to={`/account/${code}/send`} className={style.send}>
           <span>{t('button.send')}</span>
@@ -47,7 +51,7 @@ export const ActionButtons = ({ canSend, code, exchangeBuySupported }: TProps) =
       )}
       { code.includes('eth') && (
         <Link key="wallet-connect" to={`/account/${code}/wallet-connect`} className={style.walletConnect}>
-          <span>Wallet Connect</span>
+          <WalletConnectLight width={18} /> {!isLargeTablet && <span>Wallet Connect</span>}
         </Link>
       )}
     </div>

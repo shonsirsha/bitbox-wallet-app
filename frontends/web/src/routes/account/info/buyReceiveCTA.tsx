@@ -15,12 +15,14 @@
  */
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useMediaQuery } from '../../../hooks/mediaquery';
 import { route } from '../../../utils/route';
 import { CoinUnit, IAccount, IBalance } from '../../../api/account';
 import { Button } from '../../../components/forms';
 import { Balances } from '../summary/accountssummary';
 import { isBitcoinCoin } from '../utils';
 import { getExchangeSupportedAccounts } from '../../buy/utils';
+import { WalletConnectLight } from '../../../components/icon';
 import styles from './buyReceiveCTA.module.css';
 
 type TBuyReceiveCTAProps = {
@@ -38,6 +40,8 @@ type TAddBuyReceiveOnEmpyBalancesProps = {
 export const BuyReceiveCTA = ({ code, unit, balanceList, exchangeBuySupported = true }: TBuyReceiveCTAProps) => {
   const formattedUnit = isBitcoinCoin(unit as CoinUnit) ? 'BTC' : unit;
   const { t } = useTranslation();
+  const isMobile = useMediaQuery('(max-width: 768px)');
+
   const onBuyCTA = () => route(code ? `/buy/info/${code}` : '/buy/info');
   const onWalletConnect = () => route(`/account/${code}/wallet-connect`);
   const onReceiveCTA = () => {
@@ -57,8 +61,7 @@ export const BuyReceiveCTA = ({ code, unit, balanceList, exchangeBuySupported = 
       <div className={styles.container}>
         {balanceList && <Button primary onClick={onReceiveCTA}>{formattedUnit ? t('receive.title', { accountName: formattedUnit }) : t('receive.title', { accountName: t('buy.info.crypto') })}</Button>}
         {exchangeBuySupported && <Button primary onClick={onBuyCTA}>{formattedUnit ? t('accountInfo.buyCTA.buy', { unit: formattedUnit }) : t('accountInfo.buyCTA.buyCrypto')}</Button>}
-        <Button primary onClick={onBuyCTA}>{formattedUnit ? t('accountInfo.buyCTA.buy', { unit: formattedUnit }) : t('accountInfo.buyCTA.buyCrypto')}</Button>
-        { code && code.includes('eth') && !code.includes('erc20') && <Button primary onClick={onWalletConnect} className={styles.walletConnect}>Wallet Connect</Button>}
+        {code && code.includes('eth') && !code.includes('erc20') && <Button primary onClick={onWalletConnect} className={styles.walletConnect}>{isMobile ? <WalletConnectLight /> : <><WalletConnectLight /> <span>Wallet Connect</span></>}</Button>}
       </div>
     </div>);
 };
