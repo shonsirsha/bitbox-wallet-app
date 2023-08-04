@@ -44,6 +44,7 @@ import (
 	ethcommon "github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/rlp"
 	"github.com/sirupsen/logrus"
 )
 
@@ -885,8 +886,10 @@ func (account *Account) EthSignWalletConnectTx(
 	}
 
 	if proposedTx.Value != "" {
-		bigIntValue := new(big.Int)
-		bigIntValue.SetString(strings.TrimPrefix(proposedTx.Value, "0x"), 16)
+		bigIntValue, ok := new(big.Int).SetString(strings.TrimPrefix(proposedTx.Value, "0x"), 16)
+		if !ok {
+			return "", "", errp.New("error setting transaction value")
+		}
 		value = bigIntValue
 	}
 
@@ -926,11 +929,13 @@ func (account *Account) EthSignWalletConnectTx(
 	tx := types.NewTransaction(nonce,
 		*message.To,
 		message.Value, gasLimit, gasPrice, message.Data)
-	//TODO edit signer to match chainID proposed by wallet connect
 	signature, err := account.Config().Keystore.SignETHWalletConnectTransaction(chainId, tx, account.signingConfiguration.AbsoluteKeypath())
 	if err != nil {
 		return "", "", err
 	}
+	//TODO edit signer to match chainID proposed by wallet connect
+	// account.coin.Net() will only incude ChainID 1 in its current *params.ChainConfig
+	// Needs to be set to the appropriuate chain id for each supported network
 	signer := types.MakeSigner(account.coin.Net(), account.blockNumber)
 	signedTx, err := tx.WithSignature(signer, signature)
 	if err != nil {
@@ -942,5 +947,9 @@ func (account *Account) EthSignWalletConnectTx(
 			return "", "", errp.WithStack(err)
 		}
 	}
-	return "0x" + hex.EncodeToString(signature), "0x" + hex.EncodeToString(txHash[:]), nil
+	rawTx, err := rlp.EncodeToBytes(tx)
+	if err != nil {
+		return "", "", err
+	}
+	return "0x" + hex.EncodeToString(txHash[:]), "0x" + hex.EncodeToString(rawTx), nil
 }
