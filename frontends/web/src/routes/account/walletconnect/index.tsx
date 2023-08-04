@@ -198,7 +198,7 @@ export const WalletConnect = ({
           handleSessionRequest(async () => {
             // If the typed data to be signed includes its own chainId, we use that, otherwise use the id in the params
             const chainId = typedData.domain.chainId ?
-              typedData.domain.chainId :
+              +typedData.domain.chainId :
               +params.chainId.split(':')[1];
             const result = await ethSignTypedMessage(code, chainId, request.params[1]);
             if (result.success) {
@@ -230,7 +230,7 @@ export const WalletConnect = ({
           handleSessionRequest(async () => {
             const result = await ethSignWalletConnectTx(code, false, +params.chainId.split(':')[1], request.params[0]);
             if (result.success) {
-              const response = { id, jsonrpc: '2.0', result: result.signature };
+              const response = { id, jsonrpc: '2.0', result: result.rawTx };
               return { response, success: true };
             }
             return { success: false, error: result };
@@ -276,8 +276,9 @@ export const WalletConnect = ({
         supportedNamespaces: {
           eip155: {
             chains: SUPPORTED_CHAINS,
-            methods: ['eth_sendTransaction', 'eth_signTransaction', 'eth_sign', 'personal_sign', 'eth_signTypedData'],
+            methods: ['eth_sendTransaction', 'eth_signTransaction', 'eth_sign', 'personal_sign', 'eth_signTypedData', 'eth_signTypedData_v4'],
             // TODO: handle emitting accountsChanged events
+            // TODO: handle emitting chainChanged event, we need to have a chain selector in the app to support other networks in dapps properly
             events: ['accountsChanged', 'chainChanged'],
             accounts: accounts
           },

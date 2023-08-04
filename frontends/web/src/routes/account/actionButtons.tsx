@@ -19,16 +19,19 @@ import { Link } from 'react-router-dom';
 import { WalletConnectLight } from '../../components/icon';
 import { useMediaQuery } from '../../hooks/mediaquery';
 import style from './account.module.css';
+import { IAccount } from '../../api/account';
+import { isEthereumBased } from './utils';
 
 type TProps = {
     canSend?: boolean;
     code: string;
     exchangeBuySupported?: boolean;
+    account: IAccount;
 }
 
-export const ActionButtons = ({ canSend, code, exchangeBuySupported }: TProps) => {
+export const ActionButtons = ({ canSend, code, exchangeBuySupported, account }: TProps) => {
   const { t } = useTranslation();
-  const walletConnectEnabled = code.includes('eth');
+  const walletConnectEnabled = isEthereumBased(account.coinCode) && !account.isToken;
   const isLargeTablet = useMediaQuery('(max-width: 830px)');
   return (
     <div className={`${style.actionsContainer} ${walletConnectEnabled ? style.withWalletConnect : ''}`}>
@@ -49,11 +52,9 @@ export const ActionButtons = ({ canSend, code, exchangeBuySupported }: TProps) =
           <span>{t('button.buy')}</span>
         </Link>
       )}
-      { code.includes('eth') && (
-        <Link key="wallet-connect" to={`/account/${code}/wallet-connect`} className={style.walletConnect}>
-          <WalletConnectLight width={18} /> {!isLargeTablet && <span>Wallet Connect</span>}
-        </Link>
-      )}
+      {walletConnectEnabled && <Link key="wallet-connect" to={`/account/${code}/wallet-connect`} className={style.walletConnect}>
+        <WalletConnectLight width={18} /> {!isLargeTablet && <span>Wallet Connect</span>}
+      </Link>}
     </div>
   );
 };
