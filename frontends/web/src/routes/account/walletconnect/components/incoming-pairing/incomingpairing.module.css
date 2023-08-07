@@ -1,0 +1,63 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.container p {
+    font-size: 16px;
+    margin: 0;
+    margin-bottom: var(--space-eight);
+}
+
+.container p.connectionRequest {
+    color: var(--color-secondary);
+    margin-bottom: 24px;
+}
+
+.pairingDetailContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pairingDetailContainer img {
+    width: 64px;
+    height: 64px;
+}
+
+.container p.walletAddress {
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+
+.buttonsContainer {
+    margin-top: var(--space-default);
+    display: flex;
+    justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+    .container p {
+        font-size: var(--size-default);
+    }
+
+    .buttonsContainer {
+        flex-direction: column-reverse;
+        gap: var(--space-quarter);
+    }
+
+    .container p.connectionRequest {
+       text-align: center;
+    }
+
+    .pairingDetailContainer {
+        align-items: flex-start;
+        flex-direction: column-reverse;
+    }
+
+    .pairingDetailContainer img {
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: var(--space-default);
+    }
+}
