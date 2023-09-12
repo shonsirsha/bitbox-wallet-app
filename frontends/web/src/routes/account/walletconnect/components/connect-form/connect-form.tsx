@@ -68,7 +68,6 @@ export const WCConnectForm = ({ code, uri, onInputChange, onSubmit }: TWCConnect
     parseQRResult: (uri: string) => onSubmit(uri)
   });
 
-
   const showMobileQRReader = isMobile && hasCamera;
   const showQRButton = !isMobile && hasCamera;
 

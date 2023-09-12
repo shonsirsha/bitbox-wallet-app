@@ -38,6 +38,7 @@ import { route, RouterWatcher } from './utils/route';
 import { Darkmode } from './components/darkmode/darkmode';
 import { DarkModeProvider } from './contexts/DarkmodeProvider';
 import { AppProvider } from './contexts/AppProvider';
+import { WCIncomingRequest } from './components/wallet-connect/incoming-session-request';
 
  interface State {
      accounts: IAccount[];
@@ -198,6 +199,7 @@ class App extends Component<Props, State> {
                 <Banner msgKey="bitbox01" />
                 <Banner msgKey="bitbox02" />
                 <MobileDataWarning />
+                <WCIncomingRequest />
                 <Aopp />
                 <AppRouter
                   accounts={accounts}

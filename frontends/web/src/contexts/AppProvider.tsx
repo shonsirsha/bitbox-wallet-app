@@ -16,7 +16,7 @@
 
 import { ReactNode, useEffect, useState } from 'react';
 import { getConfig, setConfig } from '../utils/config';
-import AppContext from './AppContext';
+import AppContext, { WCSessions } from './AppContext';
 
 type TProps = {
     children: ReactNode;
@@ -25,6 +25,7 @@ type TProps = {
 export const AppProvider = ({ children }: TProps) => {
   const [guideShown, setGuideShown] = useState(false);
   const [guideExists, setGuideExists] = useState(false);
+  const [allSessions, setAllSessions] = useState<WCSessions>({});
 
   const toggleGuide = () => {
     setConfig({ frontend: { guideShown: !guideShown } });
@@ -49,6 +50,8 @@ export const AppProvider = ({ children }: TProps) => {
         guideExists,
         setGuideShown,
         setGuideExists,
+        setAllSessions,
+        allSessions,
       }}>
       {children}
     </AppContext.Provider>

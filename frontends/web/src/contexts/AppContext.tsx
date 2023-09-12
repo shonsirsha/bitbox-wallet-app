@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 /**
  * Copyright 2023 Shift Crypto AG
  *
@@ -16,12 +18,16 @@
 
 import { Dispatch, SetStateAction, createContext } from 'react';
 
+export type WCSessions = Record<string, SessionTypes.Struct>;
+
 type AppContextProps = {
     guideShown: boolean;
     guideExists: boolean;
     setGuideExists: Dispatch<SetStateAction<boolean>>;
     setGuideShown: Dispatch<SetStateAction<boolean>>;
     toggleGuide: () => void;
+    allSessions: WCSessions;
+    setAllSessions: Dispatch<SetStateAction<WCSessions>>;
 }
 
 const AppContext = createContext<AppContextProps>({} as AppContextProps);

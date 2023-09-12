@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useLoad } from '../../../hooks/api';
 import * as accountApi from '../../../api/account';
+import AppContext from '../../../contexts/AppContext';
 import { Header, Main } from '../../../components/layout';
 import { SignClientTypes } from '@walletconnect/types';
 import useInitialization, { pair, web3wallet } from './utils';
@@ -40,6 +41,7 @@ export const ConnectScreenWalletConnect = ({
 }: TProps) => {
   const initialized = useInitialization();
   const [uri, setUri] = useState('');
+  const { setAllSessions } = useContext(AppContext);
   const [status, setStatus] = useState<TConnectStatus>('connect');
   const [currentProposal, setCurrentProposal] = useState<SignClientTypes.EventArguments['session_proposal']>();
   const receiveAddresses = useLoad(accountApi.getReceiveAddressList(code));
@@ -61,6 +63,7 @@ export const ConnectScreenWalletConnect = ({
   }, [onSessionProposal, initialized]);
 
   const handleApprovePairingStates = () => {
+    setAllSessions(web3wallet.getActiveSessions());
     setStatus('success');
     setUri('');
     setCurrentProposal(undefined);
