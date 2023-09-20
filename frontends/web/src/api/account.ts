@@ -71,7 +71,7 @@ type TETHAddressByAccountCode = SuccessResponse & {
   name: string;
 }
 
-export const getETHAddressByAccountCode = (address: string): Promise<TETHAddressByAccountCode> => {
+export const getEthAccountCodeAndNameByAddress = (address: string): Promise<TETHAddressByAccountCode> => {
   return apiPost('accounts/eth-account-code', { address });
 };
 

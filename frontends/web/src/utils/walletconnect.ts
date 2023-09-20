@@ -13,20 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
+import { ReactNode, createElement } from 'react';
 import { IWeb3Wallet } from '@walletconnect/web3wallet';
+import { ArbitrumLogo, BSCLogo, ETHLogo, FantomLogo, OptimismLogo, PolygonLogo } from '../components/icon';
 
+type TSupportedChainDetail = {
+  [key: string]: { name: string; icon: ReactNode; }
+}
 
-export const SUPPORTED_CHAINS = [
-  'eip155:1', // ETH Mainnet
-  'eip155:5', // ETH Goerli testnet
-  'eip155:10', // Optimism
-  'eip155:56', // BSC
-  'eip155:137', // Polygon
-  'eip155:250', // Fantom
-  'eip155:42161' // Arbitrum One
-];
+export const SUPPORTED_CHAINS: TSupportedChainDetail = {
+  'eip155:1': {
+    name: 'Etherum mainnet',
+    icon: createElement(ETHLogo)
+  },
+  'eip155:5': {
+    name: 'Ethereum goerli',
+    icon: createElement(ETHLogo)
+  },
+  'eip155:10': {
+    name: 'Optimism',
+    icon: createElement(OptimismLogo)
+  },
+  'eip155:56': {
+    name: 'Binance smart chain',
+    icon: createElement(BSCLogo)
+  },
+  'eip155:137': {
+    name: 'Polygon',
+    icon: createElement(PolygonLogo)
+  },
+  'eip155:250': {
+    name: 'Fantom',
+    icon: createElement(FantomLogo)
+  },
+  'eip155:42161': {
+    name: 'Arbitrum One',
+    icon: createElement(ArbitrumLogo)
+  }
+};
 
 export const EIP155_SIGNING_METHODS = {
   PERSONAL_SIGN: 'personal_sign',
@@ -78,4 +102,15 @@ export const pairingHasEverBeenRejected = (topic: string, web3wallet: IWeb3Walle
         history.response &&
         'error' in history.response)
         >= 0;
+};
+
+export const rejectMessage = (id: number) => {
+  return {
+    id,
+    jsonrpc: '2.0',
+    error: {
+      code: 5000,
+      message: 'User rejected.'
+    }
+  };
 };
