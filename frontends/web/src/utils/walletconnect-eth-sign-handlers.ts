@@ -1,7 +1,8 @@
 import { t } from 'i18next';
 import { SessionTypes } from '@walletconnect/types';
-import { EIP155_SIGNING_METHODS } from './walletconnect';
+import { EIP155_SIGNING_METHODS, decodeEthMessage } from './walletconnect';
 import { ethSignMessage, ethSignTypedMessage, ethSignWalletConnectTx, getEthAccountCodeAndNameByAddress } from '../api/account';
+import { alertUser } from '../components/alert/Alert';
 
 type TWCParams = {
   request: {
@@ -75,6 +76,11 @@ async function ethSignHandler({ params, launchSignDialog, topic, id, currentSess
   const requestParams = params.request.params;
   const accountAddress = isPersonalSign ? requestParams[1] : requestParams[0];
   const signingData = isPersonalSign ? requestParams[0] : requestParams[1];
+  const decoded = decodeEthMessage(signingData);
+  if (decoded === null) {
+    alertUser(t('walletConnect.signingRequest.decodeError'));
+    return;
+  }
   const { accountName, accountCode } = await fetchAccountNameAndAddress(accountAddress);
   const apiCaller = async () => {
     const result = await ethSignMessage(accountCode, signingData);
@@ -92,7 +98,7 @@ async function ethSignHandler({ params, launchSignDialog, topic, id, currentSess
     id,
     apiCaller,
     dialogContent: {
-      signingData,
+      signingData: decoded,
       currentSession,
       accountName,
       accountAddress,

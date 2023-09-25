@@ -1554,6 +1554,7 @@
       "chain": "Chain",
       "dapp": "Dapp",
       "data": "Data",
+      "decodeError": "Failed to decode message",
       "method": {
         "sendTransaction": "Sign and send transaction",
         "signMessage": "Sign message",
