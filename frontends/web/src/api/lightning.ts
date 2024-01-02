@@ -16,7 +16,6 @@
 
 import { apiGet, apiPost } from '../utils/request';
 import { TSubscriptionCallback, subscribeEndpoint } from './subscribe';
-import qs from 'query-string';
 
 export interface ILightningResponse<T> {
   success: boolean;
@@ -812,7 +811,7 @@ export interface ILightningStatus {
   remoteBalance: number;
 }
 
-export interface ParseInputRequest {
+export type ParseInputRequest = {
   s: string;
 }
 
@@ -888,18 +887,21 @@ export const getNodeInfo = async (): Promise<NodeState> => {
 };
 
 export const getListPayments = async (params: ListPaymentsRequest): Promise<Payment[]> => {
-  return getApiResponse<Payment[]>(`lightning/list-payments?${qs.stringify(params, { skipNull: true })}`, 'Error calling getListPayments');
+  const queryString = new URLSearchParams(params as Record<string, any>).toString();
+  return getApiResponse<Payment[]>(`lightning/list-payments?${queryString}`, 'Error calling getListPayments');
 };
 
 export const getOpenChannelFee = async (params: OpenChannelFeeRequest): Promise<OpenChannelFeeResponse> => {
+  const queryString = new URLSearchParams(params as Record<string, any>).toString();
   return getApiResponse<OpenChannelFeeResponse>(
-    `lightning/open-channel-fee?${qs.stringify(params, { skipNull: true })}`,
+    `lightning/open-channel-fee?${queryString}`,
     'Error calling getOpenChannelFee'
   );
 };
 
 export const getParseInput = async (params: ParseInputRequest): Promise<InputType> => {
-  return getApiResponse<InputType>(`lightning/parse-input?${qs.stringify(params, { skipNull: true })}`, 'Error calling getParseInput');
+  const queryString = new URLSearchParams(params).toString();
+  return getApiResponse<InputType>(`lightning/parse-input?${queryString}`, 'Error calling getParseInput');
 };
 
 export const postSendPayment = async (data: SendPaymentRequest): Promise<SendPaymentResponse> => {
