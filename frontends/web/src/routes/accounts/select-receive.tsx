@@ -17,11 +17,11 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IAccount } from '../../api/account';
-import { Header } from '../../components/layout';
+import { Header } from '@/components/layout';
 import { route } from '../../utils/route';
 import { isBitcoinOnly } from '../account/utils';
-import { View, ViewContent } from '../../components/view/view';
-import { GroupedAccountSelector } from '../../components/groupedaccountselector/groupedaccountselector';
+import { View, ViewContent } from '@/components/view/view';
+import { GroupedAccountSelector } from '@/components/groupedaccountselector/groupedaccountselector';
 
 type TReceiveAccountsSelector = {
     activeAccounts: IAccount[]

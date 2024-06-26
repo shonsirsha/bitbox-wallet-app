@@ -17,9 +17,9 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { gotoStartupSettings } from '../../../../api/bitbox02';
-import { ChevronRightDark } from '../../../../components/icon';
+import { ChevronRightDark } from '@/components/icon';
 import { SettingsItem } from '../settingsItem/settingsItem';
-import { WaitDialog } from '../../../../components/wait-dialog/wait-dialog';
+import { WaitDialog } from '@/components/wait-dialog/wait-dialog';
 
 type TGoToStartupSettingsProps = {
     deviceID: string;

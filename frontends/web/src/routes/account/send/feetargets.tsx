@@ -20,8 +20,8 @@ import { useTranslation } from 'react-i18next';
 import { useLoad } from '../../../hooks/api';
 import * as accountApi from '../../../api/account';
 import { getConfig } from '../../../utils/config';
-import { Input, Select } from '../../../components/forms';
-import { Message } from '../../../components/message/message';
+import { Input, Select } from '@/components/forms';
+import { Message } from '@/components/message/message';
 import { customFeeUnit, getCoinCode, isEthereumBased } from '../utils';
 import style from './feetargets.module.css';
 

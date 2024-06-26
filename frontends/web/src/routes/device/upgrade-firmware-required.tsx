@@ -16,8 +16,8 @@
 
 import { useTranslation } from 'react-i18next';
 import { VersionInfo } from '../../api/bitbox02';
-import { View, ViewButtons, ViewHeader } from '../../components/view/view';
-import { Header, Main } from '../../components/layout';
+import { View, ViewButtons, ViewHeader } from '@/components/view/view';
+import { Header, Main } from '@/components/layout';
 import { FirmwareSetting } from '../settings/components/device-settings/firmware-setting';
 
 type TProps = {

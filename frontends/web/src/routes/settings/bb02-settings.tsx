@@ -17,8 +17,8 @@
 import { useState, useEffect } from 'react';
 import { useLoad } from '../../hooks/api';
 import { useTranslation } from 'react-i18next';
-import { GuideWrapper, GuidedContent, Header, Main } from '../../components/layout';
-import { ViewContent, View } from '../../components/view/view';
+import { GuideWrapper, GuidedContent, Header, Main } from '@/components/layout';
+import { ViewContent, View } from '@/components/view/view';
 import { WithSettingsTabs } from './components/tabs';
 import { TPagePropsWithSettingsTabs } from './types';
 import { ManageBackupSetting } from './components/device-settings/manage-backup-setting';
@@ -26,8 +26,8 @@ import { ShowRecoveryWordsSetting } from './components/device-settings/show-reco
 import { GoToStartupSettings } from './components/device-settings/go-to-startup-settings';
 import { PassphraseSetting } from './components/device-settings/passphrase-setting';
 import { DeviceInfo, getDeviceInfo, getVersion, getRootFingerprint } from '../../api/bitbox02';
-import { alertUser } from '../../components/alert/Alert';
-import { Skeleton } from '../../components/skeleton/skeleton';
+import { alertUser } from '@/components/alert/Alert';
+import { Skeleton } from '@/components/skeleton/skeleton';
 import { AttestationCheckSetting } from './components/device-settings/attestation-check-setting';
 import { FirmwareSetting } from './components/device-settings/firmware-setting';
 import { SecureChipSetting } from './components/device-settings/secure-chip-setting';

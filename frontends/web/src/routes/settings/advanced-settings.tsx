@@ -17,8 +17,8 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLoad } from '../../hooks/api';
-import { Main, Header, GuideWrapper, GuidedContent } from '../../components/layout';
-import { View, ViewContent } from '../../components/view/view';
+import { Main, Header, GuideWrapper, GuidedContent } from '@/components/layout';
+import { View, ViewContent } from '@/components/view/view';
 import { WithSettingsTabs } from './components/tabs';
 import { TPagePropsWithSettingsTabs } from './types';
 import { EnableCustomFeesToggleSetting } from './components/advanced-settings/enable-custom-fees-toggle-setting';
@@ -28,8 +28,8 @@ import { EnableTorProxySetting } from './components/advanced-settings/enable-tor
 import { ExportLogSetting } from './components/advanced-settings/export-log-setting';
 import { getConfig } from '../../utils/config';
 import { MobileHeader } from './components/mobile-header';
-import { Guide } from '../../components/guide/guide';
-import { Entry } from '../../components/guide/entry';
+import { Guide } from '@/components/guide/guide';
+import { Entry } from '@/components/guide/entry';
 import { EnableAuthSetting } from './components/advanced-settings/enable-auth-setting';
 
 export type TProxyConfig = {

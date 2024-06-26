@@ -21,8 +21,8 @@ import { ElectrumAddServer } from './electrum-add-server';
 import { ElectrumServer } from './electrum-server';
 import { getDefaultConfig } from '../../api/backend';
 import { getConfig, setConfig } from '../../utils/config';
-import { confirmation } from '../../components/confirm/Confirm';
-import { Button } from '../../components/forms';
+import { confirmation } from '@/components/confirm/Confirm';
+import { Button } from '@/components/forms';
 import style from './electrum.module.css';
 
 type Props = {

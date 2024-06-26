@@ -15,7 +15,7 @@
  */
 
 import { CoreTypes } from '@walletconnect/types';
-import { Button } from '../../../../../components/forms';
+import { Button } from '@/components/forms';
 import { useTranslation } from 'react-i18next';
 import { useLoad } from '../../../../../hooks/api';
 import { getEthAccountCodeAndNameByAddress } from '../../../../../api/account';

@@ -16,7 +16,7 @@
 
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { formattedCurrencies } from '../../../../components/rates/rates';
+import { formattedCurrencies } from '@/components/rates/rates';
 import { SettingsItem } from '../settingsItem/settingsItem';
 import { ActiveCurrenciesDropdown } from '../dropdowns/activecurrenciesdropdown';
 import { RatesContext } from '../../../../contexts/RatesContext';

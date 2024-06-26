@@ -18,11 +18,11 @@ import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from '../../../hooks/mediaquery';
 import { route } from '../../../utils/route';
 import { CoinUnit, IAccount, IBalance } from '../../../api/account';
-import { Button } from '../../../components/forms';
+import { Button } from '@/components/forms';
 import { Balances } from '../summary/accountssummary';
 import { isBitcoinCoin, isEthereumBased } from '../utils';
 import { getExchangeSupportedAccounts } from '../../buy/utils';
-import { WalletConnectLight } from '../../../components/icon';
+import { WalletConnectLight } from '@/components/icon';
 import styles from './buyReceiveCTA.module.css';
 import { useMountedRef } from '../../../hooks/mount';
 

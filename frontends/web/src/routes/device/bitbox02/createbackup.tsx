@@ -17,10 +17,10 @@
 
 import { useState } from 'react';
 import { checkBackup, createBackup as createBackupAPI } from '../../../api/bitbox02';
-import { alertUser } from '../../../components/alert/Alert';
-import { confirmation } from '../../../components/confirm/Confirm';
-import { Button } from '../../../components/forms';
-import { WaitDialog } from '../../../components/wait-dialog/wait-dialog';
+import { alertUser } from '@/components/alert/Alert';
+import { confirmation } from '@/components/confirm/Confirm';
+import { Button } from '@/components/forms';
+import { WaitDialog } from '@/components/wait-dialog/wait-dialog';
 import { useTranslation } from 'react-i18next';
 
 type TProps = {

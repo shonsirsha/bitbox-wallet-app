@@ -20,11 +20,11 @@ import { RequestAddressV0Message, MessageVersion, parseMessage, serializeMessage
 import { getConfig } from '../../utils/config';
 import { ScriptType, signAddress } from '../../api/account';
 import { getInfo } from '../../api/account';
-import { Header } from '../../components/layout';
-import { Spinner } from '../../components/spinner/Spinner';
-import { BitsuranceTerms } from '../../components/terms/bitsurance-terms';
+import { Header } from '@/components/layout';
+import { Spinner } from '@/components/spinner/Spinner';
+import { BitsuranceTerms } from '@/components/terms/bitsurance-terms';
 import { useLoad } from '../../hooks/api';
-import { alertUser } from '../../components/alert/Alert';
+import { alertUser } from '@/components/alert/Alert';
 import { BitsuranceGuide } from './guide';
 import { getBitsuranceURL } from '../../api/bitsurance';
 import { route } from '../../utils/route';

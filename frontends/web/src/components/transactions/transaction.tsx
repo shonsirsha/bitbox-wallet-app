@@ -24,7 +24,7 @@ import { CopyableInput } from '../copy/Copy';
 import { Warning, ExpandIcon } from '../icon/icon';
 import { ProgressRing } from '../progressRing/progressRing';
 import { FiatConversion } from '../rates/rates';
-import { Amount } from '../../components/amount/amount';
+import { Amount } from '@/components/amount/amount';
 import { ArrowIn, ArrowOut, ArrowSelf } from './components/icons';
 import { Note } from './note';
 import parentStyle from './transactions.module.css';

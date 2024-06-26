@@ -17,7 +17,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as bitbox02 from '../../../../api/bitbox02';
-import { alertUser } from '../../../../components/alert/Alert';
+import { alertUser } from '@/components/alert/Alert';
 import { Backup } from '../../../../api/backup';
 import { SetPasswordWithBackup } from './password';
 import { RestoreFromSDCardBackup } from './restore';

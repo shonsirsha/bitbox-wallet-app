@@ -18,10 +18,10 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { TDevices } from '../../../api/devices';
-import { ButtonLink } from '../../../components/forms';
-import { Guide } from '../../../components/guide/guide';
-import { Entry } from '../../../components/guide/entry';
-import { Header } from '../../../components/layout';
+import { ButtonLink } from '@/components/forms';
+import { Guide } from '@/components/guide/guide';
+import { Entry } from '@/components/guide/entry';
+import { Header } from '@/components/layout';
 import { Backups } from '../bitbox01/backups';
 import { BackupsV2 } from '../bitbox02/backups';
 import { SDCardCheck } from '../bitbox02/sdcardcheck';

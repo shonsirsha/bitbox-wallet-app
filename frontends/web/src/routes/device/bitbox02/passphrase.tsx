@@ -20,12 +20,12 @@ import { useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
 import { getDeviceInfo, setMnemonicPassphraseEnabled } from '../../../api/bitbox02';
 import { MultilineMarkup, SimpleMarkup } from '../../../utils/markup';
-import { Main } from '../../../components/layout';
-import { Button, Checkbox } from '../../../components/forms';
-import { alertUser } from '../../../components/alert/Alert';
-import { View, ViewButtons, ViewContent, ViewHeader } from '../../../components/view/view';
-import { PointToBitBox02 } from '../../../components/icon';
-import { Status } from '../../../components/status/status';
+import { Main } from '@/components/layout';
+import { Button, Checkbox } from '@/components/forms';
+import { alertUser } from '@/components/alert/Alert';
+import { View, ViewButtons, ViewContent, ViewHeader } from '@/components/view/view';
+import { PointToBitBox02 } from '@/components/icon';
+import { Status } from '@/components/status/status';
 
 // The enable wizard has five steps that can be navigated by clicking
 // 'back' or 'continue'. On the last step the passphrase will be enabled.

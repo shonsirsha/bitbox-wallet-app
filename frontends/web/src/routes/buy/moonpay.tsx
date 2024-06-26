@@ -23,10 +23,10 @@ import { AccountCode, IAccount } from '../../api/account';
 import { getConfig } from '../../utils/config';
 import { getMoonpayBuyInfo } from '../../api/exchanges';
 import { BuyGuide } from './guide';
-import { Header } from '../../components/layout';
-import { Spinner } from '../../components/spinner/Spinner';
+import { Header } from '@/components/layout';
+import { Spinner } from '@/components/spinner/Spinner';
 import { findAccount, getCryptoName } from '../account/utils';
-import { MoonpayTerms } from '../../components/terms/moonpay-terms';
+import { MoonpayTerms } from '@/components/terms/moonpay-terms';
 import style from './iframe.module.css';
 
 type TProps = {

@@ -1,6 +1,6 @@
 import { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Checkbox, Input } from '../../../../../components/forms';
+import { Checkbox, Input } from '@/components/forms';
 import { IAmount, IBalance } from '../../../../../api/account';
 import style from './coin-input.module.css';
 

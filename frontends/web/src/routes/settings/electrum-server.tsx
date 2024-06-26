@@ -17,7 +17,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TElectrumServer, checkElectrum } from '../../api/node';
-import { alertUser } from '../../components/alert/Alert';
+import { alertUser } from '@/components/alert/Alert';
 import style from './electrum.module.css';
 
 type Props = {

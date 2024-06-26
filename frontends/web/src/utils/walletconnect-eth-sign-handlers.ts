@@ -2,7 +2,7 @@ import { t } from 'i18next';
 import { SessionTypes } from '@walletconnect/types';
 import { EIP155_SIGNING_METHODS, decodeEthMessage } from './walletconnect';
 import { ethSignMessage, ethSignTypedMessage, ethSignWalletConnectTx, getEthAccountCodeAndNameByAddress } from '../api/account';
-import { alertUser } from '../components/alert/Alert';
+import { alertUser } from '@/components/alert/Alert';
 
 type TWCParams = {
   request: {

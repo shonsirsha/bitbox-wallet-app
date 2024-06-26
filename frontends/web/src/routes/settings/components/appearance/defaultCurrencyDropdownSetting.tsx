@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { currenciesWithDisplayName, formattedCurrencies } from '../../../../components/rates/rates';
+import { currenciesWithDisplayName, formattedCurrencies } from '@/components/rates/rates';
 import { SingleDropdown } from '../dropdowns/singledropdown';
 import { SettingsItem } from '../settingsItem/settingsItem';
 import { Fiat } from '../../../../api/account';

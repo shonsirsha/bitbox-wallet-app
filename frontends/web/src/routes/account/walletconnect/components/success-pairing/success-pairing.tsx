@@ -17,8 +17,8 @@
 
 import { useTranslation } from 'react-i18next';
 import * as accountAPI from '../../../../../api/account';
-import { Button } from '../../../../../components/forms';
-import { AnimatedChecked } from '../../../../../components/icon';
+import { Button } from '@/components/forms';
+import { AnimatedChecked } from '@/components/icon';
 import { route } from '../../../../../utils/route';
 import styles from './success-pairing.module.css';
 

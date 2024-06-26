@@ -17,12 +17,12 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SettingsItem } from '../settingsItem/settingsItem';
-import { ChevronRightDark } from '../../../../components/icon';
-import { Button, Input } from '../../../../components/forms';
-import { Dialog, DialogButtons } from '../../../../components/dialog/dialog';
+import { ChevronRightDark } from '@/components/icon';
+import { Button, Input } from '@/components/forms';
+import { Dialog, DialogButtons } from '@/components/dialog/dialog';
 import { getDeviceInfo, setDeviceName } from '../../../../api/bitbox02';
-import { alertUser } from '../../../../components/alert/Alert';
-import { WaitDialog } from '../../../../components/wait-dialog/wait-dialog';
+import { alertUser } from '@/components/alert/Alert';
+import { WaitDialog } from '@/components/wait-dialog/wait-dialog';
 import { DeviceNameErrorMessage } from '../../../device/bitbox02/setup/name';
 import { useValidateDeviceName } from '../../../../hooks/devicename';
 import nameStyle from '../../../device/bitbox02/setup/name.module.css';

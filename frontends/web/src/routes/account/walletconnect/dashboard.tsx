@@ -23,11 +23,11 @@ import { WCWeb3WalletContext } from '../../../contexts/WCWeb3WalletContext';
 import { route } from '../../../utils/route';
 import { getAddressFromEIPString, truncateAddress } from '../../../utils/walletconnect';
 import { AccountCode, IAccount, getReceiveAddressList } from '../../../api/account';
-import { GuideWrapper, GuidedContent, Header, Main } from '../../../components/layout';
-import { View, ViewContent } from '../../../components/view/view';
+import { GuideWrapper, GuidedContent, Header, Main } from '@/components/layout';
+import { View, ViewContent } from '@/components/view/view';
 import { WCSessionCard } from './components/session-card/session-card';
-import { Button } from '../../../components/forms';
-import { Status } from '../../../components/status/status';
+import { Button } from '@/components/forms';
+import { Status } from '@/components/status/status';
 import { WCGuide } from './guide';
 import styles from './dashboard.module.css';
 

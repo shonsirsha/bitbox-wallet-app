@@ -16,11 +16,11 @@
 
 import { useState } from 'react';
 import * as bitbox02API from '../../../api/bitbox02';
-import { BackupsListItem } from '../components/backup';
+import { BackupsListItem } from '@/routes/device/components/backup';
 import { Backup } from '../../../api/backup';
-import { alertUser } from '../../../components/alert/Alert';
-import { Dialog, DialogButtons } from '../../../components/dialog/dialog';
-import { Button } from '../../../components/forms';
+import { alertUser } from '@/components/alert/Alert';
+import { Dialog, DialogButtons } from '@/components/dialog/dialog';
+import { Button } from '@/components/forms';
 import { useTranslation } from 'react-i18next';
 
 type TProps = {

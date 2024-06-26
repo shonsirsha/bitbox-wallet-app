@@ -19,10 +19,10 @@ import { AccountCode, CoinCode, IBalance } from '../../../api/account';
 import { syncAddressesCount } from '../../../api/accountsync';
 import { useSubscribe } from '../../../hooks/api';
 import { route } from '../../../utils/route';
-import { Logo } from '../../../components/icon/logo';
-import { Amount } from '../../../components/amount/amount';
-import { AsciiSpinner } from '../../../components/spinner/ascii';
-import { FiatConversion } from '../../../components/rates/rates';
+import { Logo } from '@/components/icon/logo';
+import { Amount } from '@/components/amount/amount';
+import { AsciiSpinner } from '@/components/spinner/ascii';
+import { FiatConversion } from '@/components/rates/rates';
 import style from './accountssummary.module.css';
 
 type TProps = {

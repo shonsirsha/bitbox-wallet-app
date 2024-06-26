@@ -17,8 +17,8 @@
 import { useTranslation } from 'react-i18next';
 import * as accountApi from '../../../api/account';
 import { SubTotalCoinRow } from './subtotalrow';
-import { Amount } from '../../../components/amount/amount';
-import { Skeleton } from '../../../components/skeleton/skeleton';
+import { Amount } from '@/components/amount/amount';
+import { Skeleton } from '@/components/skeleton/skeleton';
 import style from './accountssummary.module.css';
 
 type TProps = {

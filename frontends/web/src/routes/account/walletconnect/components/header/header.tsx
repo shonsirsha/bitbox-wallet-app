@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { WalletConnectDefaultLogo } from '../../../../../components/icon';
+import { WalletConnectDefaultLogo } from '@/components/icon';
 import { truncateAddress } from '../../../../../utils/walletconnect';
 import styles from './header.module.css';
 

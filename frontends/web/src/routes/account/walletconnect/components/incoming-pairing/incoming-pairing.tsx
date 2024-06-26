@@ -19,8 +19,8 @@ import { useTranslation } from 'react-i18next';
 import { CoreTypes, SignClientTypes } from '@walletconnect/types';
 import { buildApprovedNamespaces, getSdkError } from '@walletconnect/utils';
 import { WCWeb3WalletContext } from '../../../../../contexts/WCWeb3WalletContext';
-import { Button } from '../../../../../components/forms';
-import { alertUser } from '../../../../../components/alert/Alert';
+import { Button } from '@/components/forms';
+import { alertUser } from '@/components/alert/Alert';
 import { SUPPORTED_CHAINS } from '../../../../../utils/walletconnect';
 import styles from './incoming-pairing.module.css';
 

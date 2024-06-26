@@ -21,17 +21,17 @@ import { TAccountDetails, TDetailStatus, bitsuranceLookup } from '../../api/bits
 import { useMountedRef } from '../../hooks/mount';
 import { route } from '../../utils/route';
 import { TAccountsByKeystore, getAccountsByKeystore, isAmbiguiousName } from '../account/utils';
-import { Button } from '../../components/forms';
-import { alertUser } from '../../components/alert/Alert';
-import { GuideWrapper, GuidedContent, Header, Main } from '../../components/layout';
-import { View, ViewContent } from '../../components/view/view';
-import { A } from '../../components/anchor/anchor';
-import { Amount } from '../../components/amount/amount';
+import { Button } from '@/components/forms';
+import { alertUser } from '@/components/alert/Alert';
+import { GuideWrapper, GuidedContent, Header, Main } from '@/components/layout';
+import { View, ViewContent } from '@/components/view/view';
+import { A } from '@/components/anchor/anchor';
+import { Amount } from '@/components/amount/amount';
 import { Balances } from '../account/summary/accountssummary';
-import { Skeleton } from '../../components/skeleton/skeleton';
-import { HideAmountsButton } from '../../components/hideamountsbutton/hideamountsbutton';
-import { ExternalLink, GreenDot, OrangeDot, RedDot, YellowDot } from '../../components/icon';
-import { HorizontallyCenteredSpinner } from '../../components/spinner/SpinnerAnimation';
+import { Skeleton } from '@/components/skeleton/skeleton';
+import { HideAmountsButton } from '@/components/hideamountsbutton/hideamountsbutton';
+import { ExternalLink, GreenDot, OrangeDot, RedDot, YellowDot } from '@/components/icon';
+import { HorizontallyCenteredSpinner } from '@/components/spinner/SpinnerAnimation';
 import { BitsuranceGuide } from './guide';
 import style from './dashboard.module.css';
 

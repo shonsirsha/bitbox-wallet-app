@@ -17,8 +17,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { checkSDCard, insertSDCard } from '../../../../api/bitbox02';
-import { View, ViewHeader } from '../../../../components/view/view';
-import { alertUser } from '../../../../components/alert/Alert';
+import { View, ViewHeader } from '@/components/view/view';
+import { alertUser } from '@/components/alert/Alert';
 import { Wait } from './wait';
 
 type Props = {
