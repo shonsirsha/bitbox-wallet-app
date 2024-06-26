@@ -28,7 +28,7 @@ import { HideAmountsButton } from '@/components/hideamountsbutton/hideamountsbut
 import { Button, ButtonLink } from '@/components/forms';
 import { Column, ColumnButtons, Grid, GuideWrapper, GuidedContent, Header, Main } from '@/components/layout';
 import { Status } from '@/components/status/status';
-import { translate, TranslateProps } from '../../../decorators/translate';
+import { translate, TranslateProps } from '@/decorators/translate';
 import { getConfig } from '@/utils/config';
 import { FeeTargets } from './feetargets';
 import { route } from '@/utils/route';

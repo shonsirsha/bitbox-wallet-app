@@ -27,7 +27,7 @@ import { Column, Grid, GuideWrapper, GuidedContent, Header, Main } from '@/compo
 import { Toggle } from '@/components/toggle/toggle';
 import { Dialog, DialogButtons } from '@/components/dialog/dialog';
 import { Message } from '@/components/message/message';
-import { translate, TranslateProps } from '../../decorators/translate';
+import { translate, TranslateProps } from '@/decorators/translate';
 import { WithSettingsTabs } from './components/tabs';
 import { View, ViewContent } from '@/components/view/view';
 import { MobileHeader } from '../settings/components/mobile-header';
