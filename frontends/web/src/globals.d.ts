@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { TPayload } from './utils/transport-common';
+import { TPayload } from '@/utils/transport-common';
 
 export declare global {
     interface Window {

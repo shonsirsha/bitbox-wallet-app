@@ -25,10 +25,10 @@ import { TConnectStatus } from './types';
 import { GuideWrapper, GuidedContent, Header, Main } from '@/components/layout';
 import { alertUser } from '@/components/alert/Alert';
 import { View, ViewContent, ViewHeader } from '@/components/view/view';
-import { WCHeader } from './components/header/header';
-import { WCConnectForm } from './components/connect-form/connect-form';
-import { WCIncomingPairing } from './components/incoming-pairing/incoming-pairing';
-import { WCSuccessPairing } from './components/success-pairing/success-pairing';
+import { WCHeader } from '@/routes/account/walletconnect/components/header/header';
+import { WCConnectForm } from '@/routes/account/walletconnect/components/connect-form/connect-form';
+import { WCIncomingPairing } from '@/routes/account/walletconnect/components/incoming-pairing/incoming-pairing';
+import { WCSuccessPairing } from '@/routes/account/walletconnect/components/success-pairing/success-pairing';
 
 type TProps = {
   code: accountApi.AccountCode;

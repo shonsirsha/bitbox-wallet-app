@@ -16,7 +16,7 @@
  */
 
 import { ReactNode, useEffect, useState } from 'react';
-import { backendConnected } from './api/subscribe';
+import { backendConnected } from '@/api/subscribe';
 
 type TProps = {
     children: ReactNode;

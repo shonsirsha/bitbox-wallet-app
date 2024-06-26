@@ -21,7 +21,7 @@ import { Info, ExchangeDealsWithSupported, ExchangeDealWithBestDeal } from '../t
 import { Bank, BankDark, CreditCard, CreditCardDark } from '@/components/icon';
 import { InfoButton } from '@/components/infobutton/infobutton';
 import { Badge } from '@/components/badge/badge';
-import { getFormattedName } from '../utils';
+import { getFormattedName } from '@/routes/buy/utils';
 import style from './exchangeselectionradio.module.css';
 
 type RadioProps = {

@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { i18n } from '@/i18n/i18n';
 import { getDeviceList } from '@/api/devices';
 import { syncDeviceList } from '@/api/devicessync';
-import { useSync } from '../..//hooks/api';
+import { useSync } from '@/hooks/api';
 import { useKeystores } from '@/hooks/backend';
 import { useDarkmode } from '@/hooks/darkmode';
 import { Entry } from '@/components/guide/entry';

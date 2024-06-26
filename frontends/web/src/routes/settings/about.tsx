@@ -17,9 +17,9 @@
 import { useTranslation } from 'react-i18next';
 import { Main, Header, GuideWrapper, GuidedContent } from '@/components/layout';
 import { View, ViewContent } from '@/components/view/view';
-import { WithSettingsTabs } from './components/tabs';
-import { AppVersion } from './components/about/app-version-setting';
-import { MobileHeader } from './components/mobile-header';
+import { WithSettingsTabs } from '@/routes/settings/components/tabs';
+import { AppVersion } from '@/routes/settings/components/about/app-version-setting';
+import { MobileHeader } from '@/routes/settings/components/mobile-header';
 import { Guide } from '@/components/guide/guide';
 import { Entry } from '@/components/guide/entry';
 import { TPagePropsWithSettingsTabs } from './types';

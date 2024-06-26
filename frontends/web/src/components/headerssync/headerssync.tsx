@@ -21,7 +21,7 @@ import { useMountedRef } from '@/hooks/mount';
 import { CoinCode } from '@/api/account';
 import { subscribeCoinHeaders } from '@/api/coins';
 import { useSubscribe } from '@/hooks/api';
-import { AsciiSpinner } from '../spinner/ascii';
+import { AsciiSpinner } from '@/components/spinner/ascii';
 import style from './headerssync.module.css';
 
 export type TProps = {

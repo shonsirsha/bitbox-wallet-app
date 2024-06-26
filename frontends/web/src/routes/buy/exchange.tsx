@@ -27,17 +27,17 @@ import { route } from '@/utils/route';
 import { useLoad } from '@/hooks/api';
 import { getRegionNameFromLocale } from '@/i18n/utils';
 import { findLowestFee, findBestDeal, getFormattedName, getExchangeSupportedAccounts } from './utils';
-import { ExchangeSelectionRadio } from './components/exchangeselectionradio';
+import { ExchangeSelectionRadio } from '@/routes/buy/components/exchangeselectionradio';
 import { Spinner } from '@/components/spinner/Spinner';
 import { Info, FrontendExchangeDealsList } from './types';
 import { Dialog } from '@/components/dialog/dialog';
 import { InfoButton } from '@/components/infobutton/infobutton';
-import { InfoContent } from './components/infocontent';
+import { InfoContent } from '@/routes/buy/components/infocontent';
 import { getNativeLocale } from '@/api/nativelocale';
 import { getConfig, setConfig } from '@/utils/config';
 import { SingleValue } from 'react-select';
 import style from './exchange.module.css';
-import { CountrySelect, TOption } from './components/countryselect';
+import { CountrySelect, TOption } from '@/routes/buy/components/countryselect';
 
 type TProps = {
     code: AccountCode;

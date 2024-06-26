@@ -37,7 +37,7 @@ import { useLoad } from '@/hooks/api';
 import { HideAmountsButton } from '@/components/hideamountsbutton/hideamountsbutton';
 import style from './account.module.css';
 import { ActionButtons } from './actionButtons';
-import { Insured } from './components/insuredtag';
+import { Insured } from '@/routes/account/components/insuredtag';
 import { AccountGuide } from './guide';
 import { BuyReceiveCTA } from './info/buyReceiveCTA';
 import { isBitcoinBased } from './utils';

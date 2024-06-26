@@ -19,9 +19,9 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { I18nextProvider } from 'react-i18next';
 import { BrowserRouter } from 'react-router-dom';
-import { App } from './app';
-import { i18n } from './i18n/i18n';
-import './style/index.css';
+import { App } from '@/app';
+import { i18n } from '@/i18n/i18n';
+import '@/style/index.css';
 
 const rootEl = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(rootEl);

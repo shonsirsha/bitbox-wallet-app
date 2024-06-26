@@ -28,12 +28,12 @@ import { Toggle } from '@/components/toggle/toggle';
 import { Dialog, DialogButtons } from '@/components/dialog/dialog';
 import { Message } from '@/components/message/message';
 import { translate, TranslateProps } from '@/decorators/translate';
-import { WithSettingsTabs } from './components/tabs';
+import { WithSettingsTabs } from '@/routes/settings/components/tabs';
 import { View, ViewContent } from '@/components/view/view';
 import { MobileHeader } from '../settings/components/mobile-header';
 import { Badge } from '@/components/badge/badge';
 import { AccountGuide } from './manage-account-guide';
-import { WatchonlySetting } from './components/manage-accounts/watchonlySetting';
+import { WatchonlySetting } from '@/routes/settings/components/manage-accounts/watchonlySetting';
 import style from './manage-accounts.module.css';
 
 interface ManageAccountsProps {

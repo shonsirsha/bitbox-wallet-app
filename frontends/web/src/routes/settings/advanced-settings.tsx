@@ -19,18 +19,18 @@ import { useTranslation } from 'react-i18next';
 import { useLoad } from '@/hooks/api';
 import { Main, Header, GuideWrapper, GuidedContent } from '@/components/layout';
 import { View, ViewContent } from '@/components/view/view';
-import { WithSettingsTabs } from './components/tabs';
+import { WithSettingsTabs } from '@/routes/settings/components/tabs';
 import { TPagePropsWithSettingsTabs } from './types';
-import { EnableCustomFeesToggleSetting } from './components/advanced-settings/enable-custom-fees-toggle-setting';
-import { EnableCoinControlSetting } from './components/advanced-settings/enable-coin-control-setting';
-import { ConnectFullNodeSetting } from './components/advanced-settings/connect-full-node-setting';
-import { EnableTorProxySetting } from './components/advanced-settings/enable-tor-proxy-setting';
-import { ExportLogSetting } from './components/advanced-settings/export-log-setting';
+import { EnableCustomFeesToggleSetting } from '@/routes/settings/components/advanced-settings/enable-custom-fees-toggle-setting';
+import { EnableCoinControlSetting } from '@/routes/settings/components/advanced-settings/enable-coin-control-setting';
+import { ConnectFullNodeSetting } from '@/routes/settings/components/advanced-settings/connect-full-node-setting';
+import { EnableTorProxySetting } from '@/routes/settings/components/advanced-settings/enable-tor-proxy-setting';
+import { ExportLogSetting } from '@/routes/settings/components/advanced-settings/export-log-setting';
 import { getConfig } from '@/utils/config';
-import { MobileHeader } from './components/mobile-header';
+import { MobileHeader } from '@/routes/settings/components/mobile-header';
 import { Guide } from '@/components/guide/guide';
 import { Entry } from '@/components/guide/entry';
-import { EnableAuthSetting } from './components/advanced-settings/enable-auth-setting';
+import { EnableAuthSetting } from '@/routes/settings/components/advanced-settings/enable-auth-setting';
 
 export type TProxyConfig = {
   proxyAddress: string;

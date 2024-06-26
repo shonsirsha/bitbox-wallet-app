@@ -25,7 +25,7 @@ import { Warning, ExpandIcon } from '../icon/icon';
 import { ProgressRing } from '../progressRing/progressRing';
 import { FiatConversion } from '../rates/rates';
 import { Amount } from '@/components/amount/amount';
-import { ArrowIn, ArrowOut, ArrowSelf } from './components/icons';
+import { ArrowIn, ArrowOut, ArrowSelf } from '@/components/transactions/components/icons';
 import { Note } from './note';
 import parentStyle from './transactions.module.css';
 import style from './transaction.module.css';

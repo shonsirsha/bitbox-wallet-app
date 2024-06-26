@@ -17,8 +17,8 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as accountAPI from '@/api/account';
-import { Button } from '../forms';
-import { WaitDialog } from '../wait-dialog/wait-dialog';
+import { Button } from '@/components/forms';
+import { WaitDialog } from '@/components/wait-dialog/wait-dialog';
 
 type TProps = {
     accountCode: accountAPI.AccountCode;
