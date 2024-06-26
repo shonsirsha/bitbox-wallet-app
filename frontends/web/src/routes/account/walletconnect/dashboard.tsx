@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { useLoad } from '@/hooks/api';
 import { SessionTypes } from '@walletconnect/types';
 import { getSdkError } from '@walletconnect/utils';
-import { WCWeb3WalletContext } from '../../../contexts/WCWeb3WalletContext';
+import { WCWeb3WalletContext } from '@/contexts/WCWeb3WalletContext';
 import { route } from '../../../utils/route';
 import { getAddressFromEIPString, truncateAddress } from '../../../utils/walletconnect';
 import { AccountCode, IAccount, getReceiveAddressList } from '@/api/account';

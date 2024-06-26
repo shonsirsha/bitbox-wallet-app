@@ -25,7 +25,7 @@ import { Filters } from './filters';
 import { getDarkmode } from '@/components/darkmode/darkmode';
 import { TChartFiltersProps } from './types';
 import { DefaultCurrencyRotator } from '@/components/rates/rates';
-import { AppContext } from '../../../contexts/AppContext';
+import { AppContext } from '@/contexts/AppContext';
 import styles from './chart.module.css';
 
 export interface FormattedLineData extends LineData {

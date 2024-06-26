@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { SignClientTypes } from '@walletconnect/types';
 import { useLoad } from '@/hooks/api';
 import * as accountApi from '@/api/account';
-import { WCWeb3WalletContext } from '../../../contexts/WCWeb3WalletContext';
+import { WCWeb3WalletContext } from '@/contexts/WCWeb3WalletContext';
 import { WCGuide } from './guide';
 import { TConnectStatus } from './types';
 import { GuideWrapper, GuidedContent, Header, Main } from '@/components/layout';

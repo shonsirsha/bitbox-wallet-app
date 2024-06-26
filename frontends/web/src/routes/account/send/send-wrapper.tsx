@@ -17,7 +17,7 @@
 import { useContext } from 'react';
 import { AccountCode, IAccount } from '@/api/account';
 import { TDevices } from '@/api/devices';
-import { RatesContext } from '../../../contexts/RatesContext';
+import { RatesContext } from '@/contexts/RatesContext';
 import { Send } from './send';
 
 type TSendProps = {

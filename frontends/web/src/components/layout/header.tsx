@@ -18,7 +18,7 @@
 import React, { ReactNode, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GuideActive, MenuLight, MenuDark } from '../icon';
-import { AppContext } from '../../contexts/AppContext';
+import { AppContext } from '@/contexts/AppContext';
 import style from './header.module.css';
 import { Button } from '../forms';
 interface HeaderProps {

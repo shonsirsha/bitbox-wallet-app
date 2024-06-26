@@ -20,7 +20,7 @@ import { Toggle } from '@/components/toggle/toggle';
 import { SettingsItem } from '../settingsItem/settingsItem';
 import { useLoad } from '@/hooks/api';
 import { getConfig, setConfig } from '../../../../utils/config';
-import { RatesContext } from '../../../../contexts/RatesContext';
+import { RatesContext } from '@/contexts/RatesContext';
 import { BtcUnit, setBtcUnit } from '@/api/coins';
 import { alertUser } from '@/components/alert/Alert';
 

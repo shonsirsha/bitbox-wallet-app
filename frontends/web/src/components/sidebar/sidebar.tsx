@@ -37,7 +37,7 @@ import { CloseXWhite, RedDot, USBSuccess } from '../icon';
 import { getAccountsByKeystore, isAmbiguiousName, isBitcoinOnly } from '../../routes/account/utils';
 import { SkipForTesting } from '../../routes/device/components/skipfortesting';
 import { Badge } from '../badge/badge';
-import { AppContext } from '../../contexts/AppContext';
+import { AppContext } from '@/contexts/AppContext';
 import { Button } from '../forms';
 import style from './sidebar.module.css';
 

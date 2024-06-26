@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import Select, { ActionMeta, DropdownIndicatorProps, OptionProps, components } from 'react-select';
 import { Fiat } from '@/api/account';
-import { RatesContext } from '../../../../contexts/RatesContext';
+import { RatesContext } from '@/contexts/RatesContext';
 import { SelectedCheckLight } from '@/components/icon';
 import dropdownStyles from './dropdowns.module.css';
 import activeCurrenciesDropdownStyle from './activecurrenciesdropdown.module.css';
