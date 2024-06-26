@@ -18,8 +18,8 @@ import { useTranslation } from 'react-i18next';
 import { useDarkmode } from '@/hooks/darkmode';
 import { Dialog, DialogButtons } from '../dialog/dialog';
 import { Button } from '../forms';
-import { SUPPORTED_CHAINS, truncateAddress } from '../../utils/walletconnect';
-import { TRequestDialogContent } from '../../utils/walletconnect-eth-sign-handlers';
+import { SUPPORTED_CHAINS, truncateAddress } from '@/utils/walletconnect';
+import { TRequestDialogContent } from '@/utils/walletconnect-eth-sign-handlers';
 import { AnimatedChecked, PointToBitBox02, WalletConnectDark, WalletConnectLight } from '../icon';
 import styles from './incoming-signing-request.module.css';
 

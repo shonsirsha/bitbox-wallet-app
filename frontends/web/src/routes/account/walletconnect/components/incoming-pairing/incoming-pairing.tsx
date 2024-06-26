@@ -21,7 +21,7 @@ import { buildApprovedNamespaces, getSdkError } from '@walletconnect/utils';
 import { WCWeb3WalletContext } from '@/contexts/WCWeb3WalletContext';
 import { Button } from '@/components/forms';
 import { alertUser } from '@/components/alert/Alert';
-import { SUPPORTED_CHAINS } from '../../../../../utils/walletconnect';
+import { SUPPORTED_CHAINS } from '@/utils/walletconnect';
 import styles from './incoming-pairing.module.css';
 
 type TIncomingPairingProps = {

@@ -38,7 +38,7 @@ import appTranslationsHE from '@/locales/he/app.json';
 import appTranslationsIT from '@/locales/it/app.json';
 import { languageFromConfig } from './config';
 import { localeMainLanguage } from './utils';
-import { setConfig } from '../utils/config';
+import { setConfig } from '@/utils/config';
 
 const locizeProjectID = 'fe4e5a24-e4a2-4903-96fc-3d62c11fc502';
 

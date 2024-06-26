@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { useLoad } from '@/hooks/api';
 import { getNativeLocale } from '@/api/nativelocale';
 import { defaultLanguages } from '@/components/language/types';
-import { getSelectedIndex } from '../../../../utils/language';
+import { getSelectedIndex } from '@/utils/language';
 import { SingleDropdown } from '../dropdowns/singledropdown';
 import { GlobeDark, GlobeLight } from '@/components/icon/icon';
 import { useDarkmode } from '@/hooks/darkmode';

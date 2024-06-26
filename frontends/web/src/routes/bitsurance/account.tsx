@@ -16,7 +16,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { route } from '../../utils/route';
+import { route } from '@/utils/route';
 import { IAccount, connectKeystore } from '@/api/account';
 import { BitsuranceGuide } from './guide';
 import { GroupedAccountSelector } from '@/components/groupedaccountselector/groupedaccountselector';

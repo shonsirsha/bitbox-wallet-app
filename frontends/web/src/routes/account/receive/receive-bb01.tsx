@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { useLoad } from '@/hooks/api';
 import { useEsc } from '@/hooks/keyboard';
 import * as accountApi from '@/api/account';
-import { route } from '../../../utils/route';
+import { route } from '@/utils/route';
 import { getScriptName, isEthereumBased } from '../utils';
 import { alertUser } from '@/components/alert/Alert';
 import { CopyableInput } from '@/components/copy/Copy';

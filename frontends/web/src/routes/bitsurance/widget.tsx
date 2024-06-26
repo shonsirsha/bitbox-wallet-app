@@ -17,7 +17,7 @@
 import { useTranslation } from 'react-i18next';
 import { useState, useEffect, createRef } from 'react';
 import { RequestAddressV0Message, MessageVersion, parseMessage, serializeMessage, V0MessageType } from 'request-address';
-import { getConfig } from '../../utils/config';
+import { getConfig } from '@/utils/config';
 import { ScriptType, signAddress } from '@/api/account';
 import { getInfo } from '@/api/account';
 import { Header } from '@/components/layout';
@@ -27,9 +27,9 @@ import { useLoad } from '@/hooks/api';
 import { alertUser } from '@/components/alert/Alert';
 import { BitsuranceGuide } from './guide';
 import { getBitsuranceURL } from '@/api/bitsurance';
-import { route } from '../../utils/route';
+import { route } from '@/utils/route';
 import style from './widget.module.css';
-import { convertScriptType } from '../../utils/request-addess';
+import { convertScriptType } from '@/utils/request-addess';
 
 type TProps = {
     code: string;

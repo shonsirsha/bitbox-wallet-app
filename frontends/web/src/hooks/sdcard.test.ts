@@ -22,7 +22,7 @@ import * as bitbox01Apis from '@/api/bitbox01';
 import * as bitbox02Apis from '@/api/bitbox02';
 import * as utils from './mount';
 
-vi.mock('../utils/request', () => ({
+vi.mock('@/utils/request', () => ({
   apiGet: vi.fn().mockResolvedValue(''),
 }));
 

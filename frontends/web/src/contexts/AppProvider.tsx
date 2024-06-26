@@ -15,7 +15,7 @@
  */
 
 import { ReactNode, useEffect, useState } from 'react';
-import { getConfig, setConfig } from '../utils/config';
+import { getConfig, setConfig } from '@/utils/config';
 import { AppContext } from './AppContext';
 import { useLoad } from '@/hooks/api';
 import { useDefault } from '@/hooks/default';

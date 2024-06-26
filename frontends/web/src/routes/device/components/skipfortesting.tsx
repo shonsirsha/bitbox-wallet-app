@@ -22,7 +22,7 @@ import { Button } from '@/components/forms';
 import { PasswordSingleInput } from '@/components/password';
 import { Dialog, DialogButtons } from '@/components/dialog/dialog';
 import { useLoad } from '@/hooks/api';
-import { debug } from '../../../utils/env';
+import { debug } from '@/utils/env';
 
 type TProps = {
   children?: ReactNode;

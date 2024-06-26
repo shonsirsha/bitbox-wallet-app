@@ -17,7 +17,7 @@
 import { useTranslation } from 'react-i18next';
 import { ChangeEvent } from 'react';
 import { Button, Checkbox } from '../forms';
-import { setConfig } from '../../utils/config';
+import { setConfig } from '@/utils/config';
 import { A } from '../anchor/anchor';
 import style from './terms.module.css';
 

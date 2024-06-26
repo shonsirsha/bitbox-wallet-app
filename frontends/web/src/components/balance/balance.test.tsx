@@ -21,7 +21,7 @@ import { render } from '@testing-library/react';
 import { IBalance } from '@/api/account';
 import { Balance } from './balance';
 
-vi.mock('../../utils/request', () => ({
+vi.mock('@/utils/request', () => ({
   apiGet: vi.fn().mockResolvedValue({}),
 }));
 

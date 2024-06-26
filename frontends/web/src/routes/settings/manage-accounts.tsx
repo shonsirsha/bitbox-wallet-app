@@ -16,7 +16,7 @@
 
 import React, { Component } from 'react';
 import { getAccountsByKeystore, isAmbiguiousName } from '../account/utils';
-import { route } from '../../utils/route';
+import { route } from '@/utils/route';
 import * as accountAPI from '@/api/account';
 import * as backendAPI from '@/api/backend';
 import { alertUser } from '@/components/alert/Alert';

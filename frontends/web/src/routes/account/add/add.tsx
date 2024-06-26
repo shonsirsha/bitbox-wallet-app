@@ -18,7 +18,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as backendAPI from '@/api/backend';
 import * as keystoresAPI from '@/api/keystores';
-import { SimpleMarkup } from '../../../utils/markup';
+import { SimpleMarkup } from '@/utils/markup';
 import { Message } from '@/components/message/message';
 import { Button, Input } from '@/components/forms';
 import { Header } from '@/components/layout';
@@ -26,7 +26,7 @@ import { Step, Steps } from './components/steps';
 import { CoinDropDown } from './components/coin-dropdown';
 import { Check } from '@/components/icon/icon';
 import { AddAccountGuide } from './add-account-guide';
-import { route } from '../../../utils/route';
+import { route } from '@/utils/route';
 import { addAccount, CoinCode, TAddAccount, IAccount } from '@/api/account';
 import styles from './add.module.css';
 

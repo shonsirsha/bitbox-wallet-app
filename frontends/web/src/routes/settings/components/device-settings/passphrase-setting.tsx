@@ -17,7 +17,7 @@
 import { useTranslation } from 'react-i18next';
 import { SettingsItem } from '../settingsItem/settingsItem';
 import { ChevronRightDark } from '@/components/icon';
-import { route } from '../../../../utils/route';
+import { route } from '@/utils/route';
 
 type TProps = {
     deviceID: string;

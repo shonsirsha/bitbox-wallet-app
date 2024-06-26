@@ -25,7 +25,7 @@ import * as mountHooks from '@/hooks/mount';
 const useSubscribeSpy = vi.spyOn(apiHooks, 'useSubscribe');
 const useMountedRefSpy = vi.spyOn(mountHooks, 'useMountedRef');
 
-vi.mock('../../utils/request', () => ({
+vi.mock('@/utils/request', () => ({
   apiGet: vi.fn().mockResolvedValue(''),
 }));
 

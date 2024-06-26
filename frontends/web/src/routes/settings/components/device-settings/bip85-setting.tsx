@@ -21,7 +21,7 @@ import { View, ViewButtons, ViewContent, ViewHeader } from '@/components/view/vi
 import { Button, Checkbox } from '@/components/forms';
 import { ChevronRightDark, PointToBitBox02, Warning } from '@/components/icon';
 import { invokeBIP85 } from '@/api/bitbox02';
-import { SimpleMarkup } from '../../../../utils/markup';
+import { SimpleMarkup } from '@/utils/markup';
 import { A } from '@/components/anchor/anchor';
 import { Column, Grid } from '@/components/layout';
 import { useDarkmode } from '@/hooks/darkmode';

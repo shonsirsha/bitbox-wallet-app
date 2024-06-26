@@ -22,7 +22,7 @@ import { useSubscribeReset } from '@/hooks/api';
 import { Dialog, DialogButtons } from './dialog/dialog';
 import { BitBox02StylizedDark, BitBox02StylizedLight, Cancel, PointToBitBox02 } from './icon';
 import { useDarkmode } from '@/hooks/darkmode';
-import { SkipForTesting } from '../routes/device/components/skipfortesting';
+import { SkipForTesting } from '@/routes/device/components/skipfortesting';
 import styles from './keystoreconnectprompt.module.css';
 
 export const KeystoreConnectPrompt = () => {

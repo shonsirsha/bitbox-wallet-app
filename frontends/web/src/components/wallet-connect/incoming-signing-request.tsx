@@ -18,9 +18,9 @@ import { MutableRefObject, useContext, useEffect, useRef, useState } from 'react
 import { t } from 'i18next';
 import { WCWeb3WalletContext } from '@/contexts/WCWeb3WalletContext';
 import { SignClientTypes } from '@walletconnect/types';
-import { TEthSignHandlerParams, TLaunchSignDialog, TRequestDialogContent, handleWcEthSignRequest } from '../../utils/walletconnect-eth-sign-handlers';
+import { TEthSignHandlerParams, TLaunchSignDialog, TRequestDialogContent, handleWcEthSignRequest } from '@/utils/walletconnect-eth-sign-handlers';
 import { alertUser } from '../alert/Alert';
-import { rejectMessage } from '../../utils/walletconnect';
+import { rejectMessage } from '@/utils/walletconnect';
 import { TStage, WCIncomingSignRequestDialog } from './incoming-signing-request-dialog';
 
 type TSigningRequestData = {

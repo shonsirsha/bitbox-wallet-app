@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { AccountCode, IAccount, getBalance } from '@/api/account';
 import { TAccountDetails, TDetailStatus, bitsuranceLookup } from '@/api/bitsurance';
 import { useMountedRef } from '@/hooks/mount';
-import { route } from '../../utils/route';
+import { route } from '@/utils/route';
 import { TAccountsByKeystore, getAccountsByKeystore, isAmbiguiousName } from '../account/utils';
 import { Button } from '@/components/forms';
 import { alertUser } from '@/components/alert/Alert';

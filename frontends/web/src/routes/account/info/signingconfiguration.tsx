@@ -17,7 +17,7 @@
 
 import { useState, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { route } from '../../../utils/route';
+import { route } from '@/utils/route';
 import { AccountCode, IAccount, TBitcoinSimple, TEthereumSimple, TSigningConfiguration, verifyXPub } from '@/api/account';
 import { getScriptName, isBitcoinBased } from '../utils';
 import { alertUser } from '@/components/alert/Alert';

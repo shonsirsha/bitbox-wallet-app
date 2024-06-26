@@ -16,7 +16,7 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { route } from '../../utils/route';
+import { route } from '@/utils/route';
 import * as accountApi from '@/api/account';
 import { getExchangeSupportedAccounts } from './utils';
 import { GuidedContent, GuideWrapper, Header, Main } from '@/components/layout';

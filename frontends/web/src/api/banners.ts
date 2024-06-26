@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { apiGet } from '../utils/request';
+import { apiGet } from '@/utils/request';
 import { statusType } from '@/components/status/status';
 import { subscribeEndpoint, TUnsubscribe } from './subscribe';
 

@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
 import { getDeviceInfo, setMnemonicPassphraseEnabled } from '@/api/bitbox02';
-import { MultilineMarkup, SimpleMarkup } from '../../../utils/markup';
+import { MultilineMarkup, SimpleMarkup } from '@/utils/markup';
 import { Main } from '@/components/layout';
 import { Button, Checkbox } from '@/components/forms';
 import { alertUser } from '@/components/alert/Alert';

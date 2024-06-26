@@ -17,7 +17,7 @@
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MultilineMarkup } from '../../utils/markup';
+import { MultilineMarkup } from '@/utils/markup';
 import { View, ViewButtons, ViewHeader } from '../view/view';
 import { Button } from '../forms';
 

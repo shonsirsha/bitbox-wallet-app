@@ -24,7 +24,7 @@ import { bitsuranceLookup } from '@/api/bitsurance';
 import { TDevices } from '@/api/devices';
 import { getExchangeBuySupported, SupportedExchanges } from '@/api/exchanges';
 import { useSDCard } from '@/hooks/sdcard';
-import { unsubscribe } from '../../utils/subscriptions';
+import { unsubscribe } from '@/utils/subscriptions';
 import { alertUser } from '@/components/alert/Alert';
 import { Balance } from '@/components/balance/balance';
 import { HeadersSync } from '@/components/headerssync/headerssync';
@@ -42,10 +42,10 @@ import { AccountGuide } from './guide';
 import { BuyReceiveCTA } from './info/buyReceiveCTA';
 import { isBitcoinBased } from './utils';
 import { getScriptName } from './utils';
-import { MultilineMarkup } from '../../utils/markup';
+import { MultilineMarkup } from '@/utils/markup';
 import { Dialog } from '@/components/dialog/dialog';
 import { A } from '@/components/anchor/anchor';
-import { getConfig, setConfig } from '../../utils/config';
+import { getConfig, setConfig } from '@/utils/config';
 import { i18n } from '@/i18n/i18n';
 
 type Props = {

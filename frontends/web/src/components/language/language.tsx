@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { Dialog } from '../dialog/dialog';
 import { defaultLanguages, TActiveLanguageCodes, TLanguagesList } from './types';
 import style from './language.module.css';
-import { getSelectedIndex } from '../../utils/language';
+import { getSelectedIndex } from '@/utils/language';
 
 type TLanguageSwitchProps = {
     languages?: TLanguagesList;

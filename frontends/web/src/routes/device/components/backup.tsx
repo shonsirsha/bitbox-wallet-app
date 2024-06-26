@@ -16,7 +16,7 @@
  */
 
 import { i18n } from '@/i18n/i18n';
-import { convertDateToLocaleString } from '../../../utils/date';
+import { convertDateToLocaleString } from '@/utils/date';
 import { Radio } from '@/components/forms';
 import { Backup } from '@/api/backup';
 import style from './backups.module.css';

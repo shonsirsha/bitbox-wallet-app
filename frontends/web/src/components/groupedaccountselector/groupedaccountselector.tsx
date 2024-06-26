@@ -23,8 +23,8 @@ import { Logo } from '../icon/logo';
 import { AppContext } from '@/contexts/AppContext';
 import { USBSuccess } from '../icon';
 import { Badge } from '../badge/badge';
-import { InsuredShield } from '../../routes/account/components/insuredtag';
-import { getAccountsByKeystore } from '../../routes/account/utils';
+import { InsuredShield } from '@/routes/account/components/insuredtag';
+import { getAccountsByKeystore } from '@/routes/account/utils';
 import { createGroupedOptions, getBalancesForGroupedAccountSelector } from './services';
 import styles from './groupedaccountselector.module.css';
 

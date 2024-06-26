@@ -16,7 +16,7 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { runningInAndroid } from '../../utils/env';
+import { runningInAndroid } from '@/utils/env';
 import { getUpdate } from '@/api/version';
 import { Status } from '../status/status';
 import { AppDownloadLink } from '../appdownloadlink/appdownloadlink';

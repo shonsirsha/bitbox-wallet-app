@@ -26,7 +26,7 @@ import { EnableCoinControlSetting } from './components/advanced-settings/enable-
 import { ConnectFullNodeSetting } from './components/advanced-settings/connect-full-node-setting';
 import { EnableTorProxySetting } from './components/advanced-settings/enable-tor-proxy-setting';
 import { ExportLogSetting } from './components/advanced-settings/export-log-setting';
-import { getConfig } from '../../utils/config';
+import { getConfig } from '@/utils/config';
 import { MobileHeader } from './components/mobile-header';
 import { Guide } from '@/components/guide/guide';
 import { Entry } from '@/components/guide/entry';

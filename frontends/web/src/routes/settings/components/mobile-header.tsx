@@ -16,7 +16,7 @@
 
 import { useTranslation } from 'react-i18next';
 import { ChevronLeftDark } from '@/components/icon';
-import { route } from '../../../utils/route';
+import { route } from '@/utils/route';
 import styles from './mobile-header.module.css';
 
 type TProps = {
