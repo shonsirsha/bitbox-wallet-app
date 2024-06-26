@@ -21,7 +21,7 @@ import { getTesting } from '../../../api/backend';
 import { Button } from '@/components/forms';
 import { PasswordSingleInput } from '@/components/password';
 import { Dialog, DialogButtons } from '@/components/dialog/dialog';
-import { useLoad } from '../../../hooks/api';
+import { useLoad } from '@/hooks/api';
 import { debug } from '../../../utils/env';
 
 type TProps = {

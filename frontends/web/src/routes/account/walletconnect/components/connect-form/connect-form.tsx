@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 import * as accountAPI from '../../../../../api/account';
 import { Button, Input } from '@/components/forms';
 import { route } from '../../../../../utils/route';
-import { useMediaQuery } from '../../../../../hooks/mediaquery';
+import { useMediaQuery } from '@/hooks/mediaquery';
 import { ScanQRButton } from '../../../send/components/inputs/receiver-address-input';
 import { ScanQRDialog } from '../../../send/components/dialogs/scan-qr-dialog';
 import { ScanQRVideo } from '../../../send/components/inputs/scan-qr-video';

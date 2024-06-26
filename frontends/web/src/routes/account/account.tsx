@@ -23,7 +23,7 @@ import { statusChanged, syncAddressesCount, syncdone } from '../../api/accountsy
 import { bitsuranceLookup } from '../../api/bitsurance';
 import { TDevices } from '../../api/devices';
 import { getExchangeBuySupported, SupportedExchanges } from '../../api/exchanges';
-import { useSDCard } from '../../hooks/sdcard';
+import { useSDCard } from '@/hooks/sdcard';
 import { unsubscribe } from '../../utils/subscriptions';
 import { alertUser } from '@/components/alert/Alert';
 import { Balance } from '@/components/balance/balance';
@@ -33,7 +33,7 @@ import { Header } from '@/components/layout';
 import { Spinner } from '@/components/spinner/Spinner';
 import { Status } from '@/components/status/status';
 import { Transactions } from '@/components/transactions/transactions';
-import { useLoad } from '../../hooks/api';
+import { useLoad } from '@/hooks/api';
 import { HideAmountsButton } from '@/components/hideamountsbutton/hideamountsbutton';
 import style from './account.module.css';
 import { ActionButtons } from './actionButtons';

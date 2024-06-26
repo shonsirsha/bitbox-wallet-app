@@ -17,7 +17,7 @@
 
 import { ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSync } from '../../../hooks/api';
+import { useSync } from '@/hooks/api';
 import { restoreBackup } from '../../../api/bitbox02';
 import { getBackupList, subscribeBackupList } from '../../../api/backup';
 import { Toast } from '@/components/toast/toast';

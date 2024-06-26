@@ -16,7 +16,7 @@
 
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLoad } from '../../../hooks/api';
+import { useLoad } from '@/hooks/api';
 import { SessionTypes } from '@walletconnect/types';
 import { getSdkError } from '@walletconnect/utils';
 import { WCWeb3WalletContext } from '../../../contexts/WCWeb3WalletContext';

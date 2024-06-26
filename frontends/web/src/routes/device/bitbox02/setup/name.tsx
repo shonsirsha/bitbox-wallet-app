@@ -21,7 +21,7 @@ import { Status } from '@/components/status/status';
 import { Button, Input } from '@/components/forms';
 import { checkSDCard } from '../../../../api/bitbox02';
 import style from './name.module.css';
-import { useValidateDeviceName } from '../../../../hooks/devicename';
+import { useValidateDeviceName } from '@/hooks/devicename';
 import { TDeviceNameError } from '../../../../utils/types';
 
 type TProps = {

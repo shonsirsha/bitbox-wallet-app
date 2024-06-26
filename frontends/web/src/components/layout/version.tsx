@@ -16,7 +16,7 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { useLoad } from '../../hooks/api';
+import { useLoad } from '@/hooks/api';
 import { getVersion } from '../../api/version';
 
 const Version = () => {

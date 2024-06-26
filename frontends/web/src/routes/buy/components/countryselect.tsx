@@ -17,7 +17,7 @@
 import { FunctionComponent } from 'react';
 import { useTranslation } from 'react-i18next';
 import Select, { components, SingleValueProps, OptionProps, SingleValue, DropdownIndicatorProps } from 'react-select';
-import { useDarkmode } from '../../../hooks/darkmode';
+import { useDarkmode } from '@/hooks/darkmode';
 import { GlobeDark, GlobeLight } from '@/components/icon';
 import { i18n } from '../../../i18n/i18n';
 import styles from './countryselect.module.css';

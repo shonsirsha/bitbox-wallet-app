@@ -24,7 +24,7 @@ import { getDeviceInfo, setDeviceName } from '../../../../api/bitbox02';
 import { alertUser } from '@/components/alert/Alert';
 import { WaitDialog } from '@/components/wait-dialog/wait-dialog';
 import { DeviceNameErrorMessage } from '../../../device/bitbox02/setup/name';
-import { useValidateDeviceName } from '../../../../hooks/devicename';
+import { useValidateDeviceName } from '@/hooks/devicename';
 import nameStyle from '../../../device/bitbox02/setup/name.module.css';
 
 type TDeviceNameSettingProps = {

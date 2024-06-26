@@ -15,7 +15,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useLoad } from '../../hooks/api';
+import { useLoad } from '@/hooks/api';
 import { useTranslation } from 'react-i18next';
 import { GuideWrapper, GuidedContent, Header, Main } from '@/components/layout';
 import { ViewContent, View } from '@/components/view/view';

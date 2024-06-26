@@ -25,7 +25,7 @@ import { AccountCode, getInfo, getTransactionList, signAddress } from '../../api
 import { Header } from '@/components/layout';
 import { Spinner } from '@/components/spinner/Spinner';
 import { PocketTerms } from '@/components/terms/pocket-terms';
-import { useLoad } from '../../hooks/api';
+import { useLoad } from '@/hooks/api';
 import { alertUser } from '@/components/alert/Alert';
 import { BuyGuide } from './guide';
 import { convertScriptType } from '../../utils/request-addess';

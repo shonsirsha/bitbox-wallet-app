@@ -16,7 +16,7 @@
 
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useLoad, useSync } from '../../../hooks/api';
+import { useLoad, useSync } from '@/hooks/api';
 import { getStatus, getVersion, verifyAttestation } from '../../../api/bitbox02';
 import { attestationCheckDone, statusChanged } from '../../../api/devicessync';
 import { AppUpgradeRequired } from '@/components/appupgraderequired';

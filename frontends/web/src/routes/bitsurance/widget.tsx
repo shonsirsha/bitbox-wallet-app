@@ -23,7 +23,7 @@ import { getInfo } from '../../api/account';
 import { Header } from '@/components/layout';
 import { Spinner } from '@/components/spinner/Spinner';
 import { BitsuranceTerms } from '@/components/terms/bitsurance-terms';
-import { useLoad } from '../../hooks/api';
+import { useLoad } from '@/hooks/api';
 import { alertUser } from '@/components/alert/Alert';
 import { BitsuranceGuide } from './guide';
 import { getBitsuranceURL } from '../../api/bitsurance';

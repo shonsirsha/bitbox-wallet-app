@@ -24,7 +24,7 @@ import { Header } from '@/components/layout';
 import { BuyGuide } from './guide';
 import { findAccount, getCryptoName } from '../account/utils';
 import { route } from '../../utils/route';
-import { useLoad } from '../../hooks/api';
+import { useLoad } from '@/hooks/api';
 import { getRegionNameFromLocale } from '../../i18n/utils';
 import { findLowestFee, findBestDeal, getFormattedName, getExchangeSupportedAccounts } from './utils';
 import { ExchangeSelectionRadio } from './components/exchangeselectionradio';

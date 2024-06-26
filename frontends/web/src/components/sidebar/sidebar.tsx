@@ -19,7 +19,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import { Link, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useKeystores } from '../../hooks/backend';
+import { useKeystores } from '@/hooks/backend';
 import type { TDevices } from '../../api/devices';
 import type { IAccount } from '../../api/account';
 import { deregisterTest } from '../../api/keystores';

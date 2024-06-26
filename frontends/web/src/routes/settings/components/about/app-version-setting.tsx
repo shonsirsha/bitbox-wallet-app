@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { useLoad } from '../../../../hooks/api';
+import { useLoad } from '@/hooks/api';
 import { useTranslation } from 'react-i18next';
 import { getUpdate, getVersion } from '../../../../api/version';
 import { open } from '../../../../api/system';

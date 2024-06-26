@@ -17,8 +17,8 @@
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLoad } from '../../../hooks/api';
-import { useEsc } from '../../../hooks/keyboard';
+import { useLoad } from '@/hooks/api';
+import { useEsc } from '@/hooks/keyboard';
 import { getInfo, IAccount, AccountCode } from '../../../api/account';
 import { route } from '../../../utils/route';
 import { isBitcoinBased } from '../utils';

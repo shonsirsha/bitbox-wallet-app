@@ -15,7 +15,7 @@
  */
 
 import { ReactNode } from 'react';
-import { useDarkmode } from '../../hooks/darkmode';
+import { useDarkmode } from '@/hooks/darkmode';
 import { LanguageSwitch } from '../language/language';
 import { Version } from '../layout/version';
 import { AppLogo, AppLogoInverted, SwissMadeOpenSource, SwissMadeOpenSourceDark } from '../icon/logo';

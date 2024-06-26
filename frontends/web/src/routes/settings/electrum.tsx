@@ -23,7 +23,7 @@ import { getTesting } from '../../api/backend';
 import { Guide } from '@/components/guide/guide';
 import { Entry } from '@/components/guide/entry';
 import { Button, ButtonLink } from '@/components/forms';
-import { useLoad } from '../../hooks/api';
+import { useLoad } from '@/hooks/api';
 import { Header } from '@/components/layout';
 
 export const ElectrumSettings = () => {

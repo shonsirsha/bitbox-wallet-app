@@ -15,7 +15,7 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { useMediaQuery } from '../../../../../hooks/mediaquery';
+import { useMediaQuery } from '@/hooks/mediaquery';
 import { View, ViewButtons } from '@/components/view/view';
 import { Button } from '@/components/forms';
 import { ScanQRVideo } from '../inputs/scan-qr-video';

@@ -24,7 +24,7 @@ import { Button } from '@/components/forms';
 import { Checked, Sync, SyncLight } from '@/components/icon';
 import { Column, ColumnButtons, Grid, GuidedContent, GuideWrapper, Header, Main } from '@/components/layout';
 import { View, ViewContent } from '@/components/view/view';
-import { useDarkmode } from '../../hooks/darkmode';
+import { useDarkmode } from '@/hooks/darkmode';
 import { route } from '../../utils/route';
 import { BitsuranceGuide } from './guide';
 import style from './bitsurance.module.css';

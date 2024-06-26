@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router';
 import { WalletConnectLight } from '@/components/icon';
-import { useMediaQuery } from '../../hooks/mediaquery';
+import { useMediaQuery } from '@/hooks/mediaquery';
 import { connectKeystore, AccountCode, IAccount, CoinCode } from '../../api/account';
 import { isEthereumBased } from './utils';
 import style from './account.module.css';

@@ -17,8 +17,8 @@
 
 import { useState, useEffect, createRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLoad } from '../../hooks/api';
-import { useDarkmode } from '../../hooks/darkmode';
+import { useLoad } from '@/hooks/api';
+import { useDarkmode } from '@/hooks/darkmode';
 import { AccountCode, IAccount } from '../../api/account';
 import { getConfig } from '../../utils/config';
 import { getMoonpayBuyInfo } from '../../api/exchanges';
