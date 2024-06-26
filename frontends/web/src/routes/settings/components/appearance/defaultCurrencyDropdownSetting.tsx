@@ -17,7 +17,7 @@
 import { currenciesWithDisplayName, formattedCurrencies } from '@/components/rates/rates';
 import { SingleDropdown } from '../dropdowns/singledropdown';
 import { SettingsItem } from '../settingsItem/settingsItem';
-import { Fiat } from '../../../../api/account';
+import { Fiat } from '@/api/account';
 import { useTranslation } from 'react-i18next';
 import { useContext } from 'react';
 import { RatesContext } from '../../../../contexts/RatesContext';

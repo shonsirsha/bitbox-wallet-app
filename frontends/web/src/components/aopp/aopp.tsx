@@ -15,8 +15,8 @@
  */
 
 import React, { Component, ReactNode } from 'react';
-import * as accountAPI from '../../api/account';
-import * as aoppAPI from '../../api/aopp';
+import * as accountAPI from '@/api/account';
+import * as aoppAPI from '@/api/aopp';
 import { translate, TranslateProps } from '../../decorators/translate';
 import { equal } from '../../utils/equal';
 import { SimpleMarkup } from '../../utils/markup';

@@ -16,7 +16,7 @@
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { VersionInfo } from '../../../../api/bitbox02';
+import { VersionInfo } from '@/api/bitbox02';
 import { View, ViewContent, ViewHeader } from '@/components/view/view';
 import { Column, ColumnButtons, Grid } from '@/components/layout';
 import { Button, Label } from '@/components/forms';

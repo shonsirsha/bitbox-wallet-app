@@ -16,8 +16,8 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IAccount } from '../../api/account';
-import { bitsuranceLookup } from '../../api/bitsurance';
+import { IAccount } from '@/api/account';
+import { bitsuranceLookup } from '@/api/bitsurance';
 import { alertUser } from '@/components/alert/Alert';
 import { A } from '@/components/anchor/anchor';
 import { Button } from '@/components/forms';

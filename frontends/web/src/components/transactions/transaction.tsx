@@ -17,7 +17,7 @@
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import * as accountApi from '../../api/account';
+import * as accountApi from '@/api/account';
 import { A } from '../anchor/anchor';
 import { Dialog } from '../dialog/dialog';
 import { CopyableInput } from '../copy/Copy';

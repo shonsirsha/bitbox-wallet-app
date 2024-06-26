@@ -18,11 +18,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import * as accountApi from '../../api/account';
-import { statusChanged, syncAddressesCount, syncdone } from '../../api/accountsync';
-import { bitsuranceLookup } from '../../api/bitsurance';
-import { TDevices } from '../../api/devices';
-import { getExchangeBuySupported, SupportedExchanges } from '../../api/exchanges';
+import * as accountApi from '@/api/account';
+import { statusChanged, syncAddressesCount, syncdone } from '@/api/accountsync';
+import { bitsuranceLookup } from '@/api/bitsurance';
+import { TDevices } from '@/api/devices';
+import { getExchangeBuySupported, SupportedExchanges } from '@/api/exchanges';
 import { useSDCard } from '@/hooks/sdcard';
 import { unsubscribe } from '../../utils/subscriptions';
 import { alertUser } from '@/components/alert/Alert';

@@ -16,7 +16,7 @@
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { VersionInfo, upgradeDeviceFirmware } from '../../../../api/bitbox02';
+import { VersionInfo, upgradeDeviceFirmware } from '@/api/bitbox02';
 import { Dialog, DialogButtons } from '@/components/dialog/dialog';
 import { Button } from '@/components/forms';
 import { Checked, RedDot } from '@/components/icon';

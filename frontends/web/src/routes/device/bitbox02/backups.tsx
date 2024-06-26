@@ -18,11 +18,11 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSync } from '@/hooks/api';
-import { restoreBackup } from '../../../api/bitbox02';
-import { getBackupList, subscribeBackupList } from '../../../api/backup';
+import { restoreBackup } from '@/api/bitbox02';
+import { getBackupList, subscribeBackupList } from '@/api/backup';
 import { Toast } from '@/components/toast/toast';
 import { BackupsListItem } from '@/routes/device/components/backup';
-import { Backup } from '../../../api/backup';
+import { Backup } from '@/api/backup';
 import { Button } from '@/components/forms';
 import { Check } from './checkbackup';
 import { Create } from './createbackup';

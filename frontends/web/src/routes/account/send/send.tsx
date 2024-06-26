@@ -16,12 +16,12 @@
  */
 
 import { ChangeEvent, Component } from 'react';
-import * as accountApi from '../../../api/account';
-import { syncdone } from '../../../api/accountsync';
-import { BtcUnit, convertFromCurrency, convertToCurrency, parseExternalBtcAmount } from '../../../api/coins';
+import * as accountApi from '@/api/account';
+import { syncdone } from '@/api/accountsync';
+import { BtcUnit, convertFromCurrency, convertToCurrency, parseExternalBtcAmount } from '@/api/coins';
 import { View, ViewContent } from '@/components/view/view';
-import { TDevices, hasMobileChannel } from '../../../api/devices';
-import { getDeviceInfo } from '../../../api/bitbox01';
+import { TDevices, hasMobileChannel } from '@/api/devices';
+import { getDeviceInfo } from '@/api/bitbox01';
 import { alertUser } from '@/components/alert/Alert';
 import { Balance } from '@/components/balance/balance';
 import { HideAmountsButton } from '@/components/hideamountsbutton/hideamountsbutton';
@@ -32,7 +32,7 @@ import { translate, TranslateProps } from '../../../decorators/translate';
 import { getConfig } from '../../../utils/config';
 import { FeeTargets } from './feetargets';
 import { route } from '../../../utils/route';
-import { signConfirm, signProgress, TSignProgress } from '../../../api/devicessync';
+import { signConfirm, signProgress, TSignProgress } from '@/api/devicessync';
 import { UnsubscribeList, unsubscribe } from '../../../utils/subscriptions';
 import { isBitcoinBased, findAccount } from '../utils';
 import { ConfirmingWaitDialog } from './components/dialogs/confirm-wait-dialog';

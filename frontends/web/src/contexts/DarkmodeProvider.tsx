@@ -16,7 +16,7 @@
 
 import { useState, useEffect, ReactNode, useCallback } from 'react';
 import { getConfig, setConfig } from '../utils/config';
-import { setDarkTheme, detectDarkTheme } from '../api/darktheme';
+import { setDarkTheme, detectDarkTheme } from '@/api/darktheme';
 import { runningInAndroid } from '../utils/env';
 import { useMediaQuery } from '@/hooks/mediaquery';
 import { DarkModeContext } from './DarkmodeContext';

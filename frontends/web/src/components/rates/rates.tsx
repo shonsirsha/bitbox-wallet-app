@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 import { useContext } from 'react';
-import { Fiat, ConversionUnit, IAmount } from '../../api/account';
+import { Fiat, ConversionUnit, IAmount } from '@/api/account';
 import { RatesContext } from '../../contexts/RatesContext';
 import { Amount } from '@/components/amount/amount';
 import style from './rates.module.css';

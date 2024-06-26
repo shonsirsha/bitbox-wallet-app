@@ -16,8 +16,8 @@
 
 import { useLoad } from '@/hooks/api';
 import { useTranslation } from 'react-i18next';
-import { getUpdate, getVersion } from '../../../../api/version';
-import { open } from '../../../../api/system';
+import { getUpdate, getVersion } from '@/api/version';
+import { open } from '@/api/system';
 import { SettingsItem } from '../settingsItem/settingsItem';
 import { StyledSkeleton } from '../../bb02-settings';
 import { Checked, RedDot } from '@/components/icon';

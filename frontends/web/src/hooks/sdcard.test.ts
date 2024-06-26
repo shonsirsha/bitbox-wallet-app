@@ -17,9 +17,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import { useSDCard } from './sdcard';
-import { DeviceInfo } from '../api/bitbox01';
-import * as bitbox01Apis from '../api/bitbox01';
-import * as bitbox02Apis from '../api/bitbox02';
+import { DeviceInfo } from '@/api/bitbox01';
+import * as bitbox01Apis from '@/api/bitbox01';
+import * as bitbox02Apis from '@/api/bitbox02';
 import * as utils from './mount';
 
 vi.mock('../utils/request', () => ({

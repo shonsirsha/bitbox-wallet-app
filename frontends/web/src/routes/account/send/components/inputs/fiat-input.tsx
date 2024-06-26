@@ -16,7 +16,7 @@
 
 import { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ConversionUnit } from '../../../../../api/account';
+import { ConversionUnit } from '@/api/account';
 import { NumberInput } from '@/components/forms';
 
 type TProps = {

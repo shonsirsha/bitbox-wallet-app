@@ -16,7 +16,7 @@
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import * as bitbox02 from '../../../../api/bitbox02';
+import * as bitbox02 from '@/api/bitbox02';
 import { useMountedRef } from '@/hooks/mount';
 import { alertUser } from '@/components/alert/Alert';
 import { Wait } from './wait';

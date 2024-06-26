@@ -1,4 +1,4 @@
-import { getBalance } from '../../api/account';
+import { getBalance } from '@/api/account';
 import { TAccountsByKeystore, isAmbiguiousName } from '../../routes/account/utils';
 import { TGroupedOption, TOption } from './groupedaccountselector';
 

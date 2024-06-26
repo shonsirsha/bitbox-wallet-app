@@ -20,7 +20,7 @@ import { Toggle } from '@/components/toggle/toggle';
 import { SettingsItem } from '../settingsItem/settingsItem';
 import { TBackendConfig, TConfig } from '../../advanced-settings';
 import { setConfig } from '../../../../utils/config';
-import { onAuthSettingChanged, TAuthEventObject, subscribeAuth, forceAuth } from '../../../../api/backend';
+import { onAuthSettingChanged, TAuthEventObject, subscribeAuth, forceAuth } from '@/api/backend';
 import { runningInAndroid, runningInIOS } from '../../../../utils/env';
 
 type TProps = {

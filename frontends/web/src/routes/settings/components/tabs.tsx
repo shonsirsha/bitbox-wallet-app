@@ -18,7 +18,7 @@ import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useLoad } from '@/hooks/api';
-import { getVersion } from '../../../api/bitbox02';
+import { getVersion } from '@/api/bitbox02';
 import { SettingsItem } from './settingsItem/settingsItem';
 import { ChevronRightDark, RedDot } from '@/components/icon';
 import styles from './tabs.module.css';

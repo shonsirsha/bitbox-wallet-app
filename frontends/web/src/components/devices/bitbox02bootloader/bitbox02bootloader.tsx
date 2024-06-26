@@ -16,7 +16,7 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import * as bitbox02BootloaderAPI from '../../../api/bitbox02bootloader';
+import * as bitbox02BootloaderAPI from '@/api/bitbox02bootloader';
 import { useLoad, useSync } from '@/hooks/api';
 import { useDarkmode } from '@/hooks/darkmode';
 import { CenteredContent } from '../../centeredcontent/centeredcontent';

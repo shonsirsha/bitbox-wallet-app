@@ -16,7 +16,7 @@
  */
 
 import { useState } from 'react';
-import { checkBackup, createBackup as createBackupAPI } from '../../../api/bitbox02';
+import { checkBackup, createBackup as createBackupAPI } from '@/api/bitbox02';
 import { alertUser } from '@/components/alert/Alert';
 import { confirmation } from '@/components/confirm/Confirm';
 import { Button } from '@/components/forms';

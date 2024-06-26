@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-import { getStatus } from '../../../api/bitbox02';
-import { statusChanged } from '../../../api/devicessync';
+import { getStatus } from '@/api/bitbox02';
+import { statusChanged } from '@/api/devicessync';
 import { useSync } from '@/hooks/api';
 import { BB02Settings } from '../../settings/bb02-settings';
 

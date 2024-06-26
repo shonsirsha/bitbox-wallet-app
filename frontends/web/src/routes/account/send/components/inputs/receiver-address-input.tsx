@@ -17,7 +17,7 @@
 import { ChangeEvent, useCallback, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { debug } from '../../../../../utils/env';
-import { getReceiveAddressList } from '../../../../../api/account';
+import { getReceiveAddressList } from '@/api/account';
 import { DarkModeContext } from '../../../../../contexts/DarkmodeContext';
 import { Input } from '@/components/forms';
 import { QRCodeLight, QRCodeDark } from '@/components/icon';

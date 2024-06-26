@@ -20,7 +20,7 @@ import { ChevronRightDark, WarningOutlined } from '@/components/icon';
 import { Dialog, DialogButtons } from '@/components/dialog/dialog';
 import { Button, Checkbox } from '@/components/forms';
 import { ChangeEvent, useState } from 'react';
-import { resetDevice } from '../../../../api/bitbox02';
+import { resetDevice } from '@/api/bitbox02';
 import { alertUser } from '@/components/alert/Alert';
 import styles from './factory-reset-setting.module.css';
 import { WaitDialog } from '@/components/wait-dialog/wait-dialog';

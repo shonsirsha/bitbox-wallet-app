@@ -17,7 +17,7 @@
 import { SettingsItem } from '../settingsItem/settingsItem';
 import { useTranslation } from 'react-i18next';
 import { useLoad } from '@/hooks/api';
-import { getNativeLocale } from '../../../../api/nativelocale';
+import { getNativeLocale } from '@/api/nativelocale';
 import { defaultLanguages } from '@/components/language/types';
 import { getSelectedIndex } from '../../../../utils/language';
 import { SingleDropdown } from '../dropdowns/singledropdown';

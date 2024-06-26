@@ -17,8 +17,8 @@
 
 import { Component, createRef, ReactNode } from 'react';
 import { translate, TranslateProps } from '../../decorators/translate';
-import approve from '../../assets/icons/hold.png';
-import reject from '../../assets/icons/tap.png';
+import approve from '@/assets/icons/hold.png';
+import reject from '@/assets/icons/tap.png';
 import style from '../dialog/dialog.module.css';
 import React from 'react';
 

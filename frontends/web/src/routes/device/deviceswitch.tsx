@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { TDevices } from '../../api/devices';
+import { TDevices } from '@/api/devices';
 import BitBox01 from './bitbox01/bitbox01';
 import { BitBox02 } from './bitbox02/bitbox02';
 import { BitBox02Bootloader } from '@/components/devices/bitbox02bootloader/bitbox02bootloader';

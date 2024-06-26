@@ -20,7 +20,7 @@ import { SettingsItem } from '../settingsItem/settingsItem';
 import { View, ViewButtons, ViewContent, ViewHeader } from '@/components/view/view';
 import { Button, Checkbox } from '@/components/forms';
 import { ChevronRightDark, PointToBitBox02, Warning } from '@/components/icon';
-import { invokeBIP85 } from '../../../../api/bitbox02';
+import { invokeBIP85 } from '@/api/bitbox02';
 import { SimpleMarkup } from '../../../../utils/markup';
 import { A } from '@/components/anchor/anchor';
 import { Column, Grid } from '@/components/layout';

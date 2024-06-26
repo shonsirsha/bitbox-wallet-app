@@ -16,7 +16,7 @@
 
 import { createChart, IChartApi, LineData, LineStyle, LogicalRange, ISeriesApi, UTCTimestamp, MouseEventParams, ColorType, Time } from 'lightweight-charts';
 import { Component, createRef, ReactChild } from 'react';
-import { ISummary } from '../../../api/account';
+import { ISummary } from '@/api/account';
 import { translate, TranslateProps } from '../../../decorators/translate';
 import { Skeleton } from '@/components/skeleton/skeleton';
 import { Amount } from '@/components/amount/amount';

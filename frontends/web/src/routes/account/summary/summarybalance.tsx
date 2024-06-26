@@ -15,7 +15,7 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import * as accountApi from '../../../api/account';
+import * as accountApi from '@/api/account';
 import { getAccountsPerCoin } from '../utils';
 import { Balances } from './accountssummary';
 import { BalanceRow } from './balancerow';

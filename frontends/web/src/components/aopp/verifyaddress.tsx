@@ -16,7 +16,7 @@
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import * as accountAPI from '../../api/account';
+import * as accountAPI from '@/api/account';
 import { Button } from '../forms';
 import { WaitDialog } from '../wait-dialog/wait-dialog';
 

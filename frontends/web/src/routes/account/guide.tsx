@@ -16,7 +16,7 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { IAccount } from '../../api/account';
+import { IAccount } from '@/api/account';
 import { Entry } from '@/components/guide/entry';
 import { Guide } from '@/components/guide/guide';
 import { isBitcoinBased } from './utils';

@@ -16,7 +16,7 @@
  */
 
 import { useLoad } from '@/hooks/api';
-import { getQRCode } from '../../api/backend';
+import { getQRCode } from '@/api/backend';
 import { Check } from '../icon';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';

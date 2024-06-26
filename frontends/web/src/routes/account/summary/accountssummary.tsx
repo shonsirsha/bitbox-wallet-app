@@ -17,9 +17,9 @@
 
 import { useState, useEffect, useRef, useCallback, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import * as accountApi from '../../../api/account';
-import { TDevices } from '../../../api/devices';
-import { statusChanged, syncdone } from '../../../api/accountsync';
+import * as accountApi from '@/api/account';
+import { TDevices } from '@/api/devices';
+import { statusChanged, syncdone } from '@/api/accountsync';
 import { unsubscribe } from '../../../utils/subscriptions';
 import { useMountedRef } from '@/hooks/mount';
 import { useSDCard } from '@/hooks/sdcard';

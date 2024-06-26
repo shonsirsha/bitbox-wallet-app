@@ -19,7 +19,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLoad } from '@/hooks/api';
 import { useEsc } from '@/hooks/keyboard';
-import * as accountApi from '../../../api/account';
+import * as accountApi from '@/api/account';
 import { route } from '../../../utils/route';
 import { getScriptName, isEthereumBased } from '../utils';
 import { CopyableInput } from '@/components/copy/Copy';

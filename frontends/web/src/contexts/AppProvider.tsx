@@ -19,7 +19,7 @@ import { getConfig, setConfig } from '../utils/config';
 import { AppContext } from './AppContext';
 import { useLoad } from '@/hooks/api';
 import { useDefault } from '@/hooks/default';
-import { getNativeLocale } from '../api/nativelocale';
+import { getNativeLocale } from '@/api/nativelocale';
 import { i18nextFormat } from '../i18n/utils';
 import type { TChartDisplay, TSidebarStatus } from './AppContext';
 

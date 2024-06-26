@@ -16,7 +16,7 @@
 
 import { SetStateAction, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import * as accountAPI from '../../../../../api/account';
+import * as accountAPI from '@/api/account';
 import { Button, Input } from '@/components/forms';
 import { route } from '../../../../../utils/route';
 import { useMediaQuery } from '@/hooks/mediaquery';

@@ -17,7 +17,7 @@
 import { useTranslation } from 'react-i18next';
 import { ReactElement } from 'react';
 import { Button } from './forms';
-import { TConnectKeystoreErrorCode, cancelConnectKeystore, syncConnectKeystore } from '../api/backend';
+import { TConnectKeystoreErrorCode, cancelConnectKeystore, syncConnectKeystore } from '@/api/backend';
 import { useSubscribeReset } from '@/hooks/api';
 import { Dialog, DialogButtons } from './dialog/dialog';
 import { BitBox02StylizedDark, BitBox02StylizedLight, Cancel, PointToBitBox02 } from './icon';

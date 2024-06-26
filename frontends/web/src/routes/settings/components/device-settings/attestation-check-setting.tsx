@@ -18,7 +18,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SettingsItem } from '../settingsItem/settingsItem';
 import { Checked, Warning } from '@/components/icon';
-import { verifyAttestation } from '../../../../api/bitbox02';
+import { verifyAttestation } from '@/api/bitbox02';
 import { StyledSkeleton } from '../../bb02-settings';
 
 type TProps = {

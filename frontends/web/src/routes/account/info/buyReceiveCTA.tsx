@@ -17,7 +17,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from '@/hooks/mediaquery';
 import { route } from '../../../utils/route';
-import { CoinUnit, IAccount, IBalance } from '../../../api/account';
+import { CoinUnit, IAccount, IBalance } from '@/api/account';
 import { Button } from '@/components/forms';
 import { Balances } from '../summary/accountssummary';
 import { isBitcoinCoin, isEthereumBased } from '../utils';

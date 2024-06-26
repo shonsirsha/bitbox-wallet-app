@@ -15,7 +15,7 @@
  */
 
 import { useTranslation } from 'react-i18next';
-import { TProductName } from '../../../../api/devices';
+import { TProductName } from '@/api/devices';
 import { Button } from '@/components/forms';
 
 export const useVerifyLabel = (device?: TProductName): string => {

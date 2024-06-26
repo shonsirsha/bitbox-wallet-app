@@ -17,7 +17,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Select, { components, SingleValueProps, OptionProps, SingleValue, DropdownIndicatorProps, GroupProps, GroupHeadingProps as ReactSelectGroupHeadingProps } from 'react-select';
-import { AccountCode, IAccount } from '../../api/account';
+import { AccountCode, IAccount } from '@/api/account';
 import { Button } from '../forms';
 import { Logo } from '../icon/logo';
 import { AppContext } from '../../contexts/AppContext';

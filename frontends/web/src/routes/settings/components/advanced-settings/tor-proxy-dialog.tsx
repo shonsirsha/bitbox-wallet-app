@@ -20,7 +20,7 @@ import { Dialog, DialogButtons } from '@/components/dialog/dialog';
 import { Toggle } from '@/components/toggle/toggle';
 import { Button, Input } from '@/components/forms';
 import { setConfig } from '../../../../utils/config';
-import { socksProxyCheck } from '../../../../api/backend';
+import { socksProxyCheck } from '@/api/backend';
 import { alertUser } from '@/components/alert/Alert';
 import { TConfig, TProxyConfig } from '../../advanced-settings';
 

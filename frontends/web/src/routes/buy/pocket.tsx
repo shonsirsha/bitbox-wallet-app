@@ -20,8 +20,8 @@ import { RequestAddressV0Message, MessageVersion, parseMessage, serializeMessage
 import { getConfig } from '../../utils/config';
 import { Dialog } from '@/components/dialog/dialog';
 import { confirmation } from '@/components/confirm/Confirm';
-import { verifyAddress, getPocketURL } from '../../api/exchanges';
-import { AccountCode, getInfo, getTransactionList, signAddress } from '../../api/account';
+import { verifyAddress, getPocketURL } from '@/api/exchanges';
+import { AccountCode, getInfo, getTransactionList, signAddress } from '@/api/account';
 import { Header } from '@/components/layout';
 import { Spinner } from '@/components/spinner/Spinner';
 import { PocketTerms } from '@/components/terms/pocket-terms';

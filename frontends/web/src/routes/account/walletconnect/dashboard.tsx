@@ -22,7 +22,7 @@ import { getSdkError } from '@walletconnect/utils';
 import { WCWeb3WalletContext } from '../../../contexts/WCWeb3WalletContext';
 import { route } from '../../../utils/route';
 import { getAddressFromEIPString, truncateAddress } from '../../../utils/walletconnect';
-import { AccountCode, IAccount, getReceiveAddressList } from '../../../api/account';
+import { AccountCode, IAccount, getReceiveAddressList } from '@/api/account';
 import { GuideWrapper, GuidedContent, Header, Main } from '@/components/layout';
 import { View, ViewContent } from '@/components/view/view';
 import { WCSessionCard } from './components/session-card/session-card';

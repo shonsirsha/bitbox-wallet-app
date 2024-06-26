@@ -16,7 +16,7 @@
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { exportNotes } from '../../../../api/backend';
+import { exportNotes } from '@/api/backend';
 import { alertUser } from '@/components/alert/Alert';
 import { SettingsItem } from '../settingsItem/settingsItem';
 import { ChevronRightDark } from '@/components/icon';

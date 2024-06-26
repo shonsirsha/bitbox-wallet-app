@@ -16,7 +16,7 @@
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IAccount } from '../../api/account';
+import { IAccount } from '@/api/account';
 import { Header } from '@/components/layout';
 import { route } from '../../utils/route';
 import { isBitcoinOnly } from '../account/utils';

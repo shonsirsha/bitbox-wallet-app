@@ -16,7 +16,7 @@
 
 import { useTranslation } from 'react-i18next';
 import { View, ViewContent, ViewHeader } from '@/components/view/view';
-import { Backup } from '../../../../api/backup';
+import { Backup } from '@/api/backup';
 import { PasswordEntry } from '@/routes/device/bitbox02/components/password-entry/password-entry';
 import { Status } from '@/components/status/status';
 import { MultilineMarkup } from '../../../../utils/markup';

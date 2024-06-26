@@ -16,7 +16,7 @@
  */
 
 import { LanguageDetectorAsyncModule } from 'i18next';
-import { getNativeLocale } from '../api/nativelocale';
+import { getNativeLocale } from '@/api/nativelocale';
 import { getConfig } from '../utils/config';
 import { i18nextFormat } from './utils';
 

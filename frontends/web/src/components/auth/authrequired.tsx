@@ -16,7 +16,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TAuthEventObject, authenticate, subscribeAuth } from '../../api/backend';
+import { TAuthEventObject, authenticate, subscribeAuth } from '@/api/backend';
 import { View, ViewButtons, ViewContent, ViewHeader } from '../view/view';
 import { Button } from '../forms';
 import style from './authrequired.module.css';

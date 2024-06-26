@@ -17,8 +17,8 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Toggle } from '@/components/toggle/toggle';
-import * as backendAPI from '../../../../api/backend';
-import * as accountAPI from '../../../../api/account';
+import * as backendAPI from '@/api/backend';
+import * as accountAPI from '@/api/account';
 import { useLoad } from '@/hooks/api';
 import { getConfig } from '../../../../utils/config';
 import { Dialog, DialogButtons } from '@/components/dialog/dialog';
