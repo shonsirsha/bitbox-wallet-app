@@ -28,7 +28,7 @@ import { useDarkmode } from '@/hooks/darkmode';
 import { route } from '../../utils/route';
 import { BitsuranceGuide } from './guide';
 import style from './bitsurance.module.css';
-import { i18n } from '../../i18n/i18n';
+import { i18n } from '@/i18n/i18n';
 
 type TProps = {
     accounts: IAccount[];

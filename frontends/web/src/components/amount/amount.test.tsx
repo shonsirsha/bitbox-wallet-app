@@ -26,7 +26,7 @@ vi.mock('react', async () => ({
   createContext: vi.fn()
 }));
 
-vi.mock('../../i18n/i18n', () => ({
+vi.mock('@/i18n/i18n', () => ({
   i18n: { language: 'de-CH' },
 }));
 

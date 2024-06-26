@@ -15,7 +15,7 @@
  */
 import 'flag-icons';
 import { useState, useEffect } from 'react';
-import { i18n } from '../../i18n/i18n';
+import { i18n } from '@/i18n/i18n';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/forms';
 import * as exchangesAPI from '@/api/exchanges';
@@ -25,7 +25,7 @@ import { BuyGuide } from './guide';
 import { findAccount, getCryptoName } from '../account/utils';
 import { route } from '../../utils/route';
 import { useLoad } from '@/hooks/api';
-import { getRegionNameFromLocale } from '../../i18n/utils';
+import { getRegionNameFromLocale } from '@/i18n/utils';
 import { findLowestFee, findBestDeal, getFormattedName, getExchangeSupportedAccounts } from './utils';
 import { ExchangeSelectionRadio } from './components/exchangeselectionradio';
 import { Spinner } from '@/components/spinner/Spinner';

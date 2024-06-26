@@ -46,7 +46,7 @@ import { MultilineMarkup } from '../../utils/markup';
 import { Dialog } from '@/components/dialog/dialog';
 import { A } from '@/components/anchor/anchor';
 import { getConfig, setConfig } from '../../utils/config';
-import { i18n } from '../../i18n/i18n';
+import { i18n } from '@/i18n/i18n';
 
 type Props = {
   accounts: accountApi.IAccount[];

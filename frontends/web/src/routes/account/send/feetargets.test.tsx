@@ -20,7 +20,7 @@ import { describe, expect, it, Mock, vi } from 'vitest';
 vi.mock('../../../utils/request', () => ({
   apiGet: vi.fn().mockResolvedValue(''),
 }));
-vi.mock('../../../i18n/i18n');
+vi.mock('@/i18n/i18n');
 
 import { render, waitFor } from '@testing-library/react';
 import { FeeTargets } from './feetargets';
