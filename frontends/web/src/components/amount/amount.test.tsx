@@ -18,7 +18,7 @@ import { useContext } from 'react';
 import { Mock, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { render } from '@testing-library/react';
 import { Amount } from './amount';
-import { CoinUnit, ConversionUnit } from './../../api/account';
+import { CoinUnit, ConversionUnit } from '@/api/account';
 
 vi.mock('react', async () => ({
   ...(await vi.importActual('react')),
