@@ -39,12 +39,6 @@ import { FreshInstall } from '@/components/devices/bitbox02bootloader/freshinsta
 export const General = ({ devices, hasAccounts }: TPagePropsWithSettingsTabs) => {
   const { t } = useTranslation();
 
-
-  return (<View fitContent verticallyCentered width="960px">
-    <ViewContent>
-      <FreshInstall deviceID={deviceIDs[0]} />
-    </ViewContent>
-  </View>);
   return (
     <GuideWrapper>
       <GuidedContent>

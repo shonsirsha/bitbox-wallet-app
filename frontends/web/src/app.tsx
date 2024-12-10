@@ -89,8 +89,8 @@ export const App = () => {
     if (
       deviceIDs.length === 0
       && (
-        currentURL.startsWith('/settings/device-settings/')
-        || currentURL.startsWith('/manage-backups/')
+        // currentURL.startsWith('/settings/device-settings/')
+        currentURL.startsWith('/manage-backups/')
       )
     ) {
       navigate('/');

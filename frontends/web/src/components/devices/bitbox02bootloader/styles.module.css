@@ -5,6 +5,12 @@
     width: 100%;
 }
 
+.fadeDiv1 {
+    opacity: 1;
+    animation-fill-mode: forwards; /* Ensure the final state is kept */
+    width: 100%;
+}
+
 /* Sequential fade-in for each div */
 .div1 {
     animation: fadeIn 1s ease-in-out 0.5s forwards;
@@ -54,6 +60,15 @@
     opacity: 0;
 }
 
+.bitbox02_1 {
+    display: inline-block;
+    max-width: 360px;
+    position: absolute;
+    transform: translate(195%, 0%) rotate(270deg); 
+    transition: 1.5s all;
+    opacity: 1;
+}
+
 .flyIn {
     animation: flyIn 1.5s ease-in-out forwards; 
 }
@@ -94,6 +109,7 @@
 
 
 
+.bitbox02_1 img,
 .bitbox02 img,
 .flyIn img {
     width: 100%;

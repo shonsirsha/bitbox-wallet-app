@@ -7,7 +7,8 @@ import { useLoad, useSync } from '@/hooks/api';
 import { useDarkmode } from '@/hooks/darkmode';
 import { Button } from '@/components/forms';
 import styles from './styles.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 type TProps = {
@@ -17,15 +18,15 @@ type TProps = {
 export const FreshInstall = ({ deviceID }: TProps) => {
   const { t } = useTranslation();
   const [fadeOut, setFadeout] = useState(false);
-  const [successInstall, setSuccessInstal] = useState(false);
+  const [successInstall] = useState(false);
 
 
-  //   const status = {
-  //     upgrading: true,
-  //     errMsg: undefined,
-  //     progress: 0.3,
-  //     upgradeSuccessful: false
-  //   };
+  // const status = {
+  //   upgrading: true,
+  //   errMsg: undefined,
+  //   progress: 0.3,
+  //   upgradeSuccessful: false
+  // };
 
 
 
@@ -34,15 +35,18 @@ export const FreshInstall = ({ deviceID }: TProps) => {
     bitbox02BootloaderAPI.syncStatus(deviceID),
   );
 
-  //   useEffect(() => {
-  //     if (status?.upgradeSuccessful) {
-  //       //Hides div2, div3.
-  //       setSuccessInstal(true);
-  //       //Fly in div1 (bitbox div)
+  const navigate = useNavigate();
 
 
-  //     }
-  //   }, [status?.upgradeSuccessful]);
+  useEffect(() => {
+    if (status?.upgradeSuccessful) {
+      //Hides div2, div3.
+      navigate(`/fresh-install/${deviceID}`);
+      //Fly in div1 (bitbox div)
+
+
+    }
+  }, [status?.upgradeSuccessful, deviceID, navigate]);
 
 
 
@@ -74,10 +78,11 @@ export const FreshInstall = ({ deviceID }: TProps) => {
                   <Button
                     style={{ marginTop: 32 }}
                     primary
+
                     onClick={async () => {
                       setFadeout(true);
                       setTimeout(async() => {
-                        setSuccessInstal(true);
+                        bitbox02BootloaderAPI.upgradeFirmware(deviceID);
                       }, 600);
                     }}>
                     {t('bootloader.button', { context: (versionInfo.erased ? 'install' : '') })}
@@ -114,7 +119,7 @@ const BitBox = () => {
   </>);
 };
 
-const InProgress = ({ status, versionInfo }: { status: bitbox02BootloaderAPI.TStatus, versionInfo: any }) => {
+export const InProgress = ({ status, versionInfo }: { status: bitbox02BootloaderAPI.TStatus, versionInfo: any }) => {
   const value = Math.round(status.progress * 100);
   const { t } = useTranslation();
   return (

@@ -29,6 +29,8 @@ type TProps = {
 const DeviceSwitch = ({ deviceID, devices, hasAccounts }: TProps) => {
   const deviceIDs = Object.keys(devices);
 
+  console.log(devices);
+
   if (deviceID === null || !deviceIDs.includes(deviceID)) {
     return <Waiting />;
   }

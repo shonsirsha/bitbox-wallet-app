@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 /**
  * Copyright 2024 Shift Crypto AG
  *
@@ -48,6 +50,7 @@ import { BitsuranceWidget } from './bitsurance/widget';
 import { BitsuranceDashboard } from './bitsurance/dashboard';
 import { ConnectScreenWalletConnect } from './account/walletconnect/connect';
 import { DashboardWalletConnect } from './account/walletconnect/dashboard';
+import { Frez } from '@/routes/device/frez';
 
 type TAppRouterProps = {
     devices: TDevices;
@@ -92,6 +95,16 @@ export const AppRouter = ({ devices, deviceIDs, devicesKey, accounts, activeAcco
         hasAccounts={hasAccounts}
       />
     </InjectParams>
+  );
+
+  const Fresh = (<InjectParams>
+    <Frez
+      key={devicesKey('fresh-install')}
+      deviceID={null}
+      devices={devices}
+      hasAccounts={hasAccounts}
+    />
+  </InjectParams>
   );
 
   const Acc = (<InjectParams>
@@ -246,7 +259,8 @@ export const AppRouter = ({ devices, deviceIDs, devicesKey, accounts, activeAcco
           <Route path="wallet-connect/connect" element={AccConnectScreenWC} />
           <Route path="wallet-connect/dashboard" element={AccDashboardWC} />
         </Route>
-        <Route path="add-account" element={<AddAccount accounts={accounts}/>} />
+        <Route path="add-account" element={<AddAccount accounts={accounts} />} />
+        <Route path="fresh-install/:deviceID" element={Fresh} />
         <Route path="account-summary" element={AccountsSummaryEl} />
         <Route path="exchange">
           <Route path="info" element={ExchangeInfoEl} >
