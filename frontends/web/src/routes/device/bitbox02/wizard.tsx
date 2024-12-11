@@ -15,7 +15,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useLoad, useSync } from '@/hooks/api';
 import { getStatus, getVersion, verifyAttestation } from '@/api/bitbox02';
 import { attestationCheckDone, statusChanged } from '@/api/devicessync';
@@ -28,6 +28,7 @@ import { SetupOptions, TWalletCreateOptions, TWalletSetupChoices } from './setup
 import { CreateWallet } from './setup/wallet-create';
 import { RestoreFromSDCard, RestoreFromMnemonic } from './setup/wallet-restore';
 import { CreateWalletSuccess, RestoreFromMnemonicSuccess, RestoreFromSDCardSuccess } from './setup/success';
+import { Attestation } from '@/routes/device/bitbox02/setup/attestation';
 
 type TProps = {
   deviceID: string;
@@ -36,6 +37,7 @@ type TProps = {
 export const Wizard = ({ deviceID }: TProps) => {
   const navigate = useNavigate();
   const versionInfo = useLoad(() => getVersion(deviceID));
+  const location = useLocation();
   const attestation = useSync(
     () => verifyAttestation(deviceID),
     cb => attestationCheckDone(deviceID, () => {
@@ -111,8 +113,16 @@ export const Wizard = ({ deviceID }: TProps) => {
           key="pairing"
           deviceID={deviceID}
           attestation={attestation}
-          pairingFailed={status === 'pairingFailed'} />
+          pairingFailed={status === 'pairingFailed'}
+          onContinue={() => {
+            setAppStatus('attestation-animation');
+          }}
+        />
       )}
+
+      {(!unlockOnly && location.search.includes('fresh-install') && appStatus === 'attestation-animation' && (
+        <Attestation />
+      ))}
 
       { (!unlockOnly && appStatus === '') && (
         <SetupOptions

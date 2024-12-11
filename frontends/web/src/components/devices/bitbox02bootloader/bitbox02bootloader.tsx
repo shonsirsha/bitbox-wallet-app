@@ -43,11 +43,13 @@ export const BitBox02Bootloader = ({ deviceID }: TProps) => {
   );
   const versionInfo = useLoad(() => bitbox02BootloaderAPI.getVersionInfo(deviceID));
 
-  return (<View fitContent verticallyCentered width="960px">
-    <ViewContent>
-      <FreshInstall deviceID={deviceID} />
-    </ViewContent>
-  </View>);
+  return (
+    <View fitContent verticallyCentered width="960px">
+      <ViewContent>
+        <FreshInstall deviceID={deviceID} />
+      </ViewContent>
+    </View>
+  );
 
 
   if (versionInfo === undefined) {

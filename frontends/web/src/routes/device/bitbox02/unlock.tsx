@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { View, ViewContent, ViewHeader } from '@/components/view/view';
 import { Status } from '@/components/status/status';
 import { PasswordEntry } from './components/password-entry/password-entry';
+import { useLocation } from 'react-router-dom';
 
 type Props = {
   attestation: boolean | null | undefined;
@@ -25,6 +26,8 @@ type Props = {
 
 export const Unlock = ({ attestation }: Props) => {
   const { t } = useTranslation();
+  const location = useLocation();
+  console.log({ location });
   return (
     <View
       fullscreen

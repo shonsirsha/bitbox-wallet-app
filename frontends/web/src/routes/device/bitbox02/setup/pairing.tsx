@@ -27,12 +27,14 @@ type Props = {
   attestation: boolean | null | undefined;
   deviceID: string;
   pairingFailed: boolean;
+  onContinue: () => void;
 }
 
 export const Pairing = ({
   attestation,
   deviceID,
   pairingFailed,
+  onContinue
 }: Props) => {
   const { t } = useTranslation();
   const [hash, setHash] = useState('');
@@ -91,7 +93,10 @@ export const Pairing = ({
         { (!pairingFailed && deviceVerified) && (
           <Button
             primary
-            onClick={() => verifyChannelHash(deviceID, true)}>
+            onClick={() => {
+              verifyChannelHash(deviceID, true);
+              onContinue();
+            }}>
             {t('button.continue')}
           </Button>
         )}

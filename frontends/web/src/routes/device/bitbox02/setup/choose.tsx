@@ -24,7 +24,7 @@ import { Toggle } from '@/components/toggle/toggle';
 import { Info } from '@/components/icon';
 import style from './choose.module.css';
 
-export type TWalletSetupChoices = 'create-wallet' | 'restore-sdcard' | 'restore-mnemonic';
+export type TWalletSetupChoices = 'create-wallet' | 'restore-sdcard' | 'restore-mnemonic' | 'attestation-animation';
 
 export type TWalletCreateOptions = {
   withMnemonic: boolean;
