@@ -51,6 +51,8 @@ import { BitsuranceDashboard } from './bitsurance/dashboard';
 import { ConnectScreenWalletConnect } from './account/walletconnect/connect';
 import { DashboardWalletConnect } from './account/walletconnect/dashboard';
 import { Frez } from '@/routes/device/frez';
+import { FreshInstall2 } from '@/components/devices/bitbox02bootloader/freshinstall-2';
+import { Attestation } from '@/routes/device/bitbox02/setup/attestation';
 
 type TAppRouterProps = {
     devices: TDevices;
@@ -98,8 +100,17 @@ export const AppRouter = ({ devices, deviceIDs, devicesKey, accounts, activeAcco
   );
 
   const Fresh = (<InjectParams>
-    <Frez
-      key={devicesKey('fresh-install')}
+    <FreshInstall2
+      key={devicesKey('fresh-install--zxx')}
+      deviceID={null}
+      devices={devices}
+      hasAccounts={hasAccounts}
+    />
+  </InjectParams>
+  );
+  const FreshAttestation = (<InjectParams>
+    <Attestation
+      key={devicesKey('fresh-install-attestation')}
       deviceID={null}
       devices={devices}
       hasAccounts={hasAccounts}
@@ -261,6 +272,7 @@ export const AppRouter = ({ devices, deviceIDs, devicesKey, accounts, activeAcco
         </Route>
         <Route path="add-account" element={<AddAccount accounts={accounts} />} />
         <Route path="fresh-install/:deviceID" element={Fresh} />
+        <Route path="fresh-install-attestation/:deviceID" element={FreshAttestation} />
         <Route path="account-summary" element={AccountsSummaryEl} />
         <Route path="exchange">
           <Route path="info" element={ExchangeInfoEl} >

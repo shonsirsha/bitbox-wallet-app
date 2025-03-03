@@ -165,6 +165,7 @@ export const App = () => {
 
   const deviceIDs: string[] = Object.keys(devices);
   const activeAccounts = accounts.filter(acct => acct.active);
+
   return (
     <ConnectedApp>
       <Providers>

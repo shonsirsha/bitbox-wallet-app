@@ -31,6 +31,7 @@ import { Spinner } from '@/components/spinner/Spinner';
 import { AppLogo, AppLogoInverted, SwissMadeOpenSource, SwissMadeOpenSourceDark } from '@/components/icon/logo';
 import { Footer, Header } from '@/components/layout';
 import style from './bitbox01/bitbox01.module.css';
+import { Link } from 'react-router-dom';
 
 export const Waiting = () => {
   const { t } = useTranslation();
@@ -57,6 +58,7 @@ export const Waiting = () => {
   return (
     <div className="contentWithGuide">
       <div className="container">
+        <Link to="/fresh-install/4465765372767349443a34323935333030363137626230326274632d626f6f746c6f61646572?">asds</Link>
         <Header title={<h2>{t('welcome.title')}</h2>} />
         <div className="content padded narrow isVerticallyCentered">
           <div>

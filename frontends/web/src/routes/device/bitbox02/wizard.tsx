@@ -28,7 +28,7 @@ import { SetupOptions, TWalletCreateOptions, TWalletSetupChoices } from './setup
 import { CreateWallet } from './setup/wallet-create';
 import { RestoreFromSDCard, RestoreFromMnemonic } from './setup/wallet-restore';
 import { CreateWalletSuccess, RestoreFromMnemonicSuccess, RestoreFromSDCardSuccess } from './setup/success';
-import { Attestation } from '@/routes/device/bitbox02/setup/attestation';
+// import { Attestation } from '@/routes/device/bitbox02/setup/attestation';
 
 type TProps = {
   deviceID: string;
@@ -97,7 +97,7 @@ export const Wizard = ({ deviceID }: TProps) => {
     return null;
   }
   // fixes empty main element, happens when after unlocking the device, reason wizard is now always mounted in app.tsx
-  if (appStatus === '' && status === 'initialized') {
+  if (appStatus === '' && status === 'initialized' || location.pathname.includes('fresh-install')) {
     return null;
   }
   return (
@@ -106,7 +106,7 @@ export const Wizard = ({ deviceID }: TProps) => {
         <Unlock
           key="unlock"
           attestation={attestation} />
-      ) : null }
+      ) : <p>ASX</p> }
 
       { (status === 'unpaired' || status === 'pairingFailed') && (
         <Pairing
@@ -120,11 +120,11 @@ export const Wizard = ({ deviceID }: TProps) => {
         />
       )}
 
-      {(!unlockOnly && location.search.includes('fresh-install') && appStatus === 'attestation-animation' && (
+      {/* {(location.pathname.includes('fresh-install') && (
         <Attestation />
-      ))}
+      ))} */}
 
-      { (!unlockOnly && appStatus === '') && (
+      { (!unlockOnly && !location.pathname.includes('fresh-install') && appStatus === '') && (
         <SetupOptions
           key="choose-setup"
           versionInfo={versionInfo}
