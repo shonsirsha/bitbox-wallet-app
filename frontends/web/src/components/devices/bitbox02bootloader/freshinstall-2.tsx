@@ -1,5 +1,4 @@
-import { BitBox02StylizedDark, BitBox02StylizedLight } from '@/components/icon';
-
+import { BitBox02StylizedDark, BitBox02StylizedLight, CaretDown } from '@/components/icon';
 import { useDarkmode } from '@/hooks/darkmode';
 import styles from './styles.module.css';
 import { useEffect, useState } from 'react';
@@ -14,6 +13,8 @@ type TProps = {
 
 export const FreshInstall2 = ({ deviceID, devices }: TProps) => {
   const [successInstall, setSuccessInstall] = useState(false);
+  const [showInstructions, setShowInstructions] = useState(false);
+  const [showArrow, setShowArrow] = useState(false);
   const hasDevices = Object.keys(devices).length > 0;
 
   console.log({ deviceID, devices });
@@ -26,10 +27,28 @@ export const FreshInstall2 = ({ deviceID, devices }: TProps) => {
     }
   }, [deviceID, hasDevices, navigate, successInstall]);
 
+  // Handle animations sequence
   useEffect(() => {
-    setTimeout(() => {
+    // Step 1: Start initial animation
+    const animationTimeout = setTimeout(() => {
       setSuccessInstall(true);
+
+      // Step 2: Show instruction text after BitBox animation is complete (2.5s)
+      const instructionsTimeout = setTimeout(() => {
+        setShowInstructions(true);
+
+        // Step 3: Show arrow 1 second after text appears
+        const arrowTimeout = setTimeout(() => {
+          setShowArrow(true);
+        }, 1000);
+
+        return () => clearTimeout(arrowTimeout);
+      }, 2500); // Wait for flying animation to complete
+
+      return () => clearTimeout(instructionsTimeout);
     }, 2000);
+
+    return () => clearTimeout(animationTimeout);
   }, []);
 
   if (!hasDevices) {
@@ -47,7 +66,25 @@ export const FreshInstall2 = ({ deviceID, devices }: TProps) => {
               <BitBox />
             </div>
           </div>
-          <p>Tap side of BitBox02 to orient display</p>
+
+          {/* Tap instructions container */}
+          <div className={styles.instructionsContainer}>
+            {/* Upward-pointing arrow */}
+            <div style={{ minHeight: 29 }} >
+              {showArrow && (
+                <div className={`${styles.arrowContainer} ${styles.fadeIn}`}>
+                  <CaretDown className={styles.rotatedCaret} />
+                </div>
+              )}
+
+            </div>
+            {/* Instruction text */}
+            {showInstructions && (
+              <p className={`${styles.tapInstructions} ${styles.fadeIn}`}>
+                Tap side of BitBox02 to orient display
+              </p>
+            )}
+          </div>
         </ViewContent>
       </View>
     );

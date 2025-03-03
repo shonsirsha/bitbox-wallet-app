@@ -1,0 +1,120 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.iconContainer {
+  margin-bottom: 2rem;
+  width: 80px;
+  height: 80px;
+  position: relative;
+}
+
+.circleProgress {
+  width: 100%;
+  height: 100%;
+}
+
+.progressSvg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.progressTrack {
+  fill: none;
+  stroke: #e0e0e0;
+  stroke-width: 8;
+}
+
+.progressIndicator {
+  fill: none;
+  stroke: #5cad2c;
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 251.2;
+  stroke-dashoffset: 251.2;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.checkmarkSvg {
+  width: 100%;
+  height: 100%;
+}
+
+.checkmarkPath {
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: drawCheck 0.5s ease-out 0.2s forwards;
+}
+
+.textContainer {
+  margin-bottom: 2rem;
+  min-height: 60px;
+  position: relative;
+  
+}
+
+.textContainer h2 { 
+    font-weight: 500;
+}
+
+.buttonContainer {
+  margin-top: 2rem;
+  opacity: 0;
+}
+
+.helpLink {
+  display: inline-block;
+  color: #2179fe;
+  text-decoration: none;
+  margin-top: 0.5rem;
+  opacity: 0;
+  animation: fadeIn 0.5s ease-out forwards;
+  animation-delay: 0.3s;
+}
+
+.fadeIn {
+  opacity: 0;
+  animation: fadeIn 0.5s ease-out forwards;
+  animation-delay: 0.2s;
+}
+
+.transitionOut {
+  animation: fadeOut 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes drawCheck {
+  from { stroke-dashoffset: 48; }
+  to { stroke-dashoffset: 0; }
+}
+
+.fadeInDelayed {
+  opacity: 0;
+  animation: fadeIn 0.5s ease-out forwards;
+} 
