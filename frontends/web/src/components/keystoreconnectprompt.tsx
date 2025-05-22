@@ -87,12 +87,16 @@ export const KeystoreConnectPrompt = () => {
           For iOS, the device picker is needed.
           */}
           { !runningInIOS() ? <PointToBitBox02 /> : null }
-          <Bluetooth />
-          <SkipForTesting />
+          <Bluetooth peripheralContainerClassName={styles.bluetoothPeripheralContainer} />
+          <div className={runningInIOS() ? styles.unlockTestButtonContainer : ''}>
+            <SkipForTesting />
+          </div>
         </div>
-        <DialogButtons>
-          <Button secondary onClick={cancelConnectKeystore}>{t('dialog.cancel')}</Button>
-        </DialogButtons>
+        <div className={styles.dialogButtonsContainer}>
+          <DialogButtons>
+            <Button secondary onClick={cancelConnectKeystore}>{t('dialog.cancel')}</Button>
+          </DialogButtons>
+        </div>
       </Dialog>
     );
   case 'error':
