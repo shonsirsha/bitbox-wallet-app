@@ -88,7 +88,9 @@ export const KeystoreConnectPrompt = () => {
           */}
           { !runningInIOS() ? <PointToBitBox02 /> : null }
           <Bluetooth peripheralContainerClassName={styles.bluetoothPeripheralContainer} />
-          <SkipForTesting />
+          <div className={!runningInIOS() ? '' : styles.unlockTestButtonContainer}>
+            <SkipForTesting />
+          </div>
         </div>
         <div className={styles.dialogButtonsContainer}>
           <DialogButtons>
