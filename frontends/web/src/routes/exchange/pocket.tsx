@@ -32,7 +32,6 @@ import { alertUser } from '@/components/alert/Alert';
 import { ExchangeGuide } from './guide';
 import { convertScriptType } from '@/utils/request-addess';
 import { parseExternalBtcAmount } from '@/api/coins';
-import { useScrollToTop } from '@/hooks/scrolltotop';
 import style from './iframe.module.css';
 
 interface TProps {
@@ -43,7 +42,6 @@ interface TProps {
 export const Pocket = ({ code, action }: TProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const scrollToTop = useScrollToTop();
 
   const [height, setHeight] = useState(0);
   const [iframeLoaded, setIframeLoaded] = useState(false);
@@ -289,10 +287,7 @@ export const Pocket = ({ code, action }: TProps) => {
         <div ref={ref} className={style.container}>
           { !agreedTerms ? (
             <PocketTerms
-              onAgreedTerms={() => {
-                setAgreedTerms(true);
-                scrollToTop();
-              }}
+              onAgreedTerms={() => setAgreedTerms(true)}
             />
           ) : (
             <div style={{ height }}>
