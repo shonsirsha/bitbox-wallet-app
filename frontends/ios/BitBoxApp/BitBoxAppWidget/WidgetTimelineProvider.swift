@@ -45,8 +45,9 @@ struct Provider: TimelineProvider {
     func getTimeline(in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> Void) {
         let coinCode = WidgetAppGroupStore.selectedCoinCode()
         let currency = WidgetAppGroupStore.userCurrency()
+        let forceFreshPriceReload = WidgetAppGroupStore.shouldForceFreshPriceReload()
 
-        let cached = dataService.cachedFallback(for: coinCode, currency: currency)
+        let cached = forceFreshPriceReload ? nil : dataService.cachedFallback(for: coinCode, currency: currency)
         let exactCacheHit = cached.flatMap { $0.currency.uppercased() == currency.uppercased() ? $0 : nil }
 
         if let exactCacheHit {
@@ -56,6 +57,9 @@ struct Provider: TimelineProvider {
         } else {
             Task {
                 let fetched = await dataService.fetchChartData(coinCode: coinCode, currency: currency)
+                if fetched != nil {
+                    WidgetAppGroupStore.clearForceFreshPriceReload()
+                }
                 let data = fetched ?? dataService.cachedFallback(for: coinCode, currency: currency)
                 let entry = resolvedEntry(for: coinCode, currency: currency, data: data)
                 let nextUpdate = Date().addingTimeInterval(fetched == nil ? Self.retryInterval : Self.refreshInterval)

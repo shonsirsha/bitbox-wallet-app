@@ -23,6 +23,14 @@ enum WidgetAppGroupStore {
         defaults?.set(index, forKey: WidgetShared.Keys.selectedCoinIndex)
     }
 
+    static func shouldForceFreshPriceReload() -> Bool {
+        defaults?.bool(forKey: WidgetShared.Keys.forceFreshPriceReload) == true
+    }
+
+    static func clearForceFreshPriceReload() {
+        defaults?.set(false, forKey: WidgetShared.Keys.forceFreshPriceReload)
+    }
+
     static func selectedCoinCode() -> String {
         let coins = activeCoins()
         guard !coins.isEmpty else {

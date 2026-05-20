@@ -27,7 +27,8 @@ When the app launches (or enters foreground / background), `WidgetAppGroupSync` 
 2. Reads `accounts.json` -> collects all active (non-inactive, non-hidden) coin codes.
 3. Normalizes coin codes (`tbtc` -> `btc`, `sepeth` -> `eth`, `tltc` -> `ltc`).
 4. Writes the currency and coin list to shared `UserDefaults`.
-5. If anything changed, tells iOS to reload the widget timeline.
+5. Tells iOS to reload the widget timeline on app launch / foreground / background.
+6. Marks that lifecycle reload as a fresh-price reload so the widget skips its cache once.
 
 **Fallback:** If the user's currency isn't supported by the API (e.g. `BTC` or `sat`), it falls back to `USD`.
 
@@ -98,6 +99,8 @@ When the widget refreshes, it follows this order:
 
 Switching to a coin with a warm cache feels instant. The first switch to a coin whose cache is cold (or expired) performs one inline fetch before rendering.
 
+App lifecycle reloads (launch / foreground / background) bypass the cache and attempt a fresh network fetch. If that fetch fails, the widget keeps bypassing the cache on retry until a fresh fetch succeeds.
+
 ### Fallback chain
 
 If the network fetch fails:
@@ -115,6 +118,7 @@ If the network fetch fails:
 - With the 10-minute cache TTL, each iOS-granted timeline reload should either use recent cached data or fetch fresh data.
 - If a network fetch fails, the widget asks iOS to retry in **1 minute**.
 - If the user changes their currency or accounts in the app, a refresh is triggered immediately.
+- App launch / foreground / background also triggers a widget timeline reload that bypasses the cache once.
 
 ---
 

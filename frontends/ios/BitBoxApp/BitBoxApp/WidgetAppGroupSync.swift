@@ -22,16 +22,16 @@ struct WidgetAppGroupSync {
 
     private static let serialQueue = DispatchQueue(label: "swiss.bitbox.WidgetAppGroupSync")
 
-    func sync() {
+    func sync(forceReload: Bool = false) {
         #if !TARGET_TESTNET
         Self.serialQueue.sync {
-            performSync()
+            performSync(forceReload: forceReload)
         }
         #endif
     }
 
     #if !TARGET_TESTNET
-    private func performSync() {
+    private func performSync(forceReload: Bool) {
         let appSupportDirectory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
         guard let defaults = UserDefaults(suiteName: WidgetShared.appGroupID) else {
             return
@@ -78,7 +78,11 @@ struct WidgetAppGroupSync {
             }
         }
 
-        if changed {
+        if forceReload {
+            defaults.set(true, forKey: WidgetShared.Keys.forceFreshPriceReload)
+        }
+
+        if changed || forceReload {
             WidgetCenter.shared.reloadAllTimelines()
         }
     }

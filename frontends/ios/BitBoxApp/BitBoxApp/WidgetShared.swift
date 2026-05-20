@@ -14,6 +14,7 @@ enum WidgetShared {
         static let rawMainFiat = "rawMainFiat"
         static let sharedCoins = "activeCoins"
         static let selectedCoinIndex = "selectedCoinIndex"
+        static let forceFreshPriceReload = "forceFreshPriceReload"
     }
 
     enum Cache {
