@@ -28,7 +28,8 @@ When the app launches (or enters foreground / background), `WidgetAppGroupSync` 
 3. Normalizes coin codes (`tbtc` -> `btc`, `sepeth` -> `eth`, `tltc` -> `ltc`).
 4. Writes the currency and coin list to shared `UserDefaults`.
 5. Tells iOS to reload the widget timeline on app launch / foreground / background.
-6. Marks that lifecycle reload as a fresh-price reload so the widget skips its cache once.
+6. Marks that lifecycle reload as a fresh-price reload so the widget tries the network before its
+   cache once.
 
 **Fallback:** If the user's currency isn't supported by the API (e.g. `BTC` or `sat`), it falls back to `USD`.
 
@@ -74,7 +75,8 @@ that series when available. From those responses:
 - **24-hour change** = percentage difference between the chart response's first data point and the current price.
 - **Chart data** = all returned chart price points plus the simple price when available (used for the sparkline).
 
-Each request has a **10-second timeout**.
+The chart request has a **10-second timeout**. The simple price request uses a shorter
+**1-second timeout** so the widget can fall back to the chart price quickly.
 
 ---
 
@@ -99,7 +101,8 @@ When the widget refreshes, it follows this order:
 
 Switching to a coin with a warm cache feels instant. The first switch to a coin whose cache is cold (or expired) performs one inline fetch before rendering.
 
-App lifecycle reloads (launch / foreground / background) bypass the cache and attempt a fresh network fetch. If that fetch fails, the widget keeps bypassing the cache on retry until a fresh fetch succeeds.
+App lifecycle reloads (launch / foreground / background) try a fresh network fetch before using an
+exact cache. If that fetch fails and exact cached data exists, normal cache-first reloads resume.
 
 ### Fallback chain
 
@@ -118,7 +121,7 @@ If the network fetch fails:
 - With the 10-minute cache TTL, each iOS-granted timeline reload should either use recent cached data or fetch fresh data.
 - If a network fetch fails, the widget asks iOS to retry in **1 minute**.
 - If the user changes their currency or accounts in the app, a refresh is triggered immediately.
-- App launch / foreground / background also triggers a widget timeline reload that bypasses the cache once.
+- App launch / foreground / background also triggers a network-first widget timeline reload.
 
 ---
 
