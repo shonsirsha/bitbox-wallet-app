@@ -79,11 +79,30 @@ struct WidgetAppGroupSync {
         }
 
         if forceReload {
-            defaults.set(true, forKey: WidgetShared.Keys.forceFreshPriceReload)
+            let token = defaults.integer(
+                forKey: WidgetShared.Keys.freshPriceReloadRequestedToken
+            ) + 1
+            defaults.set(token, forKey: WidgetShared.Keys.freshPriceReloadRequestedToken)
+            removeStaleFreshPriceReloadFulfilledTokens(before: token, defaults: defaults)
         }
 
         if changed || forceReload {
             WidgetCenter.shared.reloadAllTimelines()
+        }
+    }
+
+    private func removeStaleFreshPriceReloadFulfilledTokens(
+        before token: Int,
+        defaults: UserDefaults
+    ) {
+        let firstToken = max(1, token - WidgetShared.freshPriceReloadFulfilledCleanupCount)
+        guard firstToken < token else {
+            return
+        }
+        for fulfilledToken in firstToken..<token {
+            defaults.removeObject(
+                forKey: WidgetShared.freshPriceReloadFulfilledKey(for: fulfilledToken)
+            )
         }
     }
     #endif
