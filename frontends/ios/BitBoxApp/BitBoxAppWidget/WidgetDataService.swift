@@ -2,6 +2,7 @@ import Foundation
 
 struct WidgetDataService {
     private static let chartRangeSeconds = 24 * 3600
+    private static let simplePriceTimeout: TimeInterval = 1
 
     private let defaults: UserDefaults?
     private let session: URLSession
@@ -116,9 +117,11 @@ struct WidgetDataService {
         guard let url = simplePriceURL(for: coinCode, currency: currency) else {
             return nil
         }
+        var request = URLRequest(url: url)
+        request.timeoutInterval = Self.simplePriceTimeout
 
         do {
-            let (data, response) = try await session.data(from: url)
+            let (data, response) = try await session.data(for: request)
             let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
             guard statusCode == 200,
                   let decoded = try? JSONDecoder().decode([String: [String: Double]].self, from: data) else {
