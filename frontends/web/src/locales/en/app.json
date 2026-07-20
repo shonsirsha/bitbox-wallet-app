@@ -1607,6 +1607,17 @@
         "unclaimed": "Claim required"
       }
     },
+    "claimTopUp": {
+      "claimButton": "Claim top-up",
+      "claimFee": "Claim fee",
+      "description": "You will need to create a transaction to claim the stuck amount.",
+      "empty": "No unclaimed top-ups.",
+      "refundButton": "Refund top-up",
+      "refundFee": "Refund fee",
+      "title": "Claim top-up",
+      "topUps": "Unclaimed top-ups",
+      "warning": "You can either claim the top-up or refund it. Either choice will have a fee."
+    },
     "closeWithdrawFunds": {
       "accountDestination": "Account coins will be sent to",
       "confirm": "Confirm closing of lightning wallet",

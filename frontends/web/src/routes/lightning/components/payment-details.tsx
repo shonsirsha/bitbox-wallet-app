@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import type { TLightningPayment } from '@/api/lightning';
 import { A } from '@/components/anchor/anchor';
 import { Dialog } from '@/components/dialog/dialog';
@@ -28,6 +29,7 @@ export const PaymentDetailsDialog = ({
   explorerURL,
 }: TTxDetailsDialog) => {
   const { i18n, t } = useTranslation();
+  const navigate = useNavigate();
 
   const typeText = payment.bitcoinDeposit
     ? t('lightning.bitcoinDeposit.label')
@@ -125,7 +127,14 @@ export const PaymentDetailsDialog = ({
                 </div>
               )}
               {payment.bitcoinDeposit.state === 'unclaimed' && (
-                <Button className={paymentStyles.claimButton} primary>
+                <Button
+                  className={paymentStyles.claimButton}
+                  onClick={() => navigate('/lightning/claim-top-up', {
+                    state: {
+                      deposits: [payment],
+                    },
+                  })}
+                  primary>
                   {t('lightning.bitcoinDeposit.claim')}
                 </Button>
               )}
