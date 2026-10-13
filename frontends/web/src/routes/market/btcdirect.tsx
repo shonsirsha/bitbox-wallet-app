@@ -10,7 +10,6 @@ import { AppContext } from '@/contexts/AppContext';
 import { AccountCode, proposeTx, sendTx, TTxInput } from '@/api/account';
 import { useAccountSynced } from '@/hooks/account';
 import { useDarkmode } from '@/hooks/darkmode';
-import { UseDisableBackButton } from '@/hooks/backbutton';
 import { useConfig } from '@/contexts/ConfigProvider';
 import { getURLOrigin } from '@/utils/url';
 import { Header } from '@/components/layout';
@@ -22,7 +21,7 @@ import { MarketGuide } from './guide';
 import { alertUser } from '@/components/alert/Alert';
 import { useMarketIframeActive } from '@/hooks/vendor-iframe-active';
 import { useVendorIframeResizeHeight } from '@/hooks/vendor-iframe-resize-height';
-import { useVendorTerms } from '@/hooks/vendor-iframe-terms';
+import { useMarketVendorNavigation } from '@/hooks/market-vendor-navigation';
 import {
   getVendorIframeMessageTarget,
   postMessageToVendorIframe,
@@ -65,7 +64,12 @@ export const BTCDirect = ({
   const [blocking, setBlocking] = useState(false);
   const account = findAccount(activeAccounts, code);
   const { containerRef, height, iframeLoaded, iframeRef, onIframeLoad } = useVendorIframeResizeHeight();
-  const { agreedTerms, setAgreedTerms } = useVendorTerms(config?.frontend.skipBTCDirectWidgetDisclaimer ?? false);
+  const { agreedTerms, setAgreedTerms, onBack } = useMarketVendorNavigation({
+    code,
+    action,
+    skipDisclaimer: config?.frontend.skipBTCDirectWidgetDisclaimer ?? false,
+    blocked: blocking,
+  });
   useMarketIframeActive(!!account && !!config && agreedTerms && btcdirectInfo?.success === true);
 
   const handlePaymentRequest = useCallback(async (
@@ -230,7 +234,7 @@ export const BTCDirect = ({
       <div className="container">
         <div className="innerContainer">
           <div className={style.header}>
-            <Header variant="navigation" mobileBackButton title={title} />
+            <Header variant="navigation" mobileBackButton onBack={onBack} title={title} />
           </div>
           <div ref={containerRef} className={style.container}>
             { !agreedTerms ? (
@@ -240,7 +244,6 @@ export const BTCDirect = ({
               />
             ) : (
               <div style={{ height }}>
-                <UseDisableBackButton />
                 {!iframeLoaded && (
                   syncInProgress ? (
                     <Spinner text={t('account.syncing')} />

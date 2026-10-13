@@ -14,14 +14,13 @@ import { Spinner } from '@/components/spinner/Spinner';
 import { PointToBitBox02 } from '@/components/icon';
 import { PocketTerms } from '@/components/terms/pocket-terms';
 import { useLoad } from '@/hooks/api';
-import { UseDisableBackButton } from '@/hooks/backbutton';
 import { alertUser } from '@/components/alert/Alert';
 import { MarketGuide } from './guide';
 import { convertScriptType } from '@/utils/request-addess';
 import { parseExternalBtcAmount } from '@/api/coins';
 import { useMarketIframeActive } from '@/hooks/vendor-iframe-active';
 import { useVendorIframeResizeHeight } from '@/hooks/vendor-iframe-resize-height';
-import { useVendorTerms } from '@/hooks/vendor-iframe-terms';
+import { useMarketVendorNavigation } from '@/hooks/market-vendor-navigation';
 import {
   getVendorIframeMessageTarget,
   postMessageToVendorIframe,
@@ -54,8 +53,22 @@ export const Pocket = ({ action }: TProps) => {
   const accountInfo = accountInfoResponse?.success ? accountInfoResponse.info : undefined;
 
   const { containerRef, height, iframeLoaded, iframeRef, onIframeLoad } = useVendorIframeResizeHeight();
-  const { agreedTerms, setAgreedTerms } = useVendorTerms(config?.frontend.skipPocketDisclaimer ?? false);
+  const { agreedTerms, setAgreedTerms, onBack } = useMarketVendorNavigation({
+    code,
+    action,
+    skipDisclaimer: config?.frontend.skipPocketDisclaimer ?? false,
+    blocked: blocking || verifying,
+  });
   const signingRef = useRef(false);
+  const handleBack = () => {
+    if (accountInfoResponse?.success === false) {
+      navigate(`/market/select/${code}?tab=${action}`, { replace: true });
+      return;
+    }
+    if (!signingRef.current) {
+      onBack();
+    }
+  };
 
   const pocketInfo = useAccountSynced(code, useCallback(() => getPocketURL(action), [action]));
   useMarketIframeActive(!!config && agreedTerms && pocketInfo?.success === true && accountInfoResponse?.success !== false);
@@ -296,13 +309,13 @@ export const Pocket = ({ action }: TProps) => {
     <div className="contentWithGuide">
       <div className="container">
         <div className={style.header}>
-          <Header variant="navigation" mobileBackButton title={title} />
+          <Header variant="navigation" mobileBackButton onBack={handleBack} title={title} />
         </div>
         <div ref={containerRef} className={style.container}>
           { accountInfoResponse && !accountInfoResponse.success ? (
             <div className="content">
               <Message type="error">{accountInfoResponse.errorMessage || t('genericError')}</Message>
-              <DesktopBackButton enableEsc>{t('button.back')}</DesktopBackButton>
+              <DesktopBackButton enableEsc onClick={handleBack}>{t('button.back')}</DesktopBackButton>
             </div>
           ) : !agreedTerms ? (
             <PocketTerms
@@ -310,7 +323,6 @@ export const Pocket = ({ action }: TProps) => {
             />
           ) : (
             <div style={{ height }}>
-              <UseDisableBackButton />
               {!iframeLoaded && (
                 <Spinner text={t('loading')} />
               )}
