@@ -115,7 +115,7 @@ export const AppNavigation = () => {
       if (firstNewDevice) {
         const productName = devices[firstNewDevice];
         if (productName === 'bitbox' || productName === 'bitbox02-bootloader') {
-          navigate(`settings/device-settings/${firstNewDevice}`);
+          navigate(`/settings/device-settings/${firstNewDevice}`);
           return;
         }
       }

@@ -37,7 +37,7 @@ export const Waiting = () => {
   useEffect(() => {
     const deviceValues = Object.values(devices);
     if (deviceValues.length === 1 && deviceValues[0] === 'bitbox') {
-      navigate(`settings/device-settings/${Object.keys(devices)[0] as string}`);
+      navigate(`/settings/device-settings/${Object.keys(devices)[0] as string}`);
     }
   }, [devices, navigate]);
 
