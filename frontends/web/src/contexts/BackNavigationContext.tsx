@@ -12,7 +12,7 @@ import {
 } from 'react';
 import { useLocation } from 'wouter';
 import { runningInAndroid } from '@/utils/env';
-import { useSearch } from '@/utils/router-compatability';
+import { useNavigationType, useSearch } from '@/utils/router-compatability';
 
 type TabId = 'portfolio' | 'accounts' | 'market' | 'settings' | 'unknown';
 
@@ -159,26 +159,10 @@ export const BackNavigationProvider = ({
 }: ProviderProps) => {
   const [location, navigate] = useLocation();
   const search = useSearch();
+  const navigationType = useNavigationType();
 
   const stackRef = useRef<BackEntry[]>([]);
   const previousTabRef = useRef<TabId | null>(null);
-
-  // Wouter does not expose a navigation type. Track browser
-  // back/forward events and replacements initiated by this context.
-  const isPopNavigationRef = useRef(false);
-  const isReplaceNavigationRef = useRef(false);
-
-  useEffect(() => {
-    const handlePopState = () => {
-      isPopNavigationRef.current = true;
-    };
-
-    window.addEventListener('popstate', handlePopState);
-
-    return () => {
-      window.removeEventListener('popstate', handlePopState);
-    };
-  }, []);
 
   useEffect(() => {
     const pathname = location;
@@ -188,17 +172,10 @@ export const BackNavigationProvider = ({
     const previousTab = previousTabRef.current;
     const stack = stackRef.current;
 
-    const isPop = isPopNavigationRef.current;
-    const isReplace = isReplaceNavigationRef.current;
-
-    // Consume the navigation markers for this location change.
-    isPopNavigationRef.current = false;
-    isReplaceNavigationRef.current = false;
-
     // First render or switching tabs starts a fresh custom stack.
     if (!previousTab || previousTab !== tabId) {
       stackRef.current = [entry];
-    } else if (isReplace) {
+    } else if (navigationType === 'REPLACE') {
       // Replace the current logical history entry.
       if (stack.length === 0) {
         stackRef.current = [entry];
@@ -208,7 +185,7 @@ export const BackNavigationProvider = ({
           entry,
         ];
       }
-    } else if (isPop) {
+    } else if (navigationType === 'POP') {
       // Follow browser back/forward when the destination is known.
       const existingIndex = stack.findIndex(
         (item) => item.path === entry.path,
@@ -232,7 +209,7 @@ export const BackNavigationProvider = ({
     }
 
     previousTabRef.current = tabId;
-  }, [location, search]);
+  }, [location, search, navigationType]);
 
   const goBack = useCallback((): boolean => {
     const stack = stackRef.current;
@@ -249,7 +226,6 @@ export const BackNavigationProvider = ({
 
     stackRef.current = stack.slice(0, -1);
 
-    isReplaceNavigationRef.current = true;
     navigate(previous.path, { replace: true });
 
     return true;

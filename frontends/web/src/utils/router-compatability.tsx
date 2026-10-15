@@ -106,6 +106,31 @@ const subscribe = (callback: () => void) => {
   };
 };
 
+type THashNavigation = {
+  hash: string;
+  type: 'POP' | 'PUSH' | 'REPLACE';
+};
+
+const initialHashNavigation: THashNavigation = { hash: '', type: 'POP' };
+let hashNavigation = initialHashNavigation;
+
+const getHashNavigation = (): THashNavigation => {
+  // Changes outside navigate() come from browser history or direct hash navigation.
+  if (hashNavigation.hash !== window.location.hash) {
+    hashNavigation = { hash: window.location.hash, type: 'POP' };
+  }
+  return hashNavigation;
+};
+
+export const useNavigationType = () => {
+  const navigation = useSyncExternalStore(
+    subscribe,
+    getHashNavigation,
+    () => initialHashNavigation,
+  );
+  return navigation.type;
+};
+
 export const useHashLocation: BaseLocationHook = () => {
   const location = useSyncExternalStore(
     subscribe,
@@ -125,6 +150,11 @@ export const useHashLocation: BaseLocationHook = () => {
       window.history.pushState(null, '', url);
     }
 
+    // Publish the type together with its destination, including query-only changes.
+    hashNavigation = {
+      hash: window.location.hash,
+      type: options?.replace ? 'REPLACE' : 'PUSH',
+    };
     window.dispatchEvent(new HashChangeEvent('hashchange'));
   };
 
