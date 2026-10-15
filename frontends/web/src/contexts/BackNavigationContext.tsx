@@ -12,6 +12,7 @@ import {
 } from 'react';
 import { useLocation } from 'wouter';
 import { runningInAndroid } from '@/utils/env';
+import { useSearch } from '@/utils/router-compatability';
 
 type TabId = 'portfolio' | 'accounts' | 'market' | 'settings' | 'unknown';
 
@@ -58,48 +59,12 @@ const getTabId = (pathname: string): TabId => {
   return 'unknown';
 };
 
-/**
- * Wouter's location string may include a query string.
- * Keep the complete path for history identity and the pathname
- * separately for semantic route matching.
- */
-const splitPath = (path: string) => {
-  const queryIndex = path.indexOf('?');
-  const hashIndex = path.indexOf('#');
-
-  let end = path.length;
-
-  if (queryIndex >= 0) {
-    end = Math.min(end, queryIndex);
-  }
-
-  if (hashIndex >= 0) {
-    end = Math.min(end, hashIndex);
-  }
-
-  const pathname = path.slice(0, end) || '/';
-
-  const search = (
-
-    queryIndex >= 0
-      ? path.slice(
-        queryIndex,
-        hashIndex >= 0 && hashIndex > queryIndex
-          ? hashIndex
-          : undefined,
-      )
-      : ''
-  );
-
-  return { pathname, search };
-};
-
 const buildEntry = (
   pathname: string,
   search: string,
   tabId: TabId,
 ): BackEntry => ({
-  path: `${pathname}${search}`,
+  path: search ? `${pathname}?${search}` : pathname,
   pathname,
   tabId,
 });
@@ -193,6 +158,7 @@ export const BackNavigationProvider = ({
   children,
 }: ProviderProps) => {
   const [location, navigate] = useLocation();
+  const search = useSearch();
 
   const stackRef = useRef<BackEntry[]>([]);
   const previousTabRef = useRef<TabId | null>(null);
@@ -215,7 +181,7 @@ export const BackNavigationProvider = ({
   }, []);
 
   useEffect(() => {
-    const { pathname, search } = splitPath(location);
+    const pathname = location;
     const tabId = getTabId(pathname);
     const entry = buildEntry(pathname, search, tabId);
 
@@ -266,7 +232,7 @@ export const BackNavigationProvider = ({
     }
 
     previousTabRef.current = tabId;
-  }, [location]);
+  }, [location, search]);
 
   const goBack = useCallback((): boolean => {
     const stack = stackRef.current;
