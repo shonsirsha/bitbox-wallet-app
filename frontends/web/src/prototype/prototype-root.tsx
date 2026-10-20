@@ -25,12 +25,15 @@ const readVariant = (): TVariantKey => {
   return (VARIANTS.find(variant => variant.key === value)?.key) || '1';
 };
 
+// Dark is the default; the key is versioned so earlier saved "auto" choices start on dark too.
+export const THEME_STORAGE_KEY = 'prototype-theme-v2';
+
 const readTheme = (): TThemeSetting => {
   try {
-    const value = window.localStorage.getItem('prototype-theme');
-    return value === 'light' || value === 'dark' ? value : 'auto';
+    const value = window.localStorage.getItem(THEME_STORAGE_KEY);
+    return value === 'light' || value === 'auto' ? value : 'dark';
   } catch {
-    return 'auto';
+    return 'dark';
   }
 };
 
@@ -48,7 +51,7 @@ export const PrototypeRoot = () => {
   const changeTheme = (next: TThemeSetting) => {
     setTheme(next);
     try {
-      window.localStorage.setItem('prototype-theme', next);
+      window.localStorage.setItem(THEME_STORAGE_KEY, next);
     } catch {
       // Private mode: the setting just won't persist.
     }
