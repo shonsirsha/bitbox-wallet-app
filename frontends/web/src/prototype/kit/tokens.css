@@ -34,6 +34,7 @@
   --k-surface: #FFFFFF;
   --k-surface-2: #F5F5F5;
   --k-surface-3: #E5E5E5;
+  --k-hover: rgba(29, 29, 27, .06);
   --k-border: #E5E5E5;
   --k-border-strong: #999999;
   --k-text: #1D1D1B;
@@ -100,6 +101,7 @@
   --k-surface: #262624;
   --k-surface-2: #2c2c2a;
   --k-surface-3: #333333;
+  --k-hover: rgba(255, 255, 255, .07);
   --k-border: rgba(255, 255, 255, .09);
   --k-border-strong: #777777;
   --k-text: #F5F5F5;
@@ -159,7 +161,18 @@ html.proto-active body {
   height: auto;
   min-height: 100%;
   overflow: visible;
+  /* Scrolling stops at the top and bottom of the page, without the elastic bounce. */
+  overscroll-behavior-y: none;
   -webkit-app-region: no-drag;
+}
+
+/* While a sheet is open the page does not scroll. Locked on the root, so sticky bars and the
+   scroll position stay put; the scrollbar's width becomes padding, so nothing shifts sideways. */
+html.proto-active { scrollbar-gutter: stable; }
+
+html.proto-active.proto-scroll-lock {
+  overflow: hidden;
+  padding-right: var(--k-lock-gutter, 0px);
 }
 
 /* Subtle scrollbars in both themes (the page, the sidebar, sheets): a thin rounded thumb on a

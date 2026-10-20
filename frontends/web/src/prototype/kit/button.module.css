@@ -71,7 +71,7 @@
 .icon-lg { width: 52px; height: 52px; }
 
 .icon-plain { color: var(--k-text-2); }
-.iconButton:hover .icon-plain { background: var(--k-surface-2); color: var(--k-text); }
+.iconButton:hover .icon-plain { background: var(--k-hover); color: var(--k-text); }
 
 .icon-filled { background: var(--k-surface-2); color: var(--k-text); }
 .iconButton:hover .icon-filled { background: var(--k-surface-3); }

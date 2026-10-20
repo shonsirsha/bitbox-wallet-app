@@ -10,6 +10,8 @@
 .overlay {
   position: absolute;
   inset: 0;
+  /* Drags on the backdrop never pan the page behind it. */
+  touch-action: none;
   background: var(--k-overlay);
   animation: fade .2s var(--k-ease);
 }
@@ -62,6 +64,8 @@
 
 .body {
   overflow-y: auto;
+  /* Reaching the end of the sheet's content does not scroll the page. */
+  overscroll-behavior: contain;
   padding: 8px 20px 20px;
 }
 

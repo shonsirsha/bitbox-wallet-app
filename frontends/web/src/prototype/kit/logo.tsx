@@ -7,13 +7,13 @@ import wordmark from '@/components/icon/assets/app-logo-inverted.svg';
 import styles from './logo.module.css';
 
 type TProps = {
-  // Height of the wordmark; the mark is sized to match its capitals.
+  // Height of the wordmark (its box includes the descender of "pp"); the mark matches it.
   height?: number;
 };
 
 export const Logo = ({ height = 20 }: TProps) => (
-  <span className={styles.logo} role="img" aria-label="BitBoxApp" style={{ gap: Math.round(height * .4) }}>
-    <img src={mark} alt="" style={{ height: Math.round(height * 1.05) }} />
+  <span className={styles.logo} role="img" aria-label="BitBoxApp" style={{ gap: Math.round(height * .4) + 4 }}>
+    <img src={mark} alt="" className={styles.mark} style={{ height }} />
     <img src={wordmark} alt="" style={{ height }} />
   </span>
 );

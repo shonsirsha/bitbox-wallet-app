@@ -25,6 +25,7 @@
   --k-text-2: #999999;
   --k-text-3: #777777;
   --k-label-color: #999999;
+  --k-hover: rgba(255, 255, 255, .07);
   --k-scrollbar-thumb: rgba(255, 255, 255, .14);
   --k-scrollbar-thumb-hover: rgba(255, 255, 255, .28);
   --k-surface-2: #333333;

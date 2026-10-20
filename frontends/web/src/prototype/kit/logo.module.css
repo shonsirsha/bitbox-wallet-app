@@ -7,3 +7,6 @@
   display: block;
   width: auto;
 }
+
+/* The wordmark's capitals sit in the top 80% of its box: the mark centres on them. */
+.mark { transform: translateY(-10%); }

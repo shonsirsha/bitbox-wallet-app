@@ -14,6 +14,26 @@ type TProps = {
 // A bottom sheet on phones and a full-height side panel from tablet up.
 const EXIT_MS = 220;
 
+// The page behind an open sheet does not scroll; counted, so overlapping sheets unlock at the end.
+let scrollLocks = 0;
+
+const lockPageScroll = () => {
+  const root = document.documentElement;
+  if (scrollLocks === 0) {
+    // The page scrollbar goes away while locked; its width becomes padding, so nothing shifts.
+    root.style.setProperty('--k-lock-gutter', `${window.innerWidth - root.clientWidth}px`);
+    root.classList.add('proto-scroll-lock');
+  }
+  scrollLocks += 1;
+  return () => {
+    scrollLocks -= 1;
+    if (scrollLocks === 0) {
+      root.classList.remove('proto-scroll-lock');
+      root.style.removeProperty('--k-lock-gutter');
+    }
+  };
+};
+
 export const Sheet = ({ open, onClose, title, children }: TProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(open);
@@ -39,6 +59,7 @@ export const Sheet = ({ open, onClose, title, children }: TProps) => {
     }, EXIT_MS);
     return () => clearTimeout(timer);
   }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => (open ? lockPageScroll() : undefined), [open]);
   useEffect(() => {
     if (!open) {
       return;

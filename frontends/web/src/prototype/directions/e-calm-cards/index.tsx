@@ -129,6 +129,10 @@ const Portfolio = () => {
   const performance = chart?.chartPerformance[range].moneyWeightedReturn;
   const coins = summary?.coinsTotalBalance;
   const shares = allocation(coins?.map(coin => coin.formattedAmount) || [], fiat);
+  // Lightning is not listed under Assets; the shares stay those of the whole portfolio.
+  const assets = coins
+    ?.map((coin, i) => ({ coin, share: shares[i] }))
+    .filter(({ coin }) => coin.coinCode !== 'lightning');
   const total = chart?.formattedChartTotal ? fiatAmount(chart.formattedChartTotal, fiat) : undefined;
   return (
     <>
@@ -160,7 +164,7 @@ const Portfolio = () => {
           ]} />
           <Section variant="plain" title="Assets">
             <div className={styles.cardGrid}>
-              {coins ? coins.map((coin, i) => (
+              {assets ? assets.map(({ coin, share }) => (
                 <Section key={coin.coinCode} className={styles.rowCard}>
                   <ListRow
                     href={coinHref(accounts, coin.coinCode)}
@@ -168,7 +172,7 @@ const Portfolio = () => {
                     title={coin.coinName}
                     subtitle={<Amount value={coin.formattedAmount} as="coin" size="sm" tone="muted" />}
                     trailing={<Amount value={coin.formattedAmount} />}
-                    trailingSub={formatShare(shares[i], locale)} />
+                    trailingSub={formatShare(share, locale)} />
                 </Section>
               )) : <Section><SkeletonRows count={3} /></Section>}
             </div>
