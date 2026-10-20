@@ -6,12 +6,13 @@
 // a D-style top bar with the total and Settings (no search), C's accounts list as one card.
 // Phones keep their page headers and the floating tab bar.
 
-import { ReactNode, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
+import type { TTransaction } from '@/api/account';
 import { useMediaQuery } from '@/hooks/mediaquery';
 import {
   Amount, AreaChart, Badge, Button, Chip, CoinIcon, Delta, DeviceStatus, GlyphIcon, Icon, IconButton, List, ListRow, Logo,
-  Navigation, PageHeader, Popover, Section, SegmentedControl, Sheet, Skeleton, SkeletonRows, TChartPoint, TIconName,
-  TextField, format,
+  Navigation, PageHeader, Popover, Section, SearchField, SegmentedControl, Sheet, Skeleton, SkeletonRows, TChartPoint,
+  TIconName, format,
 } from '../../kit';
 import { usePrototype } from '../../context';
 import {
@@ -22,7 +23,7 @@ import { href } from '../../routing';
 import { ComingSoon } from '../../patterns/coming-soon';
 import { KitPage } from '../../patterns/kit-page';
 import { TransactionDetails } from '../../patterns/transaction-details';
-import { TxRow } from '../../patterns/tx-row';
+import { TxRow, txTitle } from '../../patterns/tx-row';
 import { HideAmountsButton, TNavKey, activeNav, closeTransaction, coinHref, navItems } from '../shared';
 import type { TDirectionProps } from '../types';
 import styles from './e.module.css';
@@ -47,17 +48,62 @@ type TPhoneHeaderProps = {
   actions?: ReactNode;
 };
 
+// Always shown within this distance of the top; smaller scroll steps are ignored (jitter).
+const HEADER_REVEAL = 72;
+const SCROLL_SLOP = 8;
+
+// Like most mobile navigation bars: hidden while scrolling down, back on any scroll up.
+const useHeaderOnScroll = () => {
+  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    let last = window.scrollY;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      // Clamped, so rubber-band overscroll at either end is not taken as a direction change.
+      const max = Math.max(document.documentElement.scrollHeight - window.innerHeight, 0);
+      const y = Math.min(Math.max(window.scrollY, 0), max);
+      setScrolled(y > 0);
+      if (y < HEADER_REVEAL) {
+        setHidden(false);
+        last = y;
+        return;
+      }
+      if (Math.abs(y - last) < SCROLL_SLOP) {
+        return;
+      }
+      setHidden(y > last);
+      last = y;
+    };
+    const onScroll = () => {
+      if (!frame) {
+        frame = requestAnimationFrame(update);
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+  return { hidden, scrolled };
+};
+
 // Every phone screen gets a page header; from tablet up the top bar and page content take over.
-const PhoneHeader = ({ title, subtitle, back, actions }: TPhoneHeaderProps) => (
-  <div className={`${styles.phoneHeader} ${styles.onCanvas}`}>
-    <PageHeader
-      title={title}
-      subtitle={subtitle}
-      back={back}
-      size={back ? 'compact' : 'large'}
-      actions={<><HideAmountsButton />{actions}</>} />
-  </div>
-);
+const PhoneHeader = ({ title, subtitle, back, actions }: TPhoneHeaderProps) => {
+  const { hidden, scrolled } = useHeaderOnScroll();
+  return (
+    <div className={`${styles.phoneHeader} ${styles.onCanvas} ${hidden ? styles.phoneHeaderHidden : ''} ${scrolled ? styles.phoneHeaderScrolled : ''}`}>
+      <PageHeader
+        title={title}
+        subtitle={subtitle}
+        back={back}
+        size={back ? 'compact' : 'large'}
+        actions={<><HideAmountsButton />{actions}</>} />
+    </div>
+  );
+};
 
 type TAction = { icon: TIconName; label: string; href: string };
 
@@ -97,7 +143,7 @@ const Portfolio = () => {
             className={styles.heroCard}>
             <div className={styles.balance}>
               <div className={styles.balanceHead}>
-                <Amount value={scrub?.label ? fiatAmount(scrub.label, fiat) : total} size="hero" />
+                <Amount value={scrub?.label ? fiatAmount(scrub.label, fiat) : total} size="hero" animated />
                 <span className={styles.meta}>
                   <Delta value={performance} />
                   <span>{RANGE_LABEL[range]}</span>
@@ -195,13 +241,13 @@ const AccountFilters = ({ sort, onSort, action, coinTypes, selectedCoins, onTogg
 );
 
 type TAccountsListProps = {
-  // sidebar: compact rows in the dark panel · page: the phone Accounts tab (and #/accounts/all)
+  // sidebar: compact rows in the dark panel. page: the Accounts tab on phones, a table on desktop.
   variant: 'sidebar' | 'page';
   selected?: string;
 };
 
 // The account list with search, sort and coin filter, and Add account; the same list in the
-// sidebar and on the phone Accounts page. Lightning is listed on the page only (it has no
+// sidebar and on the Accounts page. Lightning is listed on phones only (it has no tablet or
 // desktop navigation). Sort and filter open in a popover, or a bottom sheet on phones.
 const AccountsList = ({ variant, selected }: TAccountsListProps) => {
   const { fiat } = usePrototype();
@@ -215,9 +261,11 @@ const AccountsList = ({ variant, selected }: TAccountsListProps) => {
   const [selectedCoins, setSelectedCoins] = useState<string[]>([]);
   const phone = useMediaQuery('(max-width: 768px)');
   const sidebar = variant === 'sidebar';
+  const desktop = useMediaQuery('(min-width: 1200px)');
   // The tablet sidebar is too narrow for both amounts: its rows show name and fiat value only.
-  const wideSidebar = useMediaQuery('(min-width: 1200px)');
-  const compactRows = sidebar && !wideSidebar;
+  const compactRows = sidebar && !desktop;
+  // The desktop page is a table: coin, balance and value each get their own column.
+  const columns = !sidebar && desktop;
   const iconSize = sidebar ? 28 : 40;
   const needle = query.trim().toLowerCase();
   const matches = (...values: string[]) => !needle || values.some(value => value.toLowerCase().includes(needle));
@@ -244,7 +292,7 @@ const AccountsList = ({ variant, selected }: TAccountsListProps) => {
   const lightning = summary?.coinsTotalBalance.find(coin => coin.coinCode === 'lightning')?.formattedAmount;
   const accountCount = accounts ? `${accounts.length} accounts` : '';
   const filtersActive = sort !== 'value' || selectedCoins.length > 0;
-  const showLightning = !sidebar && matches('Lightning') && selectedCoins.length === 0;
+  const showLightning = !sidebar && phone && matches('Lightning') && selectedCoins.length === 0;
   const resetFilters = () => {
     setSort('value');
     setSelectedCoins([]);
@@ -267,41 +315,47 @@ const AccountsList = ({ variant, selected }: TAccountsListProps) => {
     <IconButton
       icon="filter"
       label="Sort and filter"
-      size={sidebar ? 'sm' : 'md'}
+      size="sm"
       active={filtersOpen || filtersActive}
       onClick={() => setFiltersOpen(open => !open)} />
   );
   const tools = (
     <div className={styles.accountsTools}>
-      <div className={styles.accountsSearch}>
-        <TextField icon="search" value={query} onChange={setQuery} placeholder={sidebar ? 'Accounts' : 'Search accounts'} />
-      </div>
       {filterButton}
-      <IconButton icon="plus" label="Add account" size={sidebar ? 'sm' : 'md'} href="#/add-account" />
+      <div className={styles.accountsSearch}>
+        <SearchField value={query} onChange={setQuery} placeholder="Search accounts" />
+      </div>
+      <IconButton icon="plus" label="Add account" size="sm" href="#/add-account" />
     </div>
   );
   const list = !accounts ? <SkeletonRows count={5} /> : (
     <List>
+      {columns && <ListRow header title="Account" cells={['Balance']} trailing="Value" chevron />}
       {!sidebar && !needle && selectedCoins.length === 0 && (
         <ListRow
           href={href.portfolio}
           leading={<GlyphIcon icon="wallet" size={iconSize} />}
           title="All accounts"
           subtitle={accountCount}
+          cells={columns ? [null] : undefined}
           trailing={<Amount value={chart?.formattedChartTotal ? fiatAmount(chart.formattedChartTotal, fiat) : undefined} />}
           chevron />
       )}
-      {filtered.map(account => (
-        <ListRow
-          key={account.code}
-          href={href.account(account.code)}
-          selected={account.code === selected}
-          leading={<CoinIcon coinCode={account.coinCode} size={iconSize} />}
-          title={account.name}
-          subtitle={<Amount value={balances?.[account.code]?.available} as={compactRows ? 'fiat' : 'coin'} size="sm" tone="muted" />}
-          trailing={compactRows ? undefined : <Amount value={balances?.[account.code]?.available} size={sidebar ? 'sm' : 'md'} />}
-          chevron={!sidebar} />
-      ))}
+      {filtered.map(account => {
+        const available = balances?.[account.code]?.available;
+        return (
+          <ListRow
+            key={account.code}
+            href={href.account(account.code)}
+            selected={account.code === selected}
+            leading={<CoinIcon coinCode={account.coinCode} size={iconSize} />}
+            title={account.name}
+            subtitle={columns ? account.coinName : <Amount value={available} as={compactRows ? 'fiat' : 'coin'} size="sm" tone="muted" animated />}
+            cells={columns ? [<Amount value={available} as="coin" animated />] : undefined}
+            trailing={compactRows ? undefined : <Amount value={available} size={sidebar ? 'sm' : 'md'} animated />}
+            chevron={!sidebar} />
+        );
+      })}
       {showLightning && (
         <ListRow
           href={href.lightning}
@@ -317,7 +371,7 @@ const AccountsList = ({ variant, selected }: TAccountsListProps) => {
   return (
     <div className={sidebar ? styles.sidebarAccounts : styles.pageAccounts}>
       {phone ? tools : (
-        <Popover open={filtersOpen} onClose={() => setFiltersOpen(false)} label="Sort and filter accounts" trigger={tools} block>
+        <Popover open={filtersOpen} onClose={() => setFiltersOpen(false)} label="Sort and filter accounts" trigger={tools} block align="start">
           {filters(true)}
         </Popover>
       )}
@@ -327,10 +381,8 @@ const AccountsList = ({ variant, selected }: TAccountsListProps) => {
           <div className={styles.sheetFilters}>
             {filters(false)}
             <div className={styles.sheetActions}>
-              <Button onClick={resetFilters} disabled={!filtersActive}>Reset</Button>
-              <Button variant="primary" onClick={() => setFiltersOpen(false)}>
-                {`Show ${resultCount} ${resultCount === 1 ? 'account' : 'accounts'}`}
-              </Button>
+              <Button variant="primary" full onClick={() => setFiltersOpen(false)}>Apply</Button>
+              <Button variant="ghost" full onClick={resetFilters} disabled={!filtersActive}>Reset</Button>
             </div>
           </div>
         </Sheet>
@@ -353,12 +405,30 @@ const Accounts = () => (
 
 type TAccountProps = { code: string; txId?: string };
 
+// Matches what a row shows: title or note, address, transaction ID, amounts and date.
+const matchesTransaction = (tx: TTransaction, needle: string, locale: string) => [
+  txTitle(tx),
+  tx.note,
+  ...tx.addresses,
+  tx.txID,
+  tx.amount.amount,
+  ...Object.values(tx.amount.conversions || {}),
+  format.formatDayLabel(tx.time, locale, 'short'),
+  format.formatShortDate(tx.time, locale),
+].some(value => value && value.toLowerCase().includes(needle));
+
 const Account = ({ code, txId }: TAccountProps) => {
+  const { locale } = usePrototype();
   const accounts = useAccounts();
   const account = accounts?.find(candidate => candidate.code === code);
   const balance = useBalance(code);
   const transactions = useTransactions(code);
   const selectedTx = transactions?.find(tx => tx.internalID === txId);
+  const [query, setQuery] = useState('');
+  const needle = query.trim().toLowerCase();
+  const visibleTransactions = needle ? transactions?.filter(tx => matchesTransaction(tx, needle, locale)) : transactions;
+  // A new account starts with an empty search.
+  useEffect(() => setQuery(''), [code]);
   if (accounts && !account) {
     return <div className={styles.onCanvas}><ComingSoon title="Account not found" /></div>;
   }
@@ -379,9 +449,9 @@ const Account = ({ code, txId }: TAccountProps) => {
                   subtitle={account?.coinName} />
               </div>
               <div className={styles.balanceHead}>
-                <Amount value={balance?.available} as="coin" size="hero" />
+                <Amount value={balance?.available} as="coin" size="hero" animated />
                 <span className={styles.meta}>
-                  <Amount value={balance?.available} size="lg" tone="muted" />
+                  <Amount value={balance?.available} size="lg" tone="muted" animated />
                   {balance?.hasIncoming && (
                     <Badge tone="warning" icon="clock">Incoming <Amount value={balance.incoming} as="coin" size="sm" sign="+" /></Badge>
                   )}
@@ -396,13 +466,19 @@ const Account = ({ code, txId }: TAccountProps) => {
             { icon: 'info', label: 'Info', href: `#/account/${encodeURIComponent(code)}/info` },
           ]} />
         </div>
-        <Section title="Activity" className={styles.listCard}>
-          {transactions && account ? (
+        <Section
+          title="Activity"
+          className={`${styles.listCard} ${styles.activity}`}
+          action={<SearchField value={query} onChange={setQuery} placeholder="Search activity" />}>
+          {visibleTransactions && account ? (
             <List>
-              {transactions.map(tx => (
+              {visibleTransactions.map(tx => (
                 <TxRow key={tx.internalID} tx={tx} account={account} primary="coin" selected={tx.internalID === txId} />
               ))}
-              {transactions.length === 0 && <ListRow title="No transactions yet" subtitle="Receive coins to get started." />}
+              {transactions?.length === 0 && <ListRow title="No transactions yet" subtitle="Receive coins to get started." />}
+              {!!transactions?.length && visibleTransactions.length === 0 && (
+                <ListRow title="No matching transactions" subtitle="Try a note, an address, an amount or a date." />
+              )}
             </List>
           ) : <SkeletonRows count={6} />}
         </Section>
@@ -436,7 +512,7 @@ export const DirectionE = ({ screen }: TDirectionProps) => {
           items={navItems(screen, SIDE_NAV)}
           header={(
             <div className={styles.sidebarHeader}>
-              <a href={href.portfolio} aria-label="Portfolio"><Logo height={19} onDark /></a>
+              <a href={href.portfolio} aria-label="Portfolio"><Logo height={19} /></a>
               <DeviceStatus
                 name={device.name}
                 state={deviceState}

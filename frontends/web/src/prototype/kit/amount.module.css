@@ -45,6 +45,15 @@
 
 .mask { letter-spacing: .08em; }
 
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .loading {
   min-width: 5em;
   border-radius: var(--k-radius-s);

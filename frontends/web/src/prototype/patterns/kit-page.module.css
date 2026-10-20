@@ -25,9 +25,37 @@
   gap: 8px;
 }
 
-.copy {
-  color: var(--k-text-2);
-  font-size: var(--k-fs-small);
+/* A main amount with its second amount underneath. */
+.amounts {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* A wide list with Balance and Value columns (the desktop Accounts table). */
+.table {
+  --k-cell-w: 200px;
+  --k-trailing-w: 120px;
+}
+
+.sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  align-items: start;
+  gap: 16px;
 }
 
 .darkTile {

@@ -4,9 +4,12 @@
   gap: var(--k-list-gap, 0px);
 }
 
+/* Leading, title, then any cells, trailing and chevron, each in its own column. */
 .row {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  grid-auto-flow: column;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-auto-columns: auto;
   align-items: center;
   column-gap: var(--k-row-gap, 14px);
   width: 100%;
@@ -16,10 +19,6 @@
   color: var(--k-text);
   border-radius: var(--k-row-radius, 0);
   transition: background-color .12s var(--k-ease);
-}
-
-.row:not(:has(> .chevron)) {
-  grid-template-columns: auto minmax(0, 1fr) auto;
 }
 
 .list > .row + .row {
@@ -68,7 +67,15 @@
   white-space: nowrap;
 }
 
+/* Fixed widths, so the columns of a wide list line up from row to row. */
+.cell {
+  width: var(--k-cell-w, 160px);
+  font-size: var(--k-fs-body);
+  text-align: end;
+}
+
 .trailing {
+  min-width: var(--k-trailing-w, 0px);
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -88,3 +95,15 @@
 }
 
 [dir='rtl'] .chevron { transform: scaleX(-1); }
+
+.header { min-height: 0; padding-block: 6px 2px; }
+
+.header .title,
+.header .cell,
+.header .trailingMain {
+  font-size: var(--k-fs-small);
+  font-weight: 500;
+  color: var(--k-text-3);
+}
+
+.header .chevron { visibility: hidden; }

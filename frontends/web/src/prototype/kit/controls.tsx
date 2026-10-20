@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import { IconButton } from './button';
-import { Icon, TIconName } from './icon';
+import { Icon } from './icon';
 import { useIndicator } from './indicator';
 import styles from './controls.module.css';
 
@@ -42,17 +42,17 @@ export const SegmentedControl = <T extends string>({ options, value, onChange, l
   );
 };
 
-type TTextFieldProps = {
+type TSearchFieldProps = {
   value: string;
   onChange: (value: string) => void;
-  placeholder?: string;
-  icon?: TIconName;
+  placeholder: string;
 };
 
-// A search field with its own clear button.
-export const TextField = ({ value, onChange, placeholder, icon }: TTextFieldProps) => (
-  <label className={styles.inputWrap}>
-    {icon && <Icon name={icon} size={18} className={styles.inputIcon} />}
+// The search: rests as a round search button and widens into the field while focused or filled.
+// Its width open comes from --k-search-w (the parent decides how far it reaches).
+export const SearchField = ({ value, onChange, placeholder }: TSearchFieldProps) => (
+  <label className={`${styles.search} ${value ? styles.filled : ''}`}>
+    <Icon name="search" size={18} className={styles.searchIcon} />
     <input
       className={styles.input}
       type="search"
@@ -62,22 +62,4 @@ export const TextField = ({ value, onChange, placeholder, icon }: TTextFieldProp
       onChange={event => onChange(event.target.value)} />
     {value && <IconButton icon="close" label="Clear search" size="sm" onClick={() => onChange('')} className={styles.clear} />}
   </label>
-);
-
-type TToggleProps = {
-  checked: boolean;
-  onChange: (checked: boolean) => void;
-  label: string;
-};
-
-export const Toggle = ({ checked, onChange, label }: TToggleProps) => (
-  <button
-    type="button"
-    role="switch"
-    aria-checked={checked}
-    aria-label={label}
-    className={`${styles.toggle} ${checked ? styles.toggleOn : ''}`}
-    onClick={() => onChange(!checked)}>
-    <span className={styles.knob} />
-  </button>
 );

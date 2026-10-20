@@ -42,38 +42,51 @@
 
 .thumbReady { transition: transform .28s var(--k-ease), width .28s var(--k-ease); }
 
-/* Search field */
+/* Search: an sm icon button at rest (32px, 36px on touch), a field while focused or filled. */
 
-.inputWrap {
+.search {
+  --size: 32px;
   display: flex;
+  flex: none;
   align-items: center;
-  gap: 8px;
-  height: var(--k-control-h);
-  padding: 0 12px;
-  border-radius: var(--k-input-radius, var(--k-radius-m));
+  gap: 6px;
+  width: var(--size);
+  height: var(--size);
+  /* The app's global label style adds a bottom margin; the search lines up with its neighbours. */
+  margin: 0;
+  padding: 0 calc((var(--size) - 18px) / 2);
+  border-radius: var(--k-radius-pill);
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+  transition: width .32s var(--k-ease), background-color .2s var(--k-ease);
+}
+
+.search:hover { background: var(--k-surface-2); }
+
+.search:focus-within,
+.search.filled {
+  width: var(--k-search-w, 260px);
+  padding: 0 0 0 12px;
   background: var(--k-surface-2);
-  transition: box-shadow .15s var(--k-ease), background-color .15s var(--k-ease);
+  cursor: text;
 }
 
-/* Directions can swap the focus ring for a quieter fill via --k-input-focus-ring / -bg. */
-.inputWrap:focus-within {
-  box-shadow: var(--k-input-focus-ring, inset 0 0 0 1px var(--k-accent), var(--k-focus));
-  background: var(--k-input-focus-bg, var(--k-surface-2));
-}
-
-.inputIcon { color: var(--k-text-3); flex: none; }
+.searchIcon { flex: none; color: var(--k-text-2); }
 
 .input {
   flex: 1;
   min-width: 0;
   height: 100%;
   border: 0;
+  padding: 0;
   background: transparent;
-  font-size: var(--k-fs-body);
+  font-size: var(--k-fs-small);
   color: var(--k-text);
   outline: none;
-  padding: 0;
 }
+
+.search:not(:focus-within):not(.filled) .input { width: 0; }
 
 .input::placeholder { color: var(--k-text-3); }
 
@@ -86,34 +99,8 @@
   appearance: none;
 }
 
-.clear { margin-inline-end: -8px; }
+.clear { flex: none; }
 
-/* Toggle */
-
-.toggle {
-  position: relative;
-  width: 44px;
-  height: 26px;
-  flex: none;
-  border-radius: 13px;
-  background: var(--k-surface-3);
-  transition: background-color .25s var(--k-ease);
+@media (pointer: coarse) {
+  .search { --size: 36px; }
 }
-
-.toggleOn { background: var(--k-accent); }
-
-.knob {
-  position: absolute;
-  top: 3px;
-  inset-inline-start: 3px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #FFFFFF;
-  box-shadow: 0 1px 3px rgba(29, 29, 27, .25);
-  transition: transform .28s var(--k-ease);
-}
-
-[dir='rtl'] .toggleOn .knob { transform: translateX(-18px); }
-
-.toggleOn .knob { transform: translateX(18px); }

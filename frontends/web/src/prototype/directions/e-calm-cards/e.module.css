@@ -158,6 +158,7 @@
 
 /* Account list ---------------------------------------------------------------------------- */
 
+/* Filter, then the search (it opens towards the end), then Add account at the end. */
 .accountsTools {
   display: flex;
   align-items: center;
@@ -165,11 +166,10 @@
 }
 
 .accountsSearch {
+  display: flex;
   flex: 1;
   min-width: 0;
-  /* No focus ring on the account search; focus shows as a slightly lighter fill. */
-  --k-input-focus-ring: none;
-  --k-input-focus-bg: var(--k-surface-3);
+  --k-search-w: min(100%, 320px);
 }
 
 /* Sort and filter (popover from tablet up, bottom sheet on phones). */
@@ -188,14 +188,14 @@
 .sheetFilters {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding-top: 4px;
+  gap: 20px;
 }
 
 .sheetActions {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
 }
 
 /* In the sidebar: a separator under the menu, then compact dark rows like the menu items. */
@@ -216,12 +216,11 @@
   --k-control-h: 40px;
 }
 
-.sidebarAccounts .accountsSearch {
-  --k-surface-2: transparent;
-  --k-input-focus-bg: rgba(255, 255, 255, .06);
-}
+/* In the sidebar the open search fills the row up to Add account. */
+.sidebarAccounts .accountsSearch { --k-search-w: 100%; }
 
-.sidebarAccounts .accountsTools { margin-inline: 2px -4px; }
+/* Filter lines up with the menu and coin icons below, Add account with the amounts. */
+.sidebarAccounts .accountsTools { margin-inline: 8px 2px; }
 
 /* In the sidebar the popover spans the account tools row. */
 .sidebarAccounts { --k-popover-w: 100%; }
@@ -238,14 +237,12 @@
   --k-secondary-bg: var(--k-surface);
 }
 
-/* Accounts: C's single list, one card in a calm centred column. */
+/* Accounts: one list card across the content width (a table on desktop). */
 .accounts {
   display: flex;
   flex-direction: column;
   gap: 16px;
   width: 100%;
-  max-width: 720px;
-  margin-inline: auto;
 }
 
 .accounts .listCard { --k-row-min-h: 68px; }
@@ -254,6 +251,13 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
+}
+
+/* Activity search: widens leftwards from the header's end; on phones up to the title. */
+.activity { --k-search-w: 280px; }
+
+@media (max-width: 768px) {
+  .activity { --k-search-w: min(260px, calc(100vw - 150px)); }
 }
 
 /* Coin amounts run longer than fiat totals: a smaller hero keeps them on one line in the card. */
@@ -277,6 +281,32 @@
   /* The phone header carries the page title (and the account's name and wallet). */
   .wideHeader,
   .identity { display: none; }
+
+  /* It stays at the top, slides away while scrolling down and comes back on any scroll up.
+     Full bleed with the canvas colour, so content never shows beside or behind it. */
+  .phoneHeader {
+    position: sticky;
+    top: 0;
+    z-index: 15;
+    margin: calc(-4px - var(--k-safe-top)) calc(var(--k-page-pad) * -1) 0;
+    padding: calc(4px + var(--k-safe-top)) var(--k-page-pad) 0;
+    background: var(--k-bg);
+    transition: transform .3s var(--k-ease), box-shadow .2s var(--k-ease);
+  }
+
+  .phoneHeaderScrolled { box-shadow: 0 1px 0 var(--k-border); }
+
+  .phoneHeaderHidden:not(:focus-within) { transform: translateY(-100%); }
+
+  /* The status bar keeps its backdrop while the header is away (webviews draw beneath it). */
+  .shell::before {
+    content: '';
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 16;
+    height: var(--k-safe-top);
+    background: var(--k-bg);
+  }
 }
 
 /* Tablet: dark sidebar (with the account list) + top bar ------------------------------- */
@@ -358,12 +388,18 @@
     top: calc(var(--k-safe-top) + var(--e-topbar-h) + 8px);
   }
 
-  /* The activity card sits under its Section header (28px + 10px gap); start both cards on
-     one line, and keep the stuck card where the portfolio's activity card sticks. */
+  /* The activity card sits under its Section header (36px with the search + 10px gap); start
+     both cards on one line, and keep the stuck card where the portfolio's activity card sticks. */
   .accountSide {
-    padding-top: 38px;
-    top: calc(var(--k-safe-top) + var(--e-topbar-h) + 8px - 38px);
+    padding-top: 46px;
+    top: calc(var(--k-safe-top) + var(--e-topbar-h) + 8px - 46px);
   }
 
   .accountCard { --k-fs-hero: 44px; }
+
+  /* The Accounts table: Balance and Value line up in fixed columns. */
+  .accounts .listCard {
+    --k-cell-w: 240px;
+    --k-trailing-w: 160px;
+  }
 }

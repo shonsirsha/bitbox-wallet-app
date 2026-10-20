@@ -1,0 +1,29 @@
+/* Plain inline layout keeps the text baseline (amount units line up with the digits). */
+.odometer {
+  display: inline;
+  white-space: pre;
+}
+
+/* One digit column: an invisible digit gives width and baseline, the strip rolls over it. */
+.column {
+  position: relative;
+  display: inline-block;
+  clip-path: inset(0);
+}
+
+.ghost { visibility: hidden; }
+
+.strip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  transition: transform .7s cubic-bezier(.2, .8, .2, 1);
+  will-change: transform;
+}
+
+.digit {
+  display: block;
+  text-align: center;
+}

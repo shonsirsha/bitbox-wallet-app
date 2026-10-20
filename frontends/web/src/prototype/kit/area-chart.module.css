@@ -14,6 +14,21 @@
 
 .plot svg { display: block; overflow: visible; }
 
+/* The line draws itself from start to finish; the fill fades in behind it. */
+.line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 1.2s cubic-bezier(.45, .05, .25, 1) forwards;
+}
+
+.area {
+  opacity: 0;
+  animation: reveal .6s ease .45s forwards;
+}
+
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes reveal { to { opacity: 1; } }
+
 .cursor {
   position: absolute;
   top: 0;
@@ -34,4 +49,3 @@
   box-shadow: 0 0 0 3px var(--k-bg);
   pointer-events: none;
 }
-

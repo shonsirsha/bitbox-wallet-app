@@ -1,22 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import logoDark from '@/components/icon/assets/app-logo.svg';
-import logoLight from '@/components/icon/assets/app-logo-inverted.svg';
-import { usePrototype } from '../context';
+// The light wordmark: the logo only sits on the dark sidebar (in both themes).
+import logo from '@/components/icon/assets/app-logo-inverted.svg';
 
 type TProps = {
   height?: number;
-  // Force the light wordmark (for dark panels inside a light theme).
-  onDark?: boolean;
 };
 
-export const Logo = ({ height = 20, onDark = false }: TProps) => {
-  const { theme } = usePrototype();
-  return (
-    <img
-      src={theme === 'dark' || onDark ? logoLight : logoDark}
-      alt="BitBoxApp"
-      height={height}
-      style={{ height, width: 'auto', display: 'block' }} />
-  );
-};
+export const Logo = ({ height = 20 }: TProps) => (
+  <img
+    src={logo}
+    alt="BitBoxApp"
+    height={height}
+    style={{ height, width: 'auto', display: 'block' }} />
+);

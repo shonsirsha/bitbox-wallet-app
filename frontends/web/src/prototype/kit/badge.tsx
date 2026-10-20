@@ -6,11 +6,11 @@ import styles from './badge.module.css';
 
 type TProps = {
   children: ReactNode;
-  tone?: 'neutral' | 'success' | 'warning' | 'danger';
+  tone: 'success' | 'warning' | 'danger';
   icon?: TIconName;
 };
 
-export const Badge = ({ children, tone = 'neutral', icon }: TProps) => (
+export const Badge = ({ children, tone, icon }: TProps) => (
   <span className={`${styles.badge} ${styles[tone]}`}>
     {icon && <Icon name={icon} size={13} strokeWidth={2} />}
     {children}

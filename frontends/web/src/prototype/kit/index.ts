@@ -11,7 +11,7 @@ export { Button, IconButton } from './button';
 export { Chip } from './chip';
 export { CoinIcon, GlyphIcon } from './coin-icon';
 export type { TCoinBadge } from './coin-icon';
-export { SegmentedControl, TextField, Toggle } from './controls';
+export { SearchField, SegmentedControl } from './controls';
 export { Delta } from './delta';
 export { DeviceStatus } from './device';
 export type { TDeviceState } from './device';

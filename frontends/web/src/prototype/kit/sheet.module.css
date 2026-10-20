@@ -51,6 +51,15 @@
   font-weight: var(--k-fw-title);
 }
 
+.floatingClose {
+  position: absolute;
+  top: 14px;
+  inset-inline-end: 16px;
+  z-index: 1;
+}
+
+.grabber + .floatingClose + .body { padding-top: 18px; }
+
 .body {
   overflow-y: auto;
   padding: 8px 20px 20px;

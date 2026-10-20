@@ -27,6 +27,14 @@
 
 [dir='rtl'] .panel { transform-origin: top left; }
 
+.alignStart {
+  inset-inline-start: 0;
+  inset-inline-end: auto;
+  transform-origin: top left;
+}
+
+[dir='rtl'] .alignStart { transform-origin: top right; }
+
 .closing {
   pointer-events: none;
   animation: popOut .14s var(--k-ease) forwards;

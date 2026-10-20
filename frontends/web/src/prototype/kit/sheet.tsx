@@ -60,10 +60,15 @@ export const Sheet = ({ open, onClose, title, children }: TProps) => {
       <div className={styles.overlay} onClick={onClose} aria-hidden="true" />
       <div ref={ref} className={styles.sheet} role="dialog" aria-modal="true" tabIndex={-1}>
         <span className={styles.grabber} aria-hidden="true" />
-        <header className={styles.header}>
-          <h2 className={styles.title}>{lastContent.current.title}</h2>
-          <IconButton icon="close" label="Close" onClick={onClose} size="sm" variant="filled" />
-        </header>
+        {lastContent.current.title ? (
+          <header className={styles.header}>
+            <h2 className={styles.title}>{lastContent.current.title}</h2>
+            <IconButton icon="close" label="Close" onClick={onClose} size="sm" variant="filled" />
+          </header>
+        ) : (
+          // Without a title there is no header row: the close button sits in the corner.
+          <IconButton icon="close" label="Close" onClick={onClose} size="sm" variant="filled" className={styles.floatingClose} />
+        )}
         <div className={styles.body}>{lastContent.current.children}</div>
       </div>
     </div>

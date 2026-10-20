@@ -1,24 +1,22 @@
 // SPDX-License-Identifier: Apache-2.0
 
-// PROTOTYPE (throwaway): every kit component in the variants the Calm cards screens use.
-// This page is the whole design vocabulary: screens may only use what is shown here.
+// PROTOTYPE (throwaway): every kit component in the variants the Redesigned screens use, filled
+// with the demo wallet. This page is the whole design vocabulary: screens may only use what is shown here.
 
-import { CSSProperties, useState } from 'react';
-import type { TAmountWithConversions } from '@/api/account';
+import { CSSProperties, useMemo, useState } from 'react';
 import {
   Amount, AreaChart, Badge, Button, Chip, CoinIcon, Delta, DeviceStatus, GlyphIcon, Icon, IconButton, List,
-  ListRow, Logo, Message, Navigation, PageHeader, Popover, Section, SegmentedControl, Sheet, Skeleton, SkeletonRows,
-  TIconName, TextField, Toggle,
+  ListRow, Logo, Message, Navigation, PageHeader, Popover, SearchField, Section, SegmentedControl, Sheet, Skeleton,
+  SkeletonRows, TIconName, TNavItem, format,
 } from '../kit';
-import { chartPoints, RANGE_OPTIONS, TRange, useChart } from '../data';
+import { PrototypeContext, usePrototype } from '../context';
+import { chartPoints, fiatAmount, RANGE_OPTIONS, TRange, useAccounts, useActivity, useBalances, useChart, useDevice } from '../data';
+import { href } from '../routing';
+import { TransactionDetails } from './transaction-details';
+import { TxRow, txSign } from './tx-row';
 import styles from './kit-page.module.css';
 
-const SAMPLE: TAmountWithConversions = {
-  amount: '0.34947407',
-  unit: 'BTC',
-  estimated: false,
-  conversions: { USD: '36\'432.67', EUR: '31\'368.53', CHF: '29\'036.84', GBP: '27\'251.64', BTC: '0.34947407', sat: '34947407' },
-};
+const KIT = '#/prototype/kit';
 
 const ICONS: TIconName[] = [
   'portfolio', 'accounts', 'lightning', 'marketplace', 'settings', 'send', 'receive', 'self', 'swap', 'buy', 'plus',
@@ -26,12 +24,22 @@ const ICONS: TIconName[] = [
   'failed', 'clock', 'device', 'wallet', 'arrowUp', 'arrowDown',
 ];
 
-const NAV = [
-  { key: 'portfolio', label: 'Portfolio', icon: 'portfolio' as const, href: '#/prototype/kit', active: true },
-  { key: 'accounts', label: 'Accounts', icon: 'accounts' as const, href: '#/prototype/kit' },
-  { key: 'lightning', label: 'Lightning', icon: 'lightning' as const, href: '#/prototype/kit' },
-  { key: 'market', label: 'Market', icon: 'marketplace' as const, href: '#/prototype/kit' },
-  { key: 'settings', label: 'Settings', icon: 'settings' as const, href: '#/prototype/kit' },
+const SIDEBAR_NAV: TNavItem[] = [
+  { key: 'portfolio', label: 'Portfolio', icon: 'portfolio', href: KIT, active: true },
+  { key: 'market', label: 'Marketplace', icon: 'marketplace', href: KIT },
+];
+
+const TAB_NAV: TNavItem[] = [
+  { key: 'portfolio', label: 'Portfolio', icon: 'portfolio', href: KIT, active: true },
+  { key: 'accounts', label: 'Accounts', icon: 'accounts', href: KIT },
+  { key: 'lightning', label: 'Lightning', icon: 'lightning', href: KIT },
+  { key: 'market', label: 'Market', icon: 'marketplace', href: KIT },
+  { key: 'settings', label: 'Settings', icon: 'settings', href: KIT },
+];
+
+const SORT_OPTIONS: { value: 'value' | 'name'; label: string }[] = [
+  { value: 'value', label: 'Value' },
+  { value: 'name', label: 'Name' },
 ];
 
 // The dark navigation panel's tokens (the sidebar keeps them in both themes).
@@ -49,41 +57,83 @@ const DARK_PANEL = {
 } as CSSProperties;
 
 export const KitPage = () => {
+  const prototype = usePrototype();
+  const { fiat, locale } = prototype;
   const chart = useChart();
+  const accounts = useAccounts();
+  const balances = useBalances(accounts);
+  const activity = useActivity(accounts);
+  const device = useDevice();
   const [range, setRange] = useState<TRange>('year');
   const [sort, setSort] = useState<'value' | 'name'>('value');
-  const [coin, setCoin] = useState(true);
-  const [toggle, setToggle] = useState(true);
-  const [text, setText] = useState('');
+  const [selectedCoins, setSelectedCoins] = useState<string[]>(['btc']);
+  const [search, setSearch] = useState('');
   const [popover, setPopover] = useState(false);
   const [sheet, setSheet] = useState(false);
+
+  const points = useMemo(() => chartPoints(chart, range), [chart, range]);
+  const total = chart?.formattedChartTotal ? fiatAmount(chart.formattedChartTotal, fiat) : undefined;
+  const savings = accounts?.[0];
+  const balance = savings ? balances?.[savings.code] : undefined;
+  const savingsActivity = activity?.filter(item => item.account.code === savings?.code);
+  const pending = savingsActivity?.find(item => item.tx.status === 'pending');
+  const received = savingsActivity?.find(item => item.tx.type === 'receive' && item.tx.status === 'complete');
+  const recent = activity?.find(item => item.tx.status === 'complete');
+  const coins = useMemo(() => {
+    const list: { code: string; name: string; count: number }[] = [];
+    accounts?.forEach(account => {
+      const coin = list.find(item => item.code === account.coinCode);
+      if (coin) {
+        coin.count++;
+      } else {
+        list.push({ code: account.coinCode, name: account.coinName, count: 1 });
+      }
+    });
+    return list;
+  }, [accounts]);
+  const toggleCoin = (code: string) => setSelectedCoins(current => (
+    current.includes(code) ? current.filter(item => item !== code) : [...current, code]
+  ));
+  const sortControl = <SegmentedControl label="Sort accounts" options={SORT_OPTIONS} value={sort} onChange={setSort} full />;
+  const chips = (
+    <div className={styles.chips}>
+      <Chip selected={selectedCoins.length === 0} onClick={() => setSelectedCoins([])} leading={<Icon name="accounts" size={18} />}>All coins</Chip>
+      {coins.map(coin => (
+        <Chip key={coin.code} selected={selectedCoins.includes(coin.code)} onClick={() => toggleCoin(coin.code)} leading={<CoinIcon coinCode={coin.code} size={20} />} count={coin.count}>
+          {coin.name}
+        </Chip>
+      ))}
+    </div>
+  );
+  const hideButton = <IconButton icon="eye" label="Hide amounts" />;
+
   return (
     <div className={styles.page}>
       <PageHeader title="Component kit" />
 
       <Section title="Logo">
-        <div className={styles.row}>
-          <Logo height={22} />
-          <span className={styles.darkTile} style={DARK_PANEL}><Logo height={22} onDark /></span>
-        </div>
+        <span className={styles.darkTile} style={DARK_PANEL}><Logo height={22} /></span>
       </Section>
 
       <Section title="Button">
         <div className={styles.row}>
-          <Button variant="primary" onClick={() => {}}>Show 5 accounts</Button>
-          <Button href="#/prototype/kit">Secondary</Button>
-          <Button variant="ghost" href="#/prototype/kit">Ghost</Button>
-          <Button variant="ghost" size="sm" href="#/prototype/kit">See all</Button>
-          <Button icon="external" href="#/prototype/kit">View in block explorer</Button>
+          <Button variant="primary" onClick={() => {}}>Apply</Button>
+          <Button variant="ghost" onClick={() => {}}>Reset</Button>
+          <Button variant="ghost" size="sm" href={KIT}>See all</Button>
+          <Button variant="secondary" icon="external" href={KIT}>View in block explorer</Button>
         </div>
       </Section>
 
       <Section title="IconButton">
         <div className={styles.row}>
-          <IconButton icon="eye" label="Plain" />
-          <IconButton icon="filter" label="Active" active />
-          <IconButton icon="plus" label="Small" size="sm" />
-          <IconButton icon="close" label="Filled" variant="filled" size="sm" />
+          {hideButton}
+          <IconButton icon="settings" label="Settings" />
+          <IconButton icon="filter" label="Sort and filter" />
+          <IconButton icon="filter" label="Sort and filter, active" active />
+          <IconButton icon="plus" label="Add account" size="sm" />
+          <IconButton icon="copy" label="Copy" size="sm" />
+          <IconButton icon="note" label="Edit note" size="sm" />
+          <IconButton icon="close" label="Close" variant="filled" size="sm" />
           <span className={styles.actionRow}>
             <IconButton icon="send" label="Send" variant="filled" size="lg" caption />
             <IconButton icon="receive" label="Receive" variant="filled" size="lg" caption />
@@ -95,18 +145,29 @@ export const KitPage = () => {
 
       <Section title="Amount and Delta">
         <div className={styles.stack}>
-          <Amount value={SAMPLE} size="hero" />
-          <Amount value={SAMPLE} as="coin" size="hero" />
-          <div className={styles.row}>
-            <Amount value={SAMPLE} as="coin" size="xl" sign="+" />
-            <Amount value={SAMPLE} size="lg" tone="muted" />
-            <Amount value={SAMPLE} sign="−" />
-            <Amount value={SAMPLE} as="coin" size="sm" tone="muted" />
-            <Amount value={undefined} />
+          <Amount value={total} size="hero" animated />
+          <div className={styles.amounts}>
+            <Amount value={balance?.available} as="coin" size="hero" animated />
+            <Amount value={balance?.available} size="lg" tone="muted" animated />
           </div>
           <div className={styles.row}>
-            <Delta value={0.2071} />
-            <Delta value={0.2071} label="1Y" />
+            {received && (
+              <div className={styles.amounts}>
+                <Amount value={received.tx.amount} as="coin" size="xl" sign={txSign(received.tx)} />
+                <Amount value={received.tx.amount} tone="muted" sign={txSign(received.tx)} />
+              </div>
+            )}
+            <div className={styles.amounts}>
+              <Amount value={balance?.available} />
+              <Amount value={balance?.available} as="coin" size="sm" tone="muted" />
+            </div>
+            <PrototypeContext.Provider value={{ ...prototype, hideAmounts: true }}>
+              <Amount value={total} size="lg" />
+            </PrototypeContext.Provider>
+            <Amount value={undefined} size="lg" />
+          </div>
+          <div className={styles.row}>
+            <Delta value={chart?.chartPerformance[range].moneyWeightedReturn} />
             <Delta value={-0.0312} />
           </div>
         </div>
@@ -114,38 +175,74 @@ export const KitPage = () => {
 
       <Section title="Badge">
         <div className={styles.row}>
-          <Badge>Neutral</Badge>
+          <Badge tone="warning">Pending</Badge>
+          <Badge tone="warning" icon="clock">1 of 6 confirmations</Badge>
           <Badge tone="success" icon="check">Confirmed</Badge>
-          <Badge tone="warning" icon="clock">Pending</Badge>
           <Badge tone="danger">Failed</Badge>
+          <Badge tone="warning" icon="clock">Incoming <Amount value={balance?.incoming} as="coin" size="sm" sign="+" /></Badge>
         </div>
       </Section>
 
       <Section title="ListRow and coin icons">
-        <List>
-          <ListRow href="#/prototype/kit" leading={<GlyphIcon icon="wallet" size={40} />} title="All accounts" subtitle="5 accounts" trailing={<Amount value={SAMPLE} />} chevron />
-          <ListRow href="#/prototype/kit" leading={<CoinIcon coinCode="btc" size={40} />} title="Savings" subtitle={<Amount value={SAMPLE} as="coin" size="sm" tone="muted" />} trailing={<Amount value={SAMPLE} />} chevron />
-          <ListRow href="#/prototype/kit" selected leading={<CoinIcon coinCode="btc" size={36} badge="pending" />} title="Received" subtitle={<Badge tone="warning">Pending</Badge>} trailing={<Amount value={SAMPLE} as="coin" sign="+" />} trailingSub={<Amount value={SAMPLE} size="sm" tone="muted" sign="+" />} />
-          <ListRow title="Value when received" trailing="$542.10" />
-        </List>
-        <div className={styles.row}>
-          {['btc', 'eth', 'eth-erc20-usdc', 'ltc', 'lightning'].map(code => <CoinIcon key={code} coinCode={code} size={36} />)}
-          {(['receive', 'send', 'self', 'pending', 'failed'] as const).map(badge => <CoinIcon key={badge} coinCode="btc" size={36} badge={badge} />)}
+        <div className={styles.stack}>
+          <List>
+            <ListRow
+              href={href.portfolio}
+              leading={<GlyphIcon icon="wallet" size={40} />}
+              title="All accounts"
+              subtitle={accounts ? `${accounts.length} accounts` : ''}
+              trailing={<Amount value={total} />}
+              chevron />
+            {savings && (
+              <ListRow
+                href={href.account(savings.code)}
+                leading={<CoinIcon coinCode={savings.coinCode} size={40} />}
+                title={savings.name}
+                subtitle={<Amount value={balance?.available} as="coin" size="sm" tone="muted" />}
+                trailing={<Amount value={balance?.available} />}
+                chevron />
+            )}
+          </List>
+          <div className={styles.table}>
+            <List>
+              <ListRow header title="Account" cells={['Balance']} trailing="Value" chevron />
+              {savings && (
+                <ListRow
+                  href={href.account(savings.code)}
+                  leading={<CoinIcon coinCode={savings.coinCode} size={40} />}
+                  title={savings.name}
+                  subtitle={savings.coinName}
+                  cells={[<Amount value={balance?.available} as="coin" />]}
+                  trailing={<Amount value={balance?.available} />}
+                  chevron />
+              )}
+            </List>
+          </div>
+          <List>
+            {pending && <TxRow tx={pending.tx} account={pending.account} primary="coin" />}
+            {received && <TxRow tx={received.tx} account={received.account} primary="coin" selected />}
+            {recent && <TxRow tx={recent.tx} account={recent.account} showAccount primary="fiat" amounts="primary" />}
+          </List>
+          <List>
+            {received && <ListRow title="Date" trailing={format.formatDateTime(received.tx.time, locale)} />}
+            {received && <ListRow title="Value when received" trailing={<Amount value={received.tx.amountAtTime} size="sm" />} />}
+            <ListRow title="No matching transactions" subtitle="Try a note, an address, an amount or a date." />
+          </List>
+          <div className={styles.row}>
+            {['btc', 'eth', 'eth-erc20-usdc', 'ltc', 'lightning'].map(code => <CoinIcon key={code} coinCode={code} size={36} />)}
+            {(['receive', 'send', 'self', 'pending', 'failed'] as const).map(badge => <CoinIcon key={badge} coinCode="btc" size={36} badge={badge} />)}
+          </div>
         </div>
       </Section>
 
-      <Section title="SegmentedControl, TextField, Toggle and Chip">
+      <Section title="SegmentedControl, SearchField and Chip">
         <div className={styles.stack}>
           <div className={styles.row}>
-            <SegmentedControl label="Range" options={RANGE_OPTIONS} value={range} onChange={setRange} />
-            <span className={styles.field}><TextField icon="search" value={text} onChange={setText} placeholder="Search accounts" /></span>
-            <Toggle checked={toggle} onChange={setToggle} label="Toggle" />
+            <SegmentedControl label="Chart range" options={RANGE_OPTIONS} value={range} onChange={setRange} />
+            <span className={styles.field}>{sortControl}</span>
           </div>
-          <div className={styles.row}>
-            <Chip selected={!coin} onClick={() => setCoin(false)} leading={<Icon name="accounts" size={18} />}>All coins</Chip>
-            <Chip selected={coin} onClick={() => setCoin(value => !value)} leading={<CoinIcon coinCode="btc" size={20} />} count={2}>Bitcoin</Chip>
-            <Chip selected={false} onClick={() => {}} leading={<CoinIcon coinCode="eth" size={20} />} count={1}>Ethereum</Chip>
-          </div>
+          <SearchField value={search} onChange={setSearch} placeholder="Search accounts" />
+          {chips}
         </div>
       </Section>
 
@@ -154,13 +251,14 @@ export const KitPage = () => {
           <Popover
             open={popover}
             onClose={() => setPopover(false)}
-            label="Example popover"
-            trigger={<IconButton icon="filter" label="Open popover" active={popover} onClick={() => setPopover(value => !value)} />}>
-            <Section variant="plain" title="Sort by">
-              <SegmentedControl label="Sort" options={[{ value: 'value', label: 'Value' }, { value: 'name', label: 'Name' }]} value={sort} onChange={setSort} full />
-            </Section>
+            label="Sort and filter"
+            trigger={<IconButton icon="filter" label="Sort and filter" active={popover} onClick={() => setPopover(value => !value)} />}>
+            <div className={styles.filters}>
+              <Section variant="plain" title="Sort by">{sortControl}</Section>
+              <Section variant="plain" title="Coins">{chips}</Section>
+            </div>
           </Popover>
-          <Button onClick={() => setSheet(true)}>Open sheet</Button>
+          <Button onClick={() => setSheet(true)}>Open transaction details</Button>
         </div>
       </Section>
 
@@ -170,31 +268,52 @@ export const KitPage = () => {
 
       <Section title="DeviceStatus">
         <div className={styles.row}>
-          <span className={styles.darkTile} style={DARK_PANEL}><DeviceStatus name="My BitBox" state="connected" detail="v9.24.0" onDark /></span>
-          <span className={styles.darkTile} style={DARK_PANEL}><DeviceStatus name="My BitBox" state="disconnected" onDark /></span>
+          <span className={styles.darkTile} style={DARK_PANEL}>
+            <DeviceStatus name={device.name} state="connected" detail={device.firmware ? `v${device.firmware}` : undefined} onDark />
+          </span>
+          <span className={styles.darkTile} style={DARK_PANEL}><DeviceStatus name={device.name} state="disconnected" onDark /></span>
         </div>
       </Section>
 
       <Section title="AreaChart">
-        <AreaChart points={chartPoints(chart, range)} height={140} />
+        <AreaChart points={points} height={140} />
       </Section>
 
       <Section title="Navigation">
         <div className={styles.navPreviews}>
           <div className={styles.navFrame} style={DARK_PANEL}>
-            <Navigation layout="sidebar" items={NAV.filter(item => item.key === 'portfolio' || item.key === 'market')} header={<Logo height={18} onDark />} />
+            <Navigation layout="sidebar" items={SIDEBAR_NAV} header={<Logo height={18} />} />
           </div>
           <div className={`${styles.navFrame} ${styles.navFrameWide}`}>
-            <Navigation layout="tabbar" items={NAV} />
+            <Navigation layout="tabbar" items={TAB_NAV} />
           </div>
         </div>
       </Section>
 
-      <Section title="PageHeader, Section and Skeleton">
+      <Section title="PageHeader">
         <div className={styles.stack}>
-          <PageHeader title="Savings" subtitle="Bitcoin" size="compact" back="#/prototype/kit" actions={<IconButton icon="eye" label="Hide amounts" />} />
-          <Section title="Card section"><p className={styles.copy}>A Section draws the calm white card.</p></Section>
-          <div className={styles.row}><Skeleton width={160} height={28} /><Skeleton width={40} height={40} radius="pill" /></div>
+          <PageHeader title="Portfolio" actions={hideButton} />
+          <PageHeader title={savings?.name || 'Savings'} subtitle={savings?.coinName} back={KIT} size="compact" actions={hideButton} />
+        </div>
+      </Section>
+
+      <Section title="Section" variant="plain">
+        <div className={styles.sections}>
+          <Section title="Recent activity" action={<Button variant="ghost" size="sm" href={KIT}>See all</Button>}>
+            <List>
+              {recent && <TxRow tx={recent.tx} account={recent.account} showAccount primary="fiat" amounts="primary" />}
+            </List>
+          </Section>
+          <Section variant="plain" title="Sort by">{sortControl}</Section>
+        </div>
+      </Section>
+
+      <Section title="Skeleton">
+        <div className={styles.stack}>
+          <div className={styles.row}>
+            <Skeleton width={48} height={48} radius="pill" />
+            <Skeleton width={120} height={16} />
+          </div>
           <SkeletonRows count={2} />
         </div>
       </Section>
@@ -205,8 +324,8 @@ export const KitPage = () => {
         </div>
       </Section>
 
-      <Sheet open={sheet} onClose={() => setSheet(false)} title="Sheet">
-        <p className={styles.copy}>A bottom sheet on phones and a side panel from tablet up.</p>
+      <Sheet open={sheet} onClose={() => setSheet(false)} title="Transaction">
+        {received && <TransactionDetails tx={received.tx} account={received.account} />}
       </Sheet>
     </div>
   );
