@@ -23,7 +23,7 @@ import { href } from '../../routing';
 import { ComingSoon } from '../../patterns/coming-soon';
 import { KitPage } from '../../patterns/kit-page';
 import { TransactionDetails } from '../../patterns/transaction-details';
-import { TxRow, txTitle } from '../../patterns/tx-row';
+import { TxRow, txAction } from '../../patterns/tx-row';
 import { HideAmountsButton, TNavKey, activeNav, closeTransaction, coinHref, navItems } from '../shared';
 import type { TDirectionProps } from '../types';
 import styles from './e.module.css';
@@ -421,7 +421,7 @@ type TAccountProps = { code: string; txId?: string };
 
 // Matches what a row shows: title or note, address, transaction ID, amounts and date.
 const matchesTransaction = (tx: TTransaction, needle: string, locale: string) => [
-  txTitle(tx),
+  txAction(tx),
   tx.note,
   ...tx.addresses,
   tx.txID,

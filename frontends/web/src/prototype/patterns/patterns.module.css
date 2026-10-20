@@ -23,6 +23,19 @@
 
 .subtitlePart { margin-inline-start: 6px; }
 
+/* A transaction's note after its action: muted, with the note icon so it reads as a note. */
+.note {
+  margin-inline-start: 8px;
+  font-weight: 400;
+  color: var(--k-text-2);
+}
+
+.noteIcon {
+  display: inline;
+  margin-inline-end: 4px;
+  vertical-align: -2px;
+}
+
 .mono {
   font-family: var(--k-font-mono);
   font-size: var(--k-fs-small);

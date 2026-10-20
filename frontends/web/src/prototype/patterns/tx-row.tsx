@@ -3,15 +3,13 @@
 // PROTOTYPE (throwaway): one transaction as a kit ListRow.
 
 import type { TAccount, TTransaction } from '@/api/account';
-import { Amount, Badge, CoinIcon, ListRow, TCoinBadge, format } from '../kit';
+import { Amount, Badge, CoinIcon, Icon, ListRow, TCoinBadge, format } from '../kit';
 import { usePrototype } from '../context';
 import { href } from '../routing';
 import styles from './patterns.module.css';
 
-export const txTitle = (tx: TTransaction) => {
-  if (tx.note) {
-    return tx.note;
-  }
+// What happened, always the row title; the transaction's note (if any) follows it.
+export const txAction = (tx: TTransaction) => {
   switch (tx.type) {
   case 'receive':
     return 'Received';
@@ -75,7 +73,17 @@ export const TxRow = ({
       href={href.transaction(account.code, tx.internalID)}
       selected={selected}
       leading={<CoinIcon coinCode={account.coinCode} size={36} badge={kind} />}
-      title={txTitle(tx)}
+      title={(
+        <>
+          {txAction(tx)}
+          {tx.note && (
+            <span className={styles.note}>
+              <Icon name="note" size={13} className={styles.noteIcon} />
+              {tx.note}
+            </span>
+          )}
+        </>
+      )}
       subtitle={subtitle}
       trailing={primary === 'coin' ? coin : fiat}
       trailingSub={amounts === 'primary'

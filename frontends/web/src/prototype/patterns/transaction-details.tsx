@@ -5,7 +5,7 @@
 import type { TAccount, TTransaction } from '@/api/account';
 import { Amount, Badge, Button, CoinIcon, IconButton, List, ListRow, format } from '../kit';
 import { usePrototype } from '../context';
-import { txKind, txSign, txTitle } from './tx-row';
+import { txAction, txKind, txSign } from './tx-row';
 import styles from './patterns.module.css';
 
 type TProps = {
@@ -32,7 +32,7 @@ export const TransactionDetails = ({ tx, account }: TProps) => {
     <div className={styles.details}>
       <div className={styles.detailsHeader}>
           <CoinIcon coinCode={account.coinCode} size={48} badge={kind} />
-          <p className={styles.detailsTitle}>{txTitle(tx)}</p>
+          <p className={styles.detailsTitle}>{txAction(tx)}</p>
           <Amount value={tx.amount} as="coin" size="xl" sign={txSign(tx)} />
           <Amount value={tx.amount} as="fiat" size="md" tone="muted" sign={txSign(tx)} />
           <div className={styles.detailsStatus}>{status}</div>
