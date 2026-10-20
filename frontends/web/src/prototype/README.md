@@ -32,8 +32,9 @@ npx vite build --mode prototype     # writes build/ (relative asset paths, hash 
 |---|---|---|
 | `lang` | e.g. `de`, `ar` | switch language (long strings / right-to-left) |
 
-The theme is dark; a saved `prototype-theme-v2` entry in localStorage (`light`, `dark` or `auto`)
-overrides it. The component kit lives at `#/prototype/kit`.
+A floating pill at the bottom switches Light and Dark (dark by default; saved in localStorage as
+`prototype-theme-v2`). The component kit lives at `#/prototype/kit`; its demo rows stay on that
+page.
 
 ## What the preview covers
 
@@ -61,6 +62,7 @@ Other routes show a "next design round" placeholder inside the app frame.
 prototype/
   main.tsx            entry (installs the mock first)
   prototype-app.tsx   wraps the screens in tokens, theme + context
+  theme-toggle.tsx    floating light/dark switch (not part of the design)
   routing.ts          parses the existing hash routes
   data.ts             data hooks over src/api/*
   kit/                the component kit + tokens

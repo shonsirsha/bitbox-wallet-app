@@ -13,7 +13,6 @@ import { PrototypeContext, usePrototype } from '../context';
 import {
   chartPoints, fiatAmount, orderAccounts, RANGE_OPTIONS, TRange, useAccounts, useActivity, useBalances, useChart, useDevice,
 } from '../data';
-import { href } from '../routing';
 import { TransactionDetails } from './transaction-details';
 import { TxRow, txSign } from './tx-row';
 import styles from './kit-page.module.css';
@@ -190,7 +189,7 @@ export const KitPage = () => {
         <div className={styles.stack}>
           <List>
             <ListRow
-              href={href.portfolio}
+              href={KIT}
               leading={<GlyphIcon icon="wallet" size={40} />}
               title="All accounts"
               subtitle={accounts ? `${accounts.length} accounts` : ''}
@@ -198,7 +197,7 @@ export const KitPage = () => {
               chevron />
             {savings && (
               <ListRow
-                href={href.account(savings.code)}
+                href={KIT}
                 leading={<CoinIcon coinCode={savings.coinCode} size={40} />}
                 title={savings.name}
                 subtitle={<Amount value={balance?.available} as="coin" size="sm" tone="muted" />}
@@ -211,7 +210,7 @@ export const KitPage = () => {
               <ListRow header title="Account" cells={['Balance']} trailing="Value" chevron />
               {savings && (
                 <ListRow
-                  href={href.account(savings.code)}
+                  href={KIT}
                   leading={<CoinIcon coinCode={savings.coinCode} size={40} />}
                   title={savings.name}
                   subtitle={savings.coinName}
@@ -222,9 +221,9 @@ export const KitPage = () => {
             </List>
           </div>
           <List>
-            {pending && <TxRow tx={pending.tx} account={pending.account} primary="coin" />}
-            {received && <TxRow tx={received.tx} account={received.account} primary="coin" selected />}
-            {recent && <TxRow tx={recent.tx} account={recent.account} showAccount primary="fiat" amounts="primary" />}
+            {pending && <TxRow tx={pending.tx} account={pending.account} primary="coin" link={KIT} />}
+            {received && <TxRow tx={received.tx} account={received.account} primary="coin" selected link={KIT} />}
+            {recent && <TxRow tx={recent.tx} account={recent.account} showAccount primary="fiat" amounts="primary" link={KIT} />}
           </List>
           <List>
             {received && <ListRow title="Date" trailing={format.formatDateTime(received.tx.time, locale)} />}
@@ -310,7 +309,7 @@ export const KitPage = () => {
         <div className={styles.sections}>
           <Section title="Recent activity" action={<Button variant="ghost" size="sm" href={KIT}>See all</Button>}>
             <List>
-              {recent && <TxRow tx={recent.tx} account={recent.account} showAccount primary="fiat" amounts="primary" />}
+              {recent && <TxRow tx={recent.tx} account={recent.account} showAccount primary="fiat" amounts="primary" link={KIT} />}
             </List>
           </Section>
           <Section variant="plain" title="Sort by">{sortControl}</Section>

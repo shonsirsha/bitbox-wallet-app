@@ -1,0 +1,44 @@
+/* A black pill at the bottom centre (above the tab bar on phones), the same in both themes. */
+.toggle {
+  position: fixed;
+  left: 50%;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  z-index: 40;
+  display: flex;
+  padding: 4px;
+  border-radius: 999px;
+  background: #0B0B0A;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .28), 0 0 0 1px rgba(255, 255, 255, .06);
+  transform: translateX(-50%);
+}
+
+.option {
+  position: relative;
+  z-index: 1;
+  height: 32px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, .72);
+  transition: color .2s ease;
+}
+
+.option:hover { color: #FFFFFF; }
+
+.option[aria-checked='true'] { color: #1D1D1B; }
+
+.thumb {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+  border-radius: 999px;
+  background: #FFFFFF;
+}
+
+.thumbReady { transition: transform .28s cubic-bezier(.2, .8, .2, 1), width .28s cubic-bezier(.2, .8, .2, 1); }
+
+@media (max-width: 768px) {
+  .toggle { bottom: calc(100px + env(safe-area-inset-bottom, 0px)); }
+}

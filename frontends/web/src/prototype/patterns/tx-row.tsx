@@ -42,10 +42,12 @@ type TProps = {
   // 'primary' drops the second amount (narrow summary lists like "Recent activity").
   amounts?: 'both' | 'primary';
   selected?: boolean;
+  // Where the row leads; the transaction's details by default.
+  link?: string;
 };
 
 export const TxRow = ({
-  tx, account, showAccount = false, primary = 'coin', amounts = 'both', selected = false,
+  tx, account, showAccount = false, primary = 'coin', amounts = 'both', selected = false, link,
 }: TProps) => {
   const { locale } = usePrototype();
   const kind = txKind(tx);
@@ -70,7 +72,7 @@ export const TxRow = ({
   const fiat = <Amount value={tx.amount} as="fiat" sign={sign} size={primary === 'fiat' ? 'md' : 'sm'} tone={primary === 'fiat' ? 'default' : 'muted'} />;
   return (
     <ListRow
-      href={href.transaction(account.code, tx.internalID)}
+      href={link ?? href.transaction(account.code, tx.internalID)}
       selected={selected}
       leading={<CoinIcon coinCode={account.coinCode} size={36} badge={kind} />}
       title={(

@@ -2,11 +2,12 @@
 
 // PROTOTYPE (throwaway): the redesigned UI on the existing hash routes.
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PrototypeContext, TDirectionKey, TPrototypeContext, TThemeSetting } from './context';
 import { DIRECTIONS } from './directions';
 import { useScreen } from './routing';
+import { ThemeToggle } from './theme-toggle';
 
 const DIRECTION: TDirectionKey = 'E';
 
@@ -39,9 +40,18 @@ export const PrototypeApp = () => {
   const systemDark = useSystemDark();
   const screen = useScreen();
   const [hideAmounts, setHideAmounts] = useState(false);
-  // A saved choice from earlier visits, else dark; 'auto' follows the OS.
-  const [themeSetting] = useState<TThemeSetting>(readThemeSetting);
+  // Picked with the floating toggle and saved; dark by default ('auto' from earlier visits follows
+  // the OS).
+  const [themeSetting, setThemeSetting] = useState<TThemeSetting>(readThemeSetting);
   const theme = themeSetting === 'auto' ? (systemDark ? 'dark' : 'light') : themeSetting;
+  const changeTheme = useCallback((next: 'light' | 'dark') => {
+    setThemeSetting(next);
+    try {
+      window.localStorage.setItem(THEME_STORAGE_KEY, next);
+    } catch {
+      // Storage blocked (private mode): the choice lasts for this visit.
+    }
+  }, []);
 
   const context = useMemo<TPrototypeContext>(() => ({
     direction: DIRECTION,
@@ -79,6 +89,7 @@ export const PrototypeApp = () => {
     <PrototypeContext.Provider value={context}>
       <div ref={rootRef} className="proto-root" data-direction={DIRECTION} data-theme={theme} dir={i18n.dir(i18n.language)}>
         <Direction screen={screen} />
+        <ThemeToggle theme={theme} onChange={changeTheme} />
       </div>
     </PrototypeContext.Provider>
   );
