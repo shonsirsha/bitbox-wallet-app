@@ -71,12 +71,6 @@
 
 .tabbar { display: block; }
 
-.total {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-}
 
 .tools {
   display: flex;

@@ -414,23 +414,15 @@ const Account = ({ code, txId }: TAccountProps) => {
   );
 };
 
-// D-style top bar, without search: portfolio total and change, then Hide amounts and Settings.
-const TopBar = ({ screen }: { screen: TDirectionProps['screen'] }) => {
-  const { fiat } = usePrototype();
-  const chart = useChart();
-  return (
-    <header className={`${styles.topbar} ${styles.onCanvas}`}>
-      <div className={styles.total}>
-        <Amount value={chart?.formattedChartTotal ? fiatAmount(chart.formattedChartTotal, fiat) : undefined} size="lg" />
-        <Delta value={chart?.chartPerformance.year.moneyWeightedReturn} label="1Y" />
-      </div>
-      <div className={styles.tools}>
-        <HideAmountsButton />
-        <IconButton icon="settings" label="Settings" href={href.settings} active={activeNav(screen) === 'settings'} />
-      </div>
-    </header>
-  );
-};
+// Top bar (tablet and desktop): Hide amounts and Settings.
+const TopBar = ({ screen }: { screen: TDirectionProps['screen'] }) => (
+  <header className={`${styles.topbar} ${styles.onCanvas}`}>
+    <div className={styles.tools}>
+      <HideAmountsButton />
+      <IconButton icon="settings" label="Settings" href={href.settings} active={activeNav(screen) === 'settings'} />
+    </div>
+  </header>
+);
 
 export const DirectionE = ({ screen }: TDirectionProps) => {
   const device = useDevice();
