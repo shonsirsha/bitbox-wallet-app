@@ -60,19 +60,6 @@ const GET: [RegExp, THandler][] = [
   [/^number-format$/, () => null],
   [/^online$/, () => true],
   [/^using-mobile-data$/, () => false],
-  // The current app (variant 0) follows the prototype's theme setting (dark by default).
-  [/^detect-dark-theme$/, () => {
-    let setting: string | null = null;
-    try {
-      setting = window.localStorage.getItem('prototype-theme-v2');
-    } catch {
-      // Storage blocked: fall back to the default.
-    }
-    if (setting === 'light') {
-      return false;
-    }
-    return setting === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : true;
-  }],
   [/^update/, () => ({ revision: 1, update: null })],
   [/^aopp$/, () => ({ state: 'inactive', errorCode: '', accounts: null, accountCode: '', address: '', displayAddress: '', addressID: '', callback: '', message: '', xpubRequired: false })],
   [/^bluetooth\/state$/, () => ({ bluetoothAvailable: false, bluetoothUnauthorized: false, scanning: false, peripherals: [] })],

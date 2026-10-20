@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-// PROTOTYPE (throwaway): renders the Calm cards UI around the current route.
+// PROTOTYPE (throwaway): the redesigned UI on the existing hash routes.
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -8,9 +8,18 @@ import { PrototypeContext, TDirectionKey, TPrototypeContext, TThemeSetting } fro
 import { DIRECTIONS } from './directions';
 import { useScreen } from './routing';
 
-type TProps = {
-  direction: TDirectionKey;
-  themeSetting: TThemeSetting;
+const DIRECTION: TDirectionKey = 'E';
+
+// Dark is the default; the key is versioned so earlier saved "auto" choices start on dark too.
+const THEME_STORAGE_KEY = 'prototype-theme-v2';
+
+const readThemeSetting = (): TThemeSetting => {
+  try {
+    const value = window.localStorage.getItem(THEME_STORAGE_KEY);
+    return value === 'light' || value === 'auto' ? value : 'dark';
+  } catch {
+    return 'dark';
+  }
 };
 
 const useSystemDark = () => {
@@ -25,22 +34,23 @@ const useSystemDark = () => {
   return dark;
 };
 
-export const PrototypeApp = ({ direction, themeSetting }: TProps) => {
+export const PrototypeApp = () => {
   const { i18n } = useTranslation();
   const systemDark = useSystemDark();
   const screen = useScreen();
   const [hideAmounts, setHideAmounts] = useState(false);
-  // Follows the OS until a theme is picked in the switcher.
+  // A saved choice from earlier visits, else dark; 'auto' follows the OS.
+  const [themeSetting] = useState<TThemeSetting>(readThemeSetting);
   const theme = themeSetting === 'auto' ? (systemDark ? 'dark' : 'light') : themeSetting;
 
   const context = useMemo<TPrototypeContext>(() => ({
-    direction,
+    direction: DIRECTION,
     theme,
     locale: i18n.language || 'en-US',
     fiat: 'USD',
     hideAmounts,
     toggleHideAmounts: () => setHideAmounts(value => !value),
-  }), [direction, theme, i18n.language, hideAmounts]);
+  }), [theme, i18n.language, hideAmounts]);
 
   const rootRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -53,8 +63,8 @@ export const PrototypeApp = ({ direction, themeSetting }: TProps) => {
     };
   }, []);
   useEffect(() => {
-    // The current app's global dark-mode class must not leak into the prototype, and the page
-    // background (visible when overscrolling on phones) should match the direction.
+    // The app's global dark-mode class must not leak into the prototype, and the page background
+    // (visible when overscrolling on phones) should match the theme.
     document.body.classList.remove('dark-mode');
     document.documentElement.style.colorScheme = theme;
     // The page scrollbar is drawn on the root, outside the themed tree.
@@ -62,12 +72,12 @@ export const PrototypeApp = ({ direction, themeSetting }: TProps) => {
     if (rootRef.current) {
       document.body.style.background = getComputedStyle(rootRef.current).getPropertyValue('--k-bg');
     }
-  }, [theme, direction]);
+  }, [theme]);
 
-  const Direction = DIRECTIONS[direction];
+  const Direction = DIRECTIONS[DIRECTION];
   return (
     <PrototypeContext.Provider value={context}>
-      <div ref={rootRef} className="proto-root" data-direction={direction} data-theme={theme} dir={i18n.dir(i18n.language)}>
+      <div ref={rootRef} className="proto-root" data-direction={DIRECTION} data-theme={theme} dir={i18n.dir(i18n.language)}>
         <Direction screen={screen} />
       </div>
     </PrototypeContext.Provider>

@@ -11,7 +11,7 @@ import { useHashLocation } from '@/utils/router-compatability';
 import { i18n } from '@/i18n/i18n';
 import '@/style/index.css';
 import './kit/tokens.css';
-import { PrototypeRoot } from './prototype-root';
+import { PrototypeApp } from './prototype-app';
 
 if (import.meta.env.MODE !== 'prototype') {
   throw new Error('The prototype entry must only run in prototype mode.');
@@ -24,7 +24,7 @@ createRoot(rootEl).render(
     <I18nextProvider i18n={i18n}>
       <React.Suspense fallback={null}>
         <Router hook={useHashLocation}>
-          <PrototypeRoot />
+          <PrototypeApp />
         </Router>
       </React.Suspense>
     </I18nextProvider>

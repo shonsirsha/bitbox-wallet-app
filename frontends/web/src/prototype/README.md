@@ -1,7 +1,7 @@
-# Calm cards UI preview (throwaway)
+# Redesigned UI preview (throwaway)
 
-A UI-refresh prototype of the BitBoxApp ("Calm cards", variant E) next to today's app
-(variant 0), rendered on the existing hash routes and switchable at runtime. Built with the
+A UI-refresh prototype of the BitBoxApp ("Calm cards"), rendered on the existing hash routes on
+a mocked backend. Built with the
 `prototype` skill. This code lives on prototype branches only and must never be merged as is:
 `prototype/ui-refresh` keeps all five explored directions, `prototype/calm-cards-preview` (this
 one) only the chosen direction.
@@ -30,11 +30,10 @@ npx vite build --mode prototype     # writes build/ (relative asset paths, hash 
 
 | Param | Values | Effect |
 |---|---|---|
-| `variant` | `0`, `E` | `0` is today's app on the demo wallet, `E` the Calm cards UI (default) |
 | `lang` | e.g. `de`, `ar` | switch language (long strings / right-to-left) |
 
-The floating black pill (a slim edge tab on phones) switches variants (also ← / →), cycles the
-theme (Auto / Light / Dark) and opens the component kit (`#/prototype/kit`).
+The theme is dark; a saved `prototype-theme-v2` entry in localStorage (`light`, `dark` or `auto`)
+overrides it. The component kit lives at `#/prototype/kit`.
 
 ## What the preview covers
 
@@ -61,9 +60,7 @@ Other routes show a "next design round" placeholder inside the app frame.
 ```
 prototype/
   main.tsx            entry (installs the mock first)
-  prototype-root.tsx  variant switching (?variant=), theme
-  prototype-app.tsx   wraps the screens in tokens + context
-  prototype-bar.tsx   floating switcher (not part of the design)
+  prototype-app.tsx   wraps the screens in tokens, theme + context
   routing.ts          parses the existing hash routes
   data.ts             data hooks over src/api/*
   kit/                the component kit + tokens

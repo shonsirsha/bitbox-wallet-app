@@ -5,8 +5,7 @@
 import { createContext, useContext } from 'react';
 
 export type TDirectionKey = 'E';
-// Variant 0 is today's app, variant 1 the redesign.
-export type TVariantKey = '0' | '1';
+// 'auto' follows the operating system.
 export type TThemeSetting = 'auto' | 'light' | 'dark';
 
 export type TPrototypeContext = {
@@ -20,7 +19,7 @@ export type TPrototypeContext = {
 
 export const PrototypeContext = createContext<TPrototypeContext>({
   direction: 'E',
-  theme: 'light',
+  theme: 'dark',
   locale: 'en-US',
   fiat: 'USD',
   hideAmounts: false,
