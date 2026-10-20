@@ -1,0 +1,9 @@
+.logo {
+  display: inline-flex;
+  align-items: center;
+}
+
+.logo img {
+  display: block;
+  width: auto;
+}
