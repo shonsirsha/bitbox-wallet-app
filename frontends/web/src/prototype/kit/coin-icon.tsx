@@ -31,7 +31,7 @@ export const CoinIcon = ({ coinCode, size = 36, badge }: TProps) => (
       : <span className={styles.fallback}>{coinCode.slice(0, 1).toUpperCase()}</span>}
     {badge && (
       <span className={`${styles.badge} ${styles[badge]}`}>
-        <Icon name={BADGE_ICONS[badge]} size={Math.round(size * .3)} strokeWidth={2.5} />
+        <Icon name={BADGE_ICONS[badge]} size={Math.round(size * .34)} strokeWidth={2.25} />
       </span>
     )}
   </span>

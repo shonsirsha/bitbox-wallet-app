@@ -33,13 +33,13 @@
 
 .badge {
   position: absolute;
-  inset-inline-end: -3px;
-  bottom: -3px;
+  inset-inline-end: -4px;
+  bottom: -4px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 46%;
-  height: 46%;
+  width: 52%;
+  height: 52%;
   border-radius: 50%;
   background: var(--k-surface);
   color: var(--k-text-2);
