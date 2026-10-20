@@ -47,6 +47,7 @@ export const PrototypeApp = ({ direction, themeSetting }: TProps) => {
     document.documentElement.classList.add('proto-active');
     return () => {
       document.documentElement.classList.remove('proto-active');
+      delete document.documentElement.dataset.protoTheme;
       document.documentElement.style.colorScheme = '';
       document.body.style.background = '';
     };
@@ -56,6 +57,8 @@ export const PrototypeApp = ({ direction, themeSetting }: TProps) => {
     // background (visible when overscrolling on phones) should match the direction.
     document.body.classList.remove('dark-mode');
     document.documentElement.style.colorScheme = theme;
+    // The page scrollbar is drawn on the root, outside the themed tree.
+    document.documentElement.dataset.protoTheme = theme;
     if (rootRef.current) {
       document.body.style.background = getComputedStyle(rootRef.current).getPropertyValue('--k-bg');
     }

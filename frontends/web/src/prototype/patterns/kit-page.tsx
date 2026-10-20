@@ -241,7 +241,10 @@ export const KitPage = () => {
             <SegmentedControl label="Chart range" options={RANGE_OPTIONS} value={range} onChange={setRange} />
             <span className={styles.field}>{sortControl}</span>
           </div>
-          <SearchField value={search} onChange={setSearch} placeholder="Search accounts" />
+          <div className={styles.row}>
+            <SearchField value={search} onChange={setSearch} placeholder="Search accounts" />
+            <span className={styles.field}><SearchField value={search} onChange={setSearch} placeholder="Accounts" variant="field" /></span>
+          </div>
           {chips}
         </div>
       </Section>

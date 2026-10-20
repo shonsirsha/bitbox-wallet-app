@@ -53,9 +53,8 @@ const HEADER_REVEAL = 72;
 const SCROLL_SLOP = 8;
 
 // Like most mobile navigation bars: hidden while scrolling down, back on any scroll up.
-const useHeaderOnScroll = () => {
+const useHeaderHidden = () => {
   const [hidden, setHidden] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     let last = window.scrollY;
     let frame = 0;
@@ -64,7 +63,6 @@ const useHeaderOnScroll = () => {
       // Clamped, so rubber-band overscroll at either end is not taken as a direction change.
       const max = Math.max(document.documentElement.scrollHeight - window.innerHeight, 0);
       const y = Math.min(Math.max(window.scrollY, 0), max);
-      setScrolled(y > 0);
       if (y < HEADER_REVEAL) {
         setHidden(false);
         last = y;
@@ -87,14 +85,14 @@ const useHeaderOnScroll = () => {
       cancelAnimationFrame(frame);
     };
   }, []);
-  return { hidden, scrolled };
+  return hidden;
 };
 
 // Every phone screen gets a page header; from tablet up the top bar and page content take over.
 const PhoneHeader = ({ title, subtitle, back, actions }: TPhoneHeaderProps) => {
-  const { hidden, scrolled } = useHeaderOnScroll();
+  const hidden = useHeaderHidden();
   return (
-    <div className={`${styles.phoneHeader} ${styles.onCanvas} ${hidden ? styles.phoneHeaderHidden : ''} ${scrolled ? styles.phoneHeaderScrolled : ''}`}>
+    <div className={`${styles.phoneHeader} ${styles.onCanvas} ${hidden ? styles.phoneHeaderHidden : ''}`}>
       <PageHeader
         title={title}
         subtitle={subtitle}
@@ -315,17 +313,23 @@ const AccountsList = ({ variant, selected }: TAccountsListProps) => {
     <IconButton
       icon="filter"
       label="Sort and filter"
-      size="sm"
+      size={sidebar ? 'sm' : 'md'}
       active={filtersOpen || filtersActive}
       onClick={() => setFiltersOpen(open => !open)} />
   );
   const tools = (
     <div className={styles.accountsTools}>
       <div className={styles.accountsSearch}>
-        <SearchField value={query} onChange={setQuery} placeholder="Search accounts" />
+        <SearchField
+          value={query}
+          onChange={setQuery}
+          placeholder={sidebar ? 'Accounts' : 'Search accounts'}
+          variant="field" />
       </div>
-      {filterButton}
-      <IconButton icon="plus" label="Add account" size="sm" href="#/add-account" />
+      <div className={styles.accountsActions}>
+        {filterButton}
+        <IconButton icon="plus" label="Add account" size={sidebar ? 'sm' : 'md'} href="#/add-account" />
+      </div>
     </div>
   );
   const list = !accounts ? <SkeletonRows count={5} /> : (
@@ -368,24 +372,14 @@ const AccountsList = ({ variant, selected }: TAccountsListProps) => {
       {resultCount === 0 && <ListRow title="No matching accounts" subtitle="Try another name or coin." />}
     </List>
   );
-  const body = (
-    <>
+  return (
+    <div className={sidebar ? styles.sidebarAccounts : styles.pageAccounts}>
       {phone ? tools : (
         <Popover open={filtersOpen} onClose={() => setFiltersOpen(false)} label="Sort and filter accounts" trigger={tools} block>
           {filters(true)}
         </Popover>
       )}
       {sidebar ? list : <Section className={styles.listCard}>{list}</Section>}
-    </>
-  );
-  return (
-    <div className={sidebar ? styles.sidebarAccounts : styles.pageAccounts}>
-      {sidebar ? (
-        // Under the menu, the heading tells the account list apart from the menu items.
-        <Section variant="plain" title="Accounts">
-          <div className={styles.sidebarBody}>{body}</div>
-        </Section>
-      ) : body}
       {phone && (
         <Sheet open={filtersOpen} onClose={() => setFiltersOpen(false)}>
           <div className={styles.sheetFilters}>

@@ -42,18 +42,22 @@
 
 .thumbReady { transition: transform .28s var(--k-ease), width .28s var(--k-ease); }
 
-/* Search: an sm icon button at rest (32px, 36px on touch), a field while focused or filled. */
+/* Search: collapsible (an sm icon button at rest, 32px or 36px on touch, a field while focused
+   or filled) or an always open field. */
 
 .search {
-  --size: 32px;
   display: flex;
-  flex: none;
   align-items: center;
+  /* The app's global label style adds a bottom margin; the search lines up with its neighbours. */
+  margin: 0;
+}
+
+.collapsible {
+  --size: 32px;
+  flex: none;
   gap: 6px;
   width: var(--size);
   height: var(--size);
-  /* The app's global label style adds a bottom margin; the search lines up with its neighbours. */
-  margin: 0;
   padding: 0 calc((var(--size) - 18px) / 2);
   border-radius: var(--k-radius-pill);
   background: transparent;
@@ -62,17 +66,36 @@
   transition: width .32s var(--k-ease), background-color .2s var(--k-ease);
 }
 
-.search:hover { background: var(--k-surface-2); }
+.collapsible:hover { background: var(--k-surface-2); }
 
-.search:focus-within,
-.search.filled {
+.collapsible:focus-within,
+.collapsible.filled {
   width: var(--k-search-w, 260px);
   padding: 0 0 0 12px;
   background: var(--k-surface-2);
   cursor: text;
 }
 
+.collapsible:not(:focus-within):not(.filled) .input { width: 0; }
+
+.field {
+  flex: 1;
+  gap: 8px;
+  min-width: 0;
+  height: var(--k-control-h);
+  padding: 0 4px 0 12px;
+  border-radius: var(--k-radius-m);
+  background: var(--k-surface-2);
+  cursor: text;
+  transition: background-color .15s var(--k-ease);
+}
+
+/* Focus shows as a fill of its own (--k-search-focus-bg), never a ring. */
+.field:focus-within { background: var(--k-search-focus-bg, var(--k-surface-2)); }
+
 .searchIcon { flex: none; color: var(--k-text-2); }
+
+.field .searchIcon { color: var(--k-text-3); }
 
 .input {
   flex: 1;
@@ -86,7 +109,7 @@
   outline: none;
 }
 
-.search:not(:focus-within):not(.filled) .input { width: 0; }
+.field .input { font-size: var(--k-fs-body); }
 
 .input::placeholder { color: var(--k-text-3); }
 
@@ -102,5 +125,5 @@
 .clear { flex: none; }
 
 @media (pointer: coarse) {
-  .search { --size: 36px; }
+  .collapsible { --size: 36px; }
 }

@@ -162,6 +162,47 @@ html.proto-active body {
   -webkit-app-region: no-drag;
 }
 
+/* Subtle scrollbars in both themes (the page, the sidebar, sheets): a thin rounded thumb on a
+   clear track. WebKit and Chromium webviews draw them from ::-webkit-scrollbar, Firefox from the
+   standard properties. Dark panels set their own thumb colours. */
+html.proto-active {
+  --k-scrollbar-thumb: rgba(29, 29, 27, .2);
+  --k-scrollbar-thumb-hover: rgba(29, 29, 27, .36);
+}
+
+html.proto-active[data-proto-theme='dark'] {
+  --k-scrollbar-thumb: rgba(255, 255, 255, .14);
+  --k-scrollbar-thumb-hover: rgba(255, 255, 255, .28);
+}
+
+html.proto-active::-webkit-scrollbar,
+html.proto-active ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+html.proto-active::-webkit-scrollbar-track,
+html.proto-active ::-webkit-scrollbar-track,
+html.proto-active ::-webkit-scrollbar-corner { background: transparent; }
+
+html.proto-active::-webkit-scrollbar-thumb,
+html.proto-active ::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: var(--k-scrollbar-thumb) padding-box;
+}
+
+html.proto-active::-webkit-scrollbar-thumb:hover,
+html.proto-active ::-webkit-scrollbar-thumb:hover { background-color: var(--k-scrollbar-thumb-hover); }
+
+@supports not selector(::-webkit-scrollbar) {
+  html.proto-active,
+  html.proto-active * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--k-scrollbar-thumb) transparent;
+  }
+}
+
 .proto-root {
   min-height: 100vh;
   min-height: 100dvh;

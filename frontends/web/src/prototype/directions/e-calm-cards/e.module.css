@@ -25,6 +25,8 @@
   --k-text-2: #999999;
   --k-text-3: #777777;
   --k-label-color: #999999;
+  --k-scrollbar-thumb: rgba(255, 255, 255, .14);
+  --k-scrollbar-thumb-hover: rgba(255, 255, 255, .28);
   --k-surface-2: #333333;
   --k-accent-ink: #73A5CD;
   /* Menu items and account rows keep clear space between their highlight shapes. */
@@ -159,7 +161,7 @@
 
 /* Account list ---------------------------------------------------------------------------- */
 
-/* The search (it opens towards the end), then Filter and Add account at the end. */
+/* The search field, then Filter and Add account at the end. */
 .accountsTools {
   display: flex;
   align-items: center;
@@ -170,7 +172,21 @@
   display: flex;
   flex: 1;
   min-width: 0;
-  --k-search-w: min(100%, 320px);
+}
+
+.accountsActions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-inline-start: auto;
+}
+
+/* On the page the field keeps a search width (Filter and Add account stay at the end) and,
+   like the sidebar's, rests on the canvas itself; focus brings the card colour. */
+.pageAccounts .accountsSearch {
+  max-width: 360px;
+  --k-surface-2: transparent;
+  --k-search-focus-bg: var(--k-surface);
 }
 
 /* Sort and filter (popover from tablet up, bottom sheet on phones). */
@@ -217,24 +233,15 @@
   --k-control-h: 40px;
 }
 
-/* In the sidebar the open search fills the row up to Filter, on a faint fill like the rows'
-   hover. */
+/* In the sidebar the search is an always open field on the panel itself; focus brings a faint
+   fill. */
 .sidebarAccounts .accountsSearch {
-  --k-search-w: 100%;
-  --k-surface-2: rgba(255, 255, 255, .05);
+  --k-surface-2: transparent;
+  --k-search-focus-bg: rgba(255, 255, 255, .06);
 }
 
-/* The heading lines up with the coin icons, the search glyph with their centres, Add account
-   with the amounts. */
-.sidebarAccounts { --k-section-head-pad: 10px; }
-
-.sidebarBody {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.sidebarAccounts .accountsTools { margin-inline: 8px 2px; }
+/* The search glyph lines up with the coin icons below, Add account with the amounts. */
+.sidebarAccounts .accountsTools { margin-inline: 3px 2px; }
 
 /* In the sidebar the popover spans the account tools row. */
 .sidebarAccounts { --k-popover-w: 100%; }
@@ -305,10 +312,8 @@
     margin: calc(-4px - var(--k-safe-top)) calc(var(--k-page-pad) * -1) 0;
     padding: calc(4px + var(--k-safe-top)) var(--k-page-pad) 0;
     background: var(--k-bg);
-    transition: transform .3s var(--k-ease), box-shadow .2s var(--k-ease);
+    transition: transform .3s var(--k-ease);
   }
-
-  .phoneHeaderScrolled { box-shadow: 0 1px 0 var(--k-border); }
 
   .phoneHeaderHidden:not(:focus-within) { transform: translateY(-100%); }
 

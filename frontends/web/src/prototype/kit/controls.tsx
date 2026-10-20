@@ -46,12 +46,14 @@ type TSearchFieldProps = {
   value: string;
   onChange: (value: string) => void;
   placeholder: string;
+  // collapsible: rests as a round search button and widens into the field while focused or
+  // filled, up to --k-search-w. field: always open (the sidebar's account search).
+  variant?: 'collapsible' | 'field';
 };
 
-// The search: rests as a round search button and widens into the field while focused or filled.
-// Its width open comes from --k-search-w (the parent decides how far it reaches).
-export const SearchField = ({ value, onChange, placeholder }: TSearchFieldProps) => (
-  <label className={`${styles.search} ${value ? styles.filled : ''}`}>
+// The search, with its own clear button.
+export const SearchField = ({ value, onChange, placeholder, variant = 'collapsible' }: TSearchFieldProps) => (
+  <label className={`${styles.search} ${styles[variant]} ${value ? styles.filled : ''}`}>
     <Icon name="search" size={18} className={styles.searchIcon} />
     <input
       className={styles.input}
