@@ -165,7 +165,7 @@ export const KitPage = () => {
       </Section>
 
       <Section title="Message">
-        <Message title="Coming in the next design round">Screens that are not designed yet show this inside the app frame.</Message>
+        <Message title="Hey there">Not available yet. This prototype only covers Portfolio, Accounts, individual account screens and tx details.</Message>
       </Section>
 
       <Section title="DeviceStatus">
