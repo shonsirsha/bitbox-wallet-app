@@ -269,6 +269,12 @@
 .sidebarAccounts { --k-popover-w: 100%; }
 
 /* On the page: tools sit on the grey canvas, so their fills take the card colour. */
+.appliedFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .pageAccounts {
   display: flex;
   flex-direction: column;

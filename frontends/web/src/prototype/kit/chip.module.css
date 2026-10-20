@@ -46,6 +46,10 @@
 
 .selected .count { background: rgba(255, 255, 255, .2); }
 
+.removable { padding-inline-end: 10px; }
+
+.remove { flex: none; opacity: .85; }
+
 @media (pointer: coarse) {
   .chip { height: 40px; }
 }

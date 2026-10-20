@@ -249,6 +249,9 @@ export const KitPage = () => {
             <span className={styles.field}><SearchField value={search} onChange={setSearch} placeholder="Accounts" variant="field" /></span>
           </div>
           {chips}
+          <div className={styles.chips}>
+            <Chip removable onClick={() => {}} leading={<CoinIcon coinCode="btc" size={20} />}>Bitcoin</Chip>
+          </div>
         </div>
       </Section>
 

@@ -322,6 +322,7 @@ const AccountsList = ({ variant, selected, coin }: TAccountsListProps) => {
   const lightning = summary?.coinsTotalBalance.find(coin => coin.coinCode === 'lightning')?.formattedAmount;
   const accountCount = accounts ? `${accounts.length} accounts` : '';
   const filtersActive = sort !== 'type' || selectedCoins.length > 0;
+  const appliedCoins = coinTypes.filter(type => selectedCoins.includes(type.code));
   const showLightning = !sidebar && phone && matches('Lightning') && selectedCoins.length === 0;
   const resetFilters = () => {
     setSort('type');
@@ -410,6 +411,16 @@ const AccountsList = ({ variant, selected, coin }: TAccountsListProps) => {
         <Popover open={filtersOpen} onClose={() => setFiltersOpen(false)} label="Sort and filter accounts" trigger={tools} block>
           {filters(true)}
         </Popover>
+      )}
+      {!sidebar && appliedCoins.length > 0 && (
+        // Applied coin filters stay in view; tapping one removes it.
+        <div className={styles.appliedFilters}>
+          {appliedCoins.map(type => (
+            <Chip key={type.code} removable onClick={() => toggleCoin(type.code)} leading={<CoinIcon coinCode={type.code} size={20} />}>
+              {type.name}
+            </Chip>
+          ))}
+        </div>
       )}
       {sidebar ? list : <Section className={styles.listCard}>{list}</Section>}
       {phone && (
