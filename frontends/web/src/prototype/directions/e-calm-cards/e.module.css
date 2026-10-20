@@ -24,6 +24,7 @@
   --k-text: #F5F5F5;
   --k-text-2: #999999;
   --k-text-3: #777777;
+  --k-label-color: #999999;
   --k-surface-2: #333333;
   --k-accent-ink: #73A5CD;
   /* Menu items and account rows keep clear space between their highlight shapes. */
@@ -158,7 +159,7 @@
 
 /* Account list ---------------------------------------------------------------------------- */
 
-/* Filter, then the search (it opens towards the end), then Add account at the end. */
+/* The search (it opens towards the end), then Filter and Add account at the end. */
 .accountsTools {
   display: flex;
   align-items: center;
@@ -216,10 +217,23 @@
   --k-control-h: 40px;
 }
 
-/* In the sidebar the open search fills the row up to Add account. */
-.sidebarAccounts .accountsSearch { --k-search-w: 100%; }
+/* In the sidebar the open search fills the row up to Filter, on a faint fill like the rows'
+   hover. */
+.sidebarAccounts .accountsSearch {
+  --k-search-w: 100%;
+  --k-surface-2: rgba(255, 255, 255, .05);
+}
 
-/* Filter lines up with the menu and coin icons below, Add account with the amounts. */
+/* The heading lines up with the coin icons, the search glyph with their centres, Add account
+   with the amounts. */
+.sidebarAccounts { --k-section-head-pad: 10px; }
+
+.sidebarBody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .sidebarAccounts .accountsTools { margin-inline: 8px 2px; }
 
 /* In the sidebar the popover spans the account tools row. */

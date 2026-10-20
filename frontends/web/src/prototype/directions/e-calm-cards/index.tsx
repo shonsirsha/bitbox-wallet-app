@@ -321,10 +321,10 @@ const AccountsList = ({ variant, selected }: TAccountsListProps) => {
   );
   const tools = (
     <div className={styles.accountsTools}>
-      {filterButton}
       <div className={styles.accountsSearch}>
         <SearchField value={query} onChange={setQuery} placeholder="Search accounts" />
       </div>
+      {filterButton}
       <IconButton icon="plus" label="Add account" size="sm" href="#/add-account" />
     </div>
   );
@@ -368,14 +368,24 @@ const AccountsList = ({ variant, selected }: TAccountsListProps) => {
       {resultCount === 0 && <ListRow title="No matching accounts" subtitle="Try another name or coin." />}
     </List>
   );
-  return (
-    <div className={sidebar ? styles.sidebarAccounts : styles.pageAccounts}>
+  const body = (
+    <>
       {phone ? tools : (
-        <Popover open={filtersOpen} onClose={() => setFiltersOpen(false)} label="Sort and filter accounts" trigger={tools} block align="start">
+        <Popover open={filtersOpen} onClose={() => setFiltersOpen(false)} label="Sort and filter accounts" trigger={tools} block>
           {filters(true)}
         </Popover>
       )}
       {sidebar ? list : <Section className={styles.listCard}>{list}</Section>}
+    </>
+  );
+  return (
+    <div className={sidebar ? styles.sidebarAccounts : styles.pageAccounts}>
+      {sidebar ? (
+        // Under the menu, the heading tells the account list apart from the menu items.
+        <Section variant="plain" title="Accounts">
+          <div className={styles.sidebarBody}>{body}</div>
+        </Section>
+      ) : body}
       {phone && (
         <Sheet open={filtersOpen} onClose={() => setFiltersOpen(false)}>
           <div className={styles.sheetFilters}>
@@ -469,7 +479,12 @@ const Account = ({ code, txId }: TAccountProps) => {
         <Section
           title="Activity"
           className={`${styles.listCard} ${styles.activity}`}
-          action={<SearchField value={query} onChange={setQuery} placeholder="Search activity" />}>
+          action={(
+            // The header sits on the canvas: the open field takes the card colour.
+            <div className={styles.onCanvas}>
+              <SearchField value={query} onChange={setQuery} placeholder="Search activity" />
+            </div>
+          )}>
           {visibleTransactions && account ? (
             <List>
               {visibleTransactions.map(tx => (

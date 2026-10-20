@@ -11,6 +11,7 @@
   justify-content: space-between;
   gap: 12px;
   min-height: 28px;
+  padding-inline: var(--k-section-head-pad, 0px);
 }
 
 .title {

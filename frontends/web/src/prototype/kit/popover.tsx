@@ -15,13 +15,11 @@ type TProps = {
   label: string;
   // Full-width anchor (the panel then spans the trigger row).
   block?: boolean;
-  // The trigger edge the panel lines up with.
-  align?: 'start' | 'end';
 };
 
 const EXIT_MS = 140;
 
-export const Popover = ({ open, onClose, trigger, children, label, block = false, align = 'end' }: TProps) => {
+export const Popover = ({ open, onClose, trigger, children, label, block = false }: TProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(open);
   const [closing, setClosing] = useState(false);
@@ -66,7 +64,7 @@ export const Popover = ({ open, onClose, trigger, children, label, block = false
     <div ref={ref} className={`${styles.anchor} ${block ? styles.block : ''}`}>
       {trigger}
       {mounted && (
-        <div className={`${styles.panel} ${align === 'start' ? styles.alignStart : ''} ${closing ? styles.closing : ''}`} role="dialog" aria-label={label}>
+        <div className={`${styles.panel} ${closing ? styles.closing : ''}`} role="dialog" aria-label={label}>
           {children}
         </div>
       )}
