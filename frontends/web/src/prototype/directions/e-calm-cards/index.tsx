@@ -116,6 +116,9 @@ const ActionRow = ({ actions }: TActionRowProps) => (
   </div>
 );
 
+// Recent activity lists this many of the latest transactions, in a card that scrolls.
+const RECENT_COUNT = 20;
+
 const Portfolio = () => {
   const { locale, fiat } = usePrototype();
   const summary = useSummary();
@@ -184,12 +187,14 @@ const Portfolio = () => {
             className={styles.listCard}
             action={<Button variant="ghost" size="sm" href={href.accounts}>See all</Button>}>
             {activity ? (
-              <List>
-                {activity.slice(0, 6).map(({ account, tx }) => (
-                  <TxRow key={`${account.code}:${tx.internalID}`} tx={tx} account={account} showAccount primary="fiat" amounts="primary" />
-                ))}
-                {activity.length === 0 && <ListRow title="No activity yet" subtitle="Received and sent coins show up here." />}
-              </List>
+              <div className={styles.recentList}>
+                <List>
+                  {activity.slice(0, RECENT_COUNT).map(({ account, tx }) => (
+                    <TxRow key={`${account.code}:${tx.internalID}`} tx={tx} account={account} showAccount primary="fiat" amounts="primary" />
+                  ))}
+                  {activity.length === 0 && <ListRow title="No activity yet" subtitle="Received and sent coins show up here." />}
+                </List>
+              </div>
             ) : <SkeletonRows count={6} />}
           </Section>
         </div>

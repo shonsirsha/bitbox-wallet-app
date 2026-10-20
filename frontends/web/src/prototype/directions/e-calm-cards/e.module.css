@@ -102,6 +102,17 @@
 
 .aside { min-width: 0; }
 
+/* Recent activity scrolls inside its card and fades out at the bottom edge, so it reads as a
+   list that scrolls; the last row scrolls clear of the fade. On phones the page takes over at
+   either end. */
+.recentList {
+  max-height: 440px;
+  overflow-y: auto;
+  padding-bottom: 20px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);
+}
+
 .balance {
   display: flex;
   flex-direction: column;
@@ -379,6 +390,8 @@
 
   .accountCard { --k-fs-hero: 48px; }
 
+  .recentList { overscroll-behavior: contain; }
+
   /* After the padding shorthands above: clear of a right-hand notch in landscape. */
   .topbar,
   .main { padding-inline-end: max(var(--k-page-pad), env(safe-area-inset-right, 0px)); }
@@ -416,6 +429,11 @@
   }
 
   .accountCard { --k-fs-hero: 44px; }
+
+  /* Beside the chart the card fills the window below the top bar and its own heading. */
+  .recentList {
+    max-height: calc(100dvh - var(--k-safe-top) - var(--e-topbar-h) - 120px);
+  }
 
   /* The Accounts table: Balance and Value line up in fixed columns. */
   .accounts .listCard {
