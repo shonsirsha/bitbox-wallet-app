@@ -17,10 +17,12 @@ type TProps = {
   // Digits roll like an odometer when the value appears or changes (not when amounts are shown
   // again after Hide amounts: then they just appear).
   animated?: boolean;
+  // Animated amounts whose changes show at once (values read off a chart while scrubbing).
+  instant?: boolean;
   className?: string;
 };
 
-export const Amount = ({ value, as = 'fiat', size = 'md', tone = 'default', sign = '', animated = false, className = '' }: TProps) => {
+export const Amount = ({ value, as = 'fiat', size = 'md', tone = 'default', sign = '', animated = false, instant = false, className = '' }: TProps) => {
   const { fiat, locale, hideAmounts } = usePrototype();
   const [wasHidden, setWasHidden] = useState(hideAmounts);
   if (hideAmounts && !wasHidden) {
@@ -48,8 +50,8 @@ export const Amount = ({ value, as = 'fiat', size = 'md', tone = 'default', sign
         <span className={styles.srOnly}>{text}</span>
         {sign && <span className={styles.sign} aria-hidden="true">{sign}</span>}
         {formatted.prefix && <span className={styles.prefix} aria-hidden="true">{formatted.prefix}</span>}
-        <span><Odometer text={formatted.integer} rollIn={!wasHidden} /></span>
-        {formatted.decimals && <span className={styles.decimals}><Odometer text={formatted.decimals} rollIn={!wasHidden} /></span>}
+        <span><Odometer text={formatted.integer} rollIn={!wasHidden} instant={instant} /></span>
+        {formatted.decimals && <span className={styles.decimals}><Odometer text={formatted.decimals} rollIn={!wasHidden} instant={instant} /></span>}
         {formatted.unit && <span className={styles.unit} aria-hidden="true"> {formatted.unit}</span>}
       </span>
     );

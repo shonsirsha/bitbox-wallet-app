@@ -127,6 +127,19 @@ const Portfolio = () => {
   const activity = useActivity(accounts);
   const [range, setRange] = useState<TRange>('year');
   const [scrub, setScrub] = useState<TChartPoint | null>(null);
+  // The value rolls in when the chart loads or its range changes (with the line drawing in);
+  // values read off the chart while scrubbing replace each other at once.
+  const [scrubbed, setScrubbed] = useState(false);
+  const onScrub = (point: TChartPoint | null) => {
+    setScrub(point);
+    if (point) {
+      setScrubbed(true);
+    }
+  };
+  const changeRange = (next: TRange) => {
+    setRange(next);
+    setScrubbed(false);
+  };
   // Stable points, so scrubbing (a re-render per pointer move) does not rebuild the chart path.
   const points = useMemo(() => chartPoints(chart, range), [chart, range]);
   const performance = chart?.chartPerformance[range].moneyWeightedReturn;
@@ -144,18 +157,18 @@ const Portfolio = () => {
         <div className={styles.stack}>
           <Section
             title={scrub ? format.formatShortDate(new Date(scrub.time * 1000).toISOString(), locale) : 'Portfolio value'}
-            action={<SegmentedControl label="Chart range" options={RANGE_OPTIONS} value={range} onChange={setRange} />}
+            action={<SegmentedControl label="Chart range" options={RANGE_OPTIONS} value={range} onChange={changeRange} />}
             className={styles.heroCard}>
             <div className={styles.balance}>
               <div className={styles.balanceHead}>
-                <Amount value={scrub?.label ? fiatAmount(scrub.label, fiat) : total} size="hero" animated />
+                <Amount key={range} value={scrub?.label ? fiatAmount(scrub.label, fiat) : total} size="hero" animated instant={scrubbed} />
                 <span className={styles.meta}>
                   <Delta value={performance} />
                   <span>{RANGE_LABEL[range]}</span>
                 </span>
               </div>
               <div className={styles.chart}>
-                <AreaChart points={points} height={160} onScrub={setScrub} />
+                <AreaChart points={points} height={160} onScrub={onScrub} />
               </div>
             </div>
           </Section>

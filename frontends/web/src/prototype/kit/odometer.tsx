@@ -15,9 +15,11 @@ type TProps = {
   text: string;
   // Roll in from zero when first shown (off: the digits appear as they are).
   rollIn?: boolean;
+  // Changes show at once, without rolling.
+  instant?: boolean;
 };
 
-export const Odometer = ({ text, rollIn = true }: TProps) => {
+export const Odometer = ({ text, rollIn = true, instant = false }: TProps) => {
   const [shown, setShown] = useState(() => (rollIn ? text.replace(/\d/g, '0') : text));
   useEffect(() => {
     // One frame later, so the columns are on screen at their previous digit and can roll.
@@ -42,7 +44,7 @@ export const Odometer = ({ text, rollIn = true }: TProps) => {
             <span className={styles.ghost}>{char}</span>
             <span
               className={styles.strip}
-              style={{ transform: `translateY(${-digit * 10}%)`, transitionDelay: `${i * 16}ms` }}>
+              style={{ transform: `translateY(${-digit * 10}%)`, transition: instant ? 'none' : undefined, transitionDelay: `${i * 16}ms` }}>
               {DIGITS.map(value => <span key={value} className={styles.digit}>{value}</span>)}
             </span>
           </span>
