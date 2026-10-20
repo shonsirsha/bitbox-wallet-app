@@ -32,7 +32,7 @@ npx vite build --mode prototype     # writes build/ (relative asset paths, hash 
 |---|---|---|
 | `lang` | e.g. `de`, `ar` | switch language (long strings / right-to-left) |
 
-A floating pill at the bottom switches Light and Dark (dark by default; saved in localStorage as
+A floating pill at the bottom (tablet and desktop) switches Light and Dark (dark by default; saved in localStorage as
 `prototype-theme-v2`). The component kit lives at `#/prototype/kit`; its demo rows stay on that
 page.
 

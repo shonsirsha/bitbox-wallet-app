@@ -1,4 +1,4 @@
-/* A black pill at the bottom centre (above the tab bar on phones), the same in both themes. */
+/* A black pill at the bottom centre from tablet up, the same in both themes. */
 .toggle {
   position: fixed;
   left: 50%;
@@ -39,6 +39,7 @@
 
 .thumbReady { transition: transform .28s cubic-bezier(.2, .8, .2, 1), width .28s cubic-bezier(.2, .8, .2, 1); }
 
+/* Phones have no toggle (the tab bar owns the bottom edge). */
 @media (max-width: 768px) {
-  .toggle { bottom: calc(100px + env(safe-area-inset-bottom, 0px)); }
+  .toggle { display: none; }
 }
