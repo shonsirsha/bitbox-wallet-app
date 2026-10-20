@@ -27,6 +27,15 @@
 
 [dir='rtl'] .panel { transform-origin: top left; }
 
+.closing {
+  pointer-events: none;
+  animation: popOut .14s var(--k-ease) forwards;
+}
+
 @keyframes pop {
-  from { opacity: 0; transform: translateY(-4px) scale(.98); }
+  from { opacity: 0; transform: translateY(-6px) scale(.97); }
+}
+
+@keyframes popOut {
+  to { opacity: 0; transform: translateY(-4px) scale(.98); }
 }

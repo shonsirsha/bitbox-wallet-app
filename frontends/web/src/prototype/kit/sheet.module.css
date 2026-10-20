@@ -26,7 +26,7 @@
   box-shadow: var(--k-shadow-2);
   padding-bottom: var(--k-safe-bottom);
   outline: none;
-  animation: rise .28s var(--k-ease);
+  animation: rise .32s var(--k-ease);
 }
 
 .grabber {
@@ -66,7 +66,7 @@
     max-height: none;
     height: 100%;
     border-radius: 0;
-    animation: slide .26s var(--k-ease);
+    animation: slide .3s var(--k-ease);
   }
 
   .header { padding: 20px 24px 8px; }
@@ -75,6 +75,20 @@
 
 [dir='rtl'] .layer { justify-content: flex-start; }
 
+/* Leaving: the sheet slides back down (phones) or out to the side (tablet and desktop). */
+.closing { pointer-events: none; }
+.closing .overlay { animation: fadeOut .22s var(--k-ease) forwards; }
+.closing .sheet { animation: sinkOut .22s var(--k-ease) forwards; }
+
+@media (min-width: 769px) {
+  .closing .sheet { animation-name: slideOut; }
+}
+
+[dir='rtl'] .sheet { --k-slide-dir: -1; }
+
 @keyframes fade { from { opacity: 0; } }
-@keyframes rise { from { transform: translateY(24px); opacity: 0; } }
-@keyframes slide { from { transform: translateX(24px); opacity: 0; } }
+@keyframes rise { from { transform: translateY(100%); } }
+@keyframes slide { from { transform: translateX(calc(100% * var(--k-slide-dir, 1))); } }
+@keyframes fadeOut { to { opacity: 0; } }
+@keyframes sinkOut { to { transform: translateY(100%); } }
+@keyframes slideOut { to { transform: translateX(calc(100% * var(--k-slide-dir, 1))); } }

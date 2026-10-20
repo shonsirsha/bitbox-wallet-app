@@ -3,7 +3,7 @@
 // PROTOTYPE (throwaway): a small floating panel anchored under its trigger (tablet and desktop).
 // Closes on Escape and on a click outside the anchor area.
 
-import { ReactNode, useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import styles from './popover.module.css';
 
 type TProps = {
@@ -17,8 +17,28 @@ type TProps = {
   block?: boolean;
 };
 
+const EXIT_MS = 140;
+
 export const Popover = ({ open, onClose, trigger, children, label, block = false }: TProps) => {
   const ref = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(open);
+  const [closing, setClosing] = useState(false);
+  useEffect(() => {
+    if (open) {
+      setMounted(true);
+      setClosing(false);
+      return;
+    }
+    if (!mounted) {
+      return;
+    }
+    setClosing(true);
+    const timer = setTimeout(() => {
+      setMounted(false);
+      setClosing(false);
+    }, EXIT_MS);
+    return () => clearTimeout(timer);
+  }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!open) {
       return;
@@ -43,8 +63,8 @@ export const Popover = ({ open, onClose, trigger, children, label, block = false
   return (
     <div ref={ref} className={`${styles.anchor} ${block ? styles.block : ''}`}>
       {trigger}
-      {open && (
-        <div className={styles.panel} role="dialog" aria-label={label}>
+      {mounted && (
+        <div className={`${styles.panel} ${closing ? styles.closing : ''}`} role="dialog" aria-label={label}>
           {children}
         </div>
       )}

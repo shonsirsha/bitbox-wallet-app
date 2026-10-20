@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
-// PROTOTYPE (throwaway): "The Calm cards UI refresh (variant E) next to today's UI (variant 0),
-// switchable via ?variant= on the existing routes." The query sits before the hash, so in-app
-// navigation keeps the selected variant and links stay shareable.
+// PROTOTYPE (throwaway): "The redesigned UI (variant 1) next to today's UI (variant 0), switchable
+// via ?variant= on the existing routes." The query sits before the hash, so in-app navigation
+// keeps the selected variant and links stay shareable.
 
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { App } from '@/app';
@@ -13,12 +13,16 @@ const PrototypeApp = lazy(() => import('./prototype-app').then(module => ({ defa
 
 export const VARIANTS: TVariant[] = [
   { key: '0', name: 'Current app' },
-  { key: 'E', name: 'Calm cards' },
+  { key: '1', name: 'Redesigned' },
 ];
 
+// Links shared before the rename used ?variant=E for the redesign.
+const ALIASES: Record<string, TVariantKey> = { E: '1' };
+
 const readVariant = (): TVariantKey => {
-  const value = new URLSearchParams(window.location.search).get('variant')?.toUpperCase();
-  return (VARIANTS.find(variant => variant.key === value)?.key) || 'E';
+  const raw = new URLSearchParams(window.location.search).get('variant')?.toUpperCase() || '';
+  const value = ALIASES[raw] || raw;
+  return (VARIANTS.find(variant => variant.key === value)?.key) || '1';
 };
 
 const readTheme = (): TThemeSetting => {
@@ -51,8 +55,8 @@ export const PrototypeRoot = () => {
   };
 
   useEffect(() => {
-    // Always show the variant in the URL so a copied link opens the same design.
-    if (!new URLSearchParams(window.location.search).get('variant')) {
+    // Always show the variant in the URL (canonical key) so a copied link opens the same design.
+    if (new URLSearchParams(window.location.search).get('variant') !== variant) {
       changeVariant(variant);
     }
   }, [changeVariant, variant]);
@@ -63,7 +67,7 @@ export const PrototypeRoot = () => {
         ? <App />
         : (
           <Suspense fallback={null}>
-            <PrototypeApp direction={variant} themeSetting={theme} />
+            <PrototypeApp direction="E" themeSetting={theme} />
           </Suspense>
         )}
       <PrototypeBar variants={VARIANTS} current={variant} onChange={changeVariant} theme={theme} onThemeChange={changeTheme} />

@@ -59,7 +59,7 @@ export const KitPage = () => {
   const [sheet, setSheet] = useState(false);
   return (
     <div className={styles.page}>
-      <PageHeader title="Component kit" subtitle="Calm cards: the only building blocks the screens use" />
+      <PageHeader title="Component kit" />
 
       <Section title="Logo">
         <div className={styles.row}>
@@ -142,7 +142,7 @@ export const KitPage = () => {
             <Toggle checked={toggle} onChange={setToggle} label="Toggle" />
           </div>
           <div className={styles.row}>
-            <Chip selected={!coin} onClick={() => setCoin(false)}>All coins</Chip>
+            <Chip selected={!coin} onClick={() => setCoin(false)} leading={<Icon name="accounts" size={18} />}>All coins</Chip>
             <Chip selected={coin} onClick={() => setCoin(value => !value)} leading={<CoinIcon coinCode="btc" size={20} />} count={2}>Bitcoin</Chip>
             <Chip selected={false} onClick={() => {}} leading={<CoinIcon coinCode="eth" size={20} />} count={1}>Ethereum</Chip>
           </div>

@@ -8,8 +8,8 @@ type TProps = {
   children: ReactNode;
   selected: boolean;
   onClick: () => void;
-  // Small visual before the label, e.g. a coin icon.
-  leading?: ReactNode;
+  // Small visual before the label (20px), e.g. a coin icon; the check replaces it when selected.
+  leading: ReactNode;
   // Optional count after the label (e.g. number of accounts).
   count?: number;
 };
@@ -21,7 +21,7 @@ export const Chip = ({ children, selected, onClick, leading, count }: TProps) =>
     className={`${styles.chip} ${selected ? styles.selected : ''}`}
     aria-pressed={selected}
     onClick={onClick}>
-    {selected ? <Icon name="check" size={16} strokeWidth={2} className={styles.check} /> : leading}
+    <span className={styles.slot}>{selected ? <Icon name="check" size={16} strokeWidth={2.25} /> : leading}</span>
     <span className={styles.label}>{children}</span>
     {count !== undefined && <span className={styles.count}>{count}</span>}
   </button>

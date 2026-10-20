@@ -9,7 +9,7 @@
 import { ReactNode, useMemo, useState } from 'react';
 import { useMediaQuery } from '@/hooks/mediaquery';
 import {
-  Amount, AreaChart, Badge, Button, Chip, CoinIcon, Delta, DeviceStatus, GlyphIcon, IconButton, List, ListRow, Logo,
+  Amount, AreaChart, Badge, Button, Chip, CoinIcon, Delta, DeviceStatus, GlyphIcon, Icon, IconButton, List, ListRow, Logo,
   Navigation, PageHeader, Popover, Section, SegmentedControl, Sheet, Skeleton, SkeletonRows, TChartPoint, TIconName,
   TextField, format,
 } from '../../kit';
@@ -162,6 +162,8 @@ type TCoinType = { code: string; name: string; count: number };
 type TFiltersProps = {
   sort: TSort;
   onSort: (sort: TSort) => void;
+  // Shown at the top right of the panel (Reset in the popover).
+  action?: ReactNode;
   coinTypes: TCoinType[];
   selectedCoins: string[];
   onToggleCoin: (code: string) => void;
@@ -169,14 +171,14 @@ type TFiltersProps = {
 };
 
 // Sort by value or name, filter by coin type: the same controls in the popover and the sheet.
-const AccountFilters = ({ sort, onSort, coinTypes, selectedCoins, onToggleCoin, onAllCoins }: TFiltersProps) => (
+const AccountFilters = ({ sort, onSort, action, coinTypes, selectedCoins, onToggleCoin, onAllCoins }: TFiltersProps) => (
   <div className={styles.filters}>
-    <Section variant="plain" title="Sort by">
+    <Section variant="plain" title="Sort by" action={action}>
       <SegmentedControl label="Sort accounts" options={SORT_OPTIONS} value={sort} onChange={onSort} full />
     </Section>
     <Section variant="plain" title="Coins">
       <div className={styles.chips}>
-        <Chip selected={selectedCoins.length === 0} onClick={onAllCoins}>All coins</Chip>
+        <Chip selected={selectedCoins.length === 0} onClick={onAllCoins} leading={<Icon name="accounts" size={18} />}>All coins</Chip>
         {coinTypes.map(coin => (
           <Chip
             key={coin.code}
@@ -250,10 +252,11 @@ const AccountsList = ({ variant, selected }: TAccountsListProps) => {
   const toggleCoin = (code: string) => setSelectedCoins(current => (
     current.includes(code) ? current.filter(candidate => candidate !== code) : [...current, code]
   ));
-  const filters = (
+  const filters = (withReset: boolean) => (
     <AccountFilters
       sort={sort}
       onSort={setSort}
+      action={withReset ? <Button variant="ghost" size="sm" onClick={resetFilters} disabled={!filtersActive}>Reset</Button> : undefined}
       coinTypes={coinTypes}
       selectedCoins={selectedCoins}
       onToggleCoin={toggleCoin}
@@ -315,21 +318,16 @@ const AccountsList = ({ variant, selected }: TAccountsListProps) => {
     <div className={sidebar ? styles.sidebarAccounts : styles.pageAccounts}>
       {phone ? tools : (
         <Popover open={filtersOpen} onClose={() => setFiltersOpen(false)} label="Sort and filter accounts" trigger={tools} block>
-          <Section
-            variant="plain"
-            title="Sort and filter"
-            action={filtersActive ? <Button variant="ghost" size="sm" onClick={resetFilters}>Reset</Button> : undefined}>
-            {filters}
-          </Section>
+          {filters(true)}
         </Popover>
       )}
       {sidebar ? list : <Section className={styles.listCard}>{list}</Section>}
       {phone && (
-        <Sheet open={filtersOpen} onClose={() => setFiltersOpen(false)} title="Sort and filter">
+        <Sheet open={filtersOpen} onClose={() => setFiltersOpen(false)}>
           <div className={styles.sheetFilters}>
-            {filters}
+            {filters(false)}
             <div className={styles.sheetActions}>
-              <Button onClick={resetFilters}>Reset</Button>
+              <Button onClick={resetFilters} disabled={!filtersActive}>Reset</Button>
               <Button variant="primary" onClick={() => setFiltersOpen(false)}>
                 {`Show ${resultCount} ${resultCount === 1 ? 'account' : 'accounts'}`}
               </Button>

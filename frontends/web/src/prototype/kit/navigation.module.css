@@ -9,10 +9,32 @@
 }
 
 .items {
+  position: relative;
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
+}
+
+/* The sliding highlight behind the active item. */
+.indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: var(--k-radius-m);
+  background: var(--nav-indicator-bg, var(--nav-active-bg));
+  pointer-events: none;
+}
+
+.indicatorReady {
+  transition: transform .32s var(--k-ease), width .32s var(--k-ease), height .32s var(--k-ease), opacity .2s var(--k-ease);
+}
+
+.indicatorHidden { opacity: 0; }
+
+.items > li:not(.indicator) {
+  position: relative;
+  z-index: 1;
 }
 
 .item {
@@ -54,6 +76,8 @@
 
 .tabbar .active { color: var(--k-accent-ink); }
 
+.tabbar { --nav-indicator-bg: var(--k-accent-soft); }
+
 /* Sidebar (tablet and desktop) ------------------------------------------------------------- */
 
 .sidebar {
@@ -77,7 +101,6 @@
   font-size: var(--k-fs-body);
 }
 
-.sidebar .item:hover,
-.sidebar .active { background: var(--nav-active-bg); }
+.sidebar .item:not(.active):hover { background: var(--nav-active-bg); }
 
 .sidebar .extra { margin-top: 24px; }

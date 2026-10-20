@@ -15,10 +15,12 @@ type TButtonProps = {
   onClick?: () => void;
   // Opens href outside the app (block explorer, support pages).
   external?: boolean;
+  // Kept in place but inactive, so layouts do not shift when it becomes available.
+  disabled?: boolean;
 };
 
 export const Button = ({
-  children, variant = 'secondary', size = 'md', icon, full = false, href, onClick, external = false,
+  children, variant = 'secondary', size = 'md', icon, full = false, href, onClick, external = false, disabled = false,
 }: TButtonProps) => {
   const className = `${styles.button} ${styles[variant]} ${styles[size]} ${full ? styles.full : ''}`;
   const content = (
@@ -27,14 +29,14 @@ export const Button = ({
       <span>{children}</span>
     </>
   );
-  if (href) {
+  if (href && !disabled) {
     return (
       <a className={className} href={href} {...(external ? { target: '_blank', rel: 'noreferrer' } : {})}>
         {content}
       </a>
     );
   }
-  return <button type="button" className={className} onClick={onClick}>{content}</button>;
+  return <button type="button" className={className} onClick={onClick} disabled={disabled}>{content}</button>;
 };
 
 type TIconButtonProps = {

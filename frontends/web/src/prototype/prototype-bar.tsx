@@ -31,12 +31,15 @@ const THEMES: TThemeSetting[] = ['auto', 'light', 'dark'];
 const THEME_LABEL: Record<TThemeSetting, string> = { auto: 'Auto', light: 'Light', dark: 'Dark' };
 
 export const PrototypeBar = ({ variants, current, onChange, theme, onThemeChange }: TProps) => {
+  // Direction of the last switch, so the label slides in from the matching side.
+  const [direction, setDirection] = useState<1 | -1>(1);
   // On phones the bar starts collapsed to a corner button so it never sits on the design.
   const [collapsed, setCollapsed] = useState(() => window.matchMedia('(max-width: 768px)').matches);
   const index = Math.max(0, variants.findIndex(variant => variant.key === current));
   const step = (delta: number) => {
     const next = variants[(index + delta + variants.length) % variants.length];
     if (next) {
+      setDirection(delta > 0 ? 1 : -1);
       onChange(next.key);
     }
   };
@@ -68,8 +71,10 @@ export const PrototypeBar = ({ variants, current, onChange, theme, onThemeChange
     <div className={styles.bar} role="toolbar" aria-label="Prototype variant switcher">
       <button type="button" className={styles.arrow} onClick={() => step(-1)} aria-label="Previous variant">‹</button>
       <span className={styles.label}>
-        <span className={styles.key}>{variant?.key === '0' ? 'Now' : variant?.key}</span>
-        <span className={styles.name}>{variant?.name}</span>
+        <span key={variant?.key} className={`${styles.labelInner} ${direction > 0 ? styles.fromEnd : styles.fromStart}`}>
+          <span className={styles.key}>{variant?.key}</span>
+          <span className={styles.name}>{variant?.name}</span>
+        </span>
       </span>
       <button type="button" className={styles.arrow} onClick={() => step(1)} aria-label="Next variant">›</button>
       <span className={styles.divider} />
@@ -80,7 +85,6 @@ export const PrototypeBar = ({ variants, current, onChange, theme, onThemeChange
         title="Theme">
         {THEME_LABEL[theme]}
       </button>
-      <a className={styles.text} href="#/prototype/kit" title="Component kit">Kit</a>
       <button type="button" className={styles.text} onClick={() => setCollapsed(true)} aria-label="Hide switcher">✕</button>
     </div>
   );

@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
+import { useRef } from 'react';
 import { IconButton } from './button';
 import { Icon, TIconName } from './icon';
+import { useIndicator } from './indicator';
 import styles from './controls.module.css';
 
 type TOption<T extends string> = { value: T; label: string };
@@ -14,21 +16,31 @@ type TSegmentedProps<T extends string> = {
   full?: boolean;
 };
 
-export const SegmentedControl = <T extends string>({ options, value, onChange, label, full = false }: TSegmentedProps<T>) => (
-  <div className={`${styles.segmented} ${full ? styles.full : ''}`} role="radiogroup" aria-label={label}>
-    {options.map(option => (
-      <button
-        key={option.value}
-        type="button"
-        role="radio"
-        aria-checked={option.value === value}
-        className={`${styles.segment} ${option.value === value ? styles.segmentActive : ''}`}
-        onClick={() => onChange(option.value)}>
-        {option.label}
-      </button>
-    ))}
-  </div>
-);
+export const SegmentedControl = <T extends string>({ options, value, onChange, label, full = false }: TSegmentedProps<T>) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const { rect, ready } = useIndicator(ref, '[aria-checked="true"]', [value, options.length]);
+  return (
+    <div ref={ref} className={`${styles.segmented} ${full ? styles.full : ''}`} role="radiogroup" aria-label={label}>
+      {rect && (
+        <span
+          className={`${styles.thumb} ${ready ? styles.thumbReady : ''}`}
+          style={{ transform: `translateX(${rect.x}px)`, width: rect.width }}
+          aria-hidden="true" />
+      )}
+      {options.map(option => (
+        <button
+          key={option.value}
+          type="button"
+          role="radio"
+          aria-checked={option.value === value}
+          className={`${styles.segment} ${option.value === value ? styles.segmentActive : ''}`}
+          onClick={() => onChange(option.value)}>
+          {option.label}
+        </button>
+      ))}
+    </div>
+  );
+};
 
 type TTextFieldProps = {
   value: string;

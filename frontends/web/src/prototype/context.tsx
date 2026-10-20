@@ -5,7 +5,8 @@
 import { createContext, useContext } from 'react';
 
 export type TDirectionKey = 'E';
-export type TVariantKey = '0' | TDirectionKey;
+// Variant 0 is today's app, variant 1 the redesign.
+export type TVariantKey = '0' | '1';
 export type TThemeSetting = 'auto' | 'light' | 'dark';
 
 export type TPrototypeContext = {

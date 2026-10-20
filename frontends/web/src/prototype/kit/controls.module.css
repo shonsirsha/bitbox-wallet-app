@@ -1,6 +1,7 @@
 /* Segmented control */
 
 .segmented {
+  position: relative;
   display: inline-flex;
   padding: 3px;
   gap: 2px;
@@ -12,6 +13,8 @@
 .full .segment { flex: 1; }
 
 .segment {
+  position: relative;
+  z-index: 1;
   height: 26px;
   padding: 0 10px;
   border-radius: calc(var(--k-segmented-radius, var(--k-radius-m)) - 2px);
@@ -23,12 +26,21 @@
 
 .segment:hover { color: var(--k-text); }
 
+/* The selected option's label sits on the sliding thumb. */
 .segmentActive,
-.segmentActive:hover {
+.segmentActive:hover { color: var(--k-text); }
+
+.thumb {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 0;
+  border-radius: calc(var(--k-segmented-radius, var(--k-radius-m)) - 2px);
   background: var(--k-surface);
-  color: var(--k-text);
   box-shadow: 0 1px 2px rgba(29, 29, 27, .12);
 }
+
+.thumbReady { transition: transform .28s var(--k-ease), width .28s var(--k-ease); }
 
 /* Search field */
 
@@ -85,7 +97,7 @@
   flex: none;
   border-radius: 13px;
   background: var(--k-surface-3);
-  transition: background-color .2s var(--k-ease);
+  transition: background-color .25s var(--k-ease);
 }
 
 .toggleOn { background: var(--k-accent); }
@@ -93,13 +105,15 @@
 .knob {
   position: absolute;
   top: 3px;
-  left: 3px;
+  inset-inline-start: 3px;
   width: 20px;
   height: 20px;
   border-radius: 50%;
   background: #FFFFFF;
   box-shadow: 0 1px 3px rgba(29, 29, 27, .25);
-  transition: transform .2s var(--k-ease);
+  transition: transform .28s var(--k-ease);
 }
+
+[dir='rtl'] .toggleOn .knob { transform: translateX(-18px); }
 
 .toggleOn .knob { transform: translateX(18px); }
