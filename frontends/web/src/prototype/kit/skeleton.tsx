@@ -5,7 +5,7 @@ import styles from './skeleton.module.css';
 type TProps = {
   width?: number | string;
   height?: number | string;
-  radius?: 's' | 'm' | 'l' | 'pill';
+  radius?: 's' | 'pill';
 };
 
 // Loading placeholder: `undefined` data renders this, never a spinner.

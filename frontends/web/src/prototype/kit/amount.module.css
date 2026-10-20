@@ -30,8 +30,6 @@
 .sm { font-size: var(--k-fs-small); font-weight: 400; }
 
 .muted { color: var(--k-text-2); }
-.positive { color: var(--k-positive); }
-.negative { color: var(--k-text); }
 
 .unit {
   font-size: .78em;

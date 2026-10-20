@@ -11,17 +11,14 @@ type TProps = {
   trailing?: ReactNode;
   trailingSub?: ReactNode;
   href?: string;
-  onClick?: () => void;
   chevron?: boolean;
   selected?: boolean;
-  className?: string;
 };
 
 export const ListRow = ({
-  leading, title, subtitle, trailing, trailingSub, href, onClick, chevron = false, selected = false, className = '',
+  leading, title, subtitle, trailing, trailingSub, href, chevron = false, selected = false,
 }: TProps) => {
-  const interactive = !!(href || onClick);
-  const classes = `${styles.row} ${interactive ? styles.interactive : ''} ${selected ? styles.selected : ''} ${className}`;
+  const classes = `${styles.row} ${href ? styles.interactive : ''} ${selected ? styles.selected : ''}`;
   const content = (
     <>
       {leading && <span className={styles.leading}>{leading}</span>}
@@ -41,13 +38,10 @@ export const ListRow = ({
   if (href) {
     return <a className={classes} href={href} aria-current={selected ? 'page' : undefined}>{content}</a>;
   }
-  if (onClick) {
-    return <button type="button" className={classes} onClick={onClick}>{content}</button>;
-  }
   return <div className={classes}>{content}</div>;
 };
 
 // Groups rows with the direction's divider style.
-export const List = ({ children, className = '' }: { children: ReactNode; className?: string }) => (
-  <div className={`${styles.list} ${className}`} role="list">{children}</div>
+export const List = ({ children }: { children: ReactNode }) => (
+  <div className={styles.list} role="list">{children}</div>
 );

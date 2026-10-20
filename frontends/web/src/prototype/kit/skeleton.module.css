@@ -5,8 +5,6 @@
 }
 
 .s { border-radius: var(--k-radius-s); }
-.m { border-radius: var(--k-radius-m); }
-.l { border-radius: var(--k-radius-l); }
 .pill { border-radius: var(--k-radius-pill); }
 
 .rows { display: flex; flex-direction: column; }

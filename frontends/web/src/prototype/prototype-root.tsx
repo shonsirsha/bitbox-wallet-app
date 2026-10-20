@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
-// PROTOTYPE (throwaway): "Five UI-refresh directions for the whole app, switchable via ?variant=
-// on the existing routes; variant 0 is today's UI." The query sits before the hash, so in-app
+// PROTOTYPE (throwaway): "The Calm cards UI refresh (variant E) next to today's UI (variant 0),
+// switchable via ?variant= on the existing routes." The query sits before the hash, so in-app
 // navigation keeps the selected variant and links stay shareable.
 
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
@@ -13,16 +13,12 @@ const PrototypeApp = lazy(() => import('./prototype-app').then(module => ({ defa
 
 export const VARIANTS: TVariant[] = [
   { key: '0', name: 'Current app' },
-  { key: 'A', name: 'Quiet Swiss' },
-  { key: 'B', name: 'Vault' },
-  { key: 'C', name: 'Activity first' },
-  { key: 'D', name: 'Workspace' },
   { key: 'E', name: 'Calm cards' },
 ];
 
 const readVariant = (): TVariantKey => {
   const value = new URLSearchParams(window.location.search).get('variant')?.toUpperCase();
-  return (VARIANTS.find(variant => variant.key === value)?.key) || 'A';
+  return (VARIANTS.find(variant => variant.key === value)?.key) || 'E';
 };
 
 const readTheme = (): TThemeSetting => {

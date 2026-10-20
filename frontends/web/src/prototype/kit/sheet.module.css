@@ -56,28 +56,12 @@
   padding: 8px 20px 20px;
 }
 
-.footer {
-  display: flex;
-  gap: 12px;
-  padding: 12px 20px 20px;
-  border-top: 1px solid var(--k-border);
-}
-
 @media (min-width: 769px) {
+  .layer { justify-content: flex-end; align-items: stretch; }
+
   .grabber { display: none; }
 
-  .dialog { align-items: center; }
-
-  .dialog .sheet {
-    width: min(520px, calc(100vw - 64px));
-    max-height: min(760px, calc(100dvh - 64px));
-    border-radius: var(--k-radius-xl);
-    animation: pop .22s var(--k-ease);
-  }
-
-  .panel { justify-content: flex-end; align-items: stretch; }
-
-  .panel .sheet {
+  .sheet {
     width: min(440px, 100vw);
     max-height: none;
     height: 100%;
@@ -87,12 +71,10 @@
 
   .header { padding: 20px 24px 8px; }
   .body { padding: 8px 24px 24px; }
-  .footer { padding: 16px 24px 24px; }
 }
 
-[dir='rtl'] .panel { justify-content: flex-start; }
+[dir='rtl'] .layer { justify-content: flex-start; }
 
 @keyframes fade { from { opacity: 0; } }
 @keyframes rise { from { transform: translateY(24px); opacity: 0; } }
-@keyframes pop { from { transform: scale(.97); opacity: 0; } }
 @keyframes slide { from { transform: translateX(24px); opacity: 0; } }

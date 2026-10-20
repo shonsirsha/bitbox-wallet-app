@@ -29,6 +29,12 @@
   /* Menu items and account rows keep clear space between their highlight shapes. */
   --k-nav-gap: 8px;
   --k-list-gap: 8px;
+  /* Floating content in the panel (sort and filter popover) uses the dark surfaces too. */
+  --k-surface: #2c2c2a;
+  --k-surface-3: #3d3d3b;
+  --k-border: rgba(255, 255, 255, .1);
+  --k-popover-bg: #262624;
+  --k-shadow-2: 0 16px 48px rgba(0, 0, 0, .55);
 }
 
 /* In dark theme the panel steps one shade below the page so it keeps an edge. */
@@ -172,11 +178,30 @@
   --k-input-focus-bg: var(--k-surface-3);
 }
 
-.accountsFilters {
+/* Sort and filter (popover from tablet up, bottom sheet on phones). */
+.filters {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  --k-row-min-h: 44px;
+  gap: 20px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sheetFilters {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 4px;
+}
+
+.sheetActions {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
 }
 
 /* In the sidebar: a separator under the menu, then compact dark rows like the menu items. */
@@ -204,6 +229,9 @@
 
 .sidebarAccounts .accountsTools { margin-inline: 2px -4px; }
 
+/* In the sidebar the popover spans the account tools row. */
+.sidebarAccounts { --k-popover-w: 100%; }
+
 /* On the page: tools sit on the grey canvas, so their fills take the card colour. */
 .pageAccounts {
   display: flex;
@@ -211,8 +239,7 @@
   gap: 12px;
 }
 
-.pageAccounts .accountsTools,
-.pageAccounts .accountsFilters {
+.pageAccounts .accountsTools {
   --k-surface-2: var(--k-surface);
   --k-secondary-bg: var(--k-surface);
 }

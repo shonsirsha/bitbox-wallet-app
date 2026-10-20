@@ -4,46 +4,37 @@ import type { ReactNode } from 'react';
 import { Icon, TIconName } from './icon';
 import styles from './button.module.css';
 
-type TCommon = {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
+type TButtonProps = {
+  children: ReactNode;
+  variant?: 'primary' | 'secondary' | 'ghost';
+  size?: 'sm' | 'md';
   icon?: TIconName;
   full?: boolean;
-  disabled?: boolean;
-  className?: string;
-};
-
-type TButtonProps = TCommon & {
-  children: ReactNode;
+  // A link (href) or an action (onClick).
   href?: string;
+  onClick?: () => void;
   // Opens href outside the app (block explorer, support pages).
   external?: boolean;
-  onClick?: () => void;
 };
 
-const classesFor = ({ variant = 'primary', size = 'md', full, className = '' }: TCommon) => (
-  `${styles.button} ${styles[variant]} ${styles[size]} ${full ? styles.full : ''} ${className}`
-);
-
-export const Button = ({ children, href, external = false, onClick, icon, disabled, ...rest }: TButtonProps) => {
+export const Button = ({
+  children, variant = 'secondary', size = 'md', icon, full = false, href, onClick, external = false,
+}: TButtonProps) => {
+  const className = `${styles.button} ${styles[variant]} ${styles[size]} ${full ? styles.full : ''}`;
   const content = (
     <>
-      {icon && <Icon name={icon} size={rest.size === 'sm' ? 16 : 18} />}
+      {icon && <Icon name={icon} size={size === 'sm' ? 16 : 18} />}
       <span>{children}</span>
     </>
   );
-  if (href && !disabled) {
+  if (href) {
     return (
-      <a className={classesFor(rest)} href={href} {...(external ? { target: '_blank', rel: 'noreferrer' } : {})}>
+      <a className={className} href={href} {...(external ? { target: '_blank', rel: 'noreferrer' } : {})}>
         {content}
       </a>
     );
   }
-  return (
-    <button type="button" className={classesFor(rest)} onClick={onClick} disabled={disabled}>
-      {content}
-    </button>
-  );
+  return <button type="button" className={className} onClick={onClick}>{content}</button>;
 };
 
 type TIconButtonProps = {
@@ -51,7 +42,7 @@ type TIconButtonProps = {
   label: string;
   // Shows the label under the button (action rows) instead of only to assistive tech.
   caption?: boolean;
-  variant?: 'plain' | 'filled' | 'accent';
+  variant?: 'plain' | 'filled';
   size?: 'sm' | 'md' | 'lg';
   href?: string;
   onClick?: () => void;

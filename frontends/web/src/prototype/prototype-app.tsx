@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
-// PROTOTYPE (throwaway): renders one direction around the current route.
+// PROTOTYPE (throwaway): renders the Calm cards UI around the current route.
 
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PrototypeContext, TDirectionKey, TPrototypeContext, TThemeSetting } from './context';
 import { DIRECTIONS } from './directions';
@@ -30,10 +30,8 @@ export const PrototypeApp = ({ direction, themeSetting }: TProps) => {
   const systemDark = useSystemDark();
   const screen = useScreen();
   const [hideAmounts, setHideAmounts] = useState(false);
-  // Vault is dark-first; the others follow the OS until a theme is picked in the switcher.
-  const theme = themeSetting === 'auto'
-    ? (direction === 'B' || systemDark ? 'dark' : 'light')
-    : themeSetting;
+  // Follows the OS until a theme is picked in the switcher.
+  const theme = themeSetting === 'auto' ? (systemDark ? 'dark' : 'light') : themeSetting;
 
   const context = useMemo<TPrototypeContext>(() => ({
     direction,
@@ -67,9 +65,7 @@ export const PrototypeApp = ({ direction, themeSetting }: TProps) => {
   return (
     <PrototypeContext.Provider value={context}>
       <div ref={rootRef} className="proto-root" data-direction={direction} data-theme={theme} dir={i18n.dir(i18n.language)}>
-        <Suspense fallback={null}>
-          <Direction screen={screen} />
-        </Suspense>
+        <Direction screen={screen} />
       </div>
     </PrototypeContext.Provider>
   );

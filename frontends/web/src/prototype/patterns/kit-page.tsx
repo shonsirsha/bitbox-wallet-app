@@ -1,30 +1,29 @@
 // SPDX-License-Identifier: Apache-2.0
 
-// PROTOTYPE (throwaway): every kit component and state, rendered with the current direction's
-// tokens. This page is the whole design vocabulary: screens may only use what is shown here.
+// PROTOTYPE (throwaway): every kit component in the variants the Calm cards screens use.
+// This page is the whole design vocabulary: screens may only use what is shown here.
 
-import { useState } from 'react';
+import { CSSProperties, useState } from 'react';
 import type { TAmountWithConversions } from '@/api/account';
 import {
-  Amount, AreaChart, Badge, Button, CoinIcon, Delta, DeviceConfirm, DeviceStatus, GlyphIcon, Icon, IconButton,
-  List, ListRow, Logo, Message, Navigation, PageHeader, Section, SegmentedControl, Sheet, Skeleton, SkeletonRows,
-  TextField, TIconName, Toggle,
+  Amount, AreaChart, Badge, Button, Chip, CoinIcon, Delta, DeviceStatus, GlyphIcon, Icon, IconButton, List,
+  ListRow, Logo, Message, Navigation, PageHeader, Popover, Section, SegmentedControl, Sheet, Skeleton, SkeletonRows,
+  TIconName, TextField, Toggle,
 } from '../kit';
-import { TDirectionKey, usePrototype } from '../context';
 import { chartPoints, RANGE_OPTIONS, TRange, useChart } from '../data';
 import styles from './kit-page.module.css';
 
 const SAMPLE: TAmountWithConversions = {
-  amount: '0.38708272',
+  amount: '0.34947407',
   unit: 'BTC',
   estimated: false,
-  conversions: { USD: '40\'353.37', EUR: '34\'744.25', CHF: '32\'161.64', GBP: '30\'184.32', BTC: '0.38708272', sat: '38708272' },
+  conversions: { USD: '36\'432.67', EUR: '31\'368.53', CHF: '29\'036.84', GBP: '27\'251.64', BTC: '0.34947407', sat: '34947407' },
 };
 
 const ICONS: TIconName[] = [
   'portfolio', 'accounts', 'lightning', 'marketplace', 'settings', 'send', 'receive', 'self', 'swap', 'buy', 'plus',
-  'back', 'chevron', 'chevronDown', 'close', 'search', 'eye', 'eyeOff', 'copy', 'external', 'check', 'info',
-  'warning', 'failed', 'clock', 'more', 'device', 'lock', 'shield', 'qr', 'menu', 'wallet', 'note', 'filter',
+  'back', 'chevron', 'close', 'search', 'filter', 'eye', 'eyeOff', 'copy', 'external', 'note', 'check', 'info',
+  'failed', 'clock', 'device', 'wallet', 'arrowUp', 'arrowDown',
 ];
 
 const NAV = [
@@ -35,172 +34,167 @@ const NAV = [
   { key: 'settings', label: 'Settings', icon: 'settings' as const, href: '#/prototype/kit' },
 ];
 
-type TNavLayoutKey = 'sidebar' | 'rail' | 'topbar' | 'tabbar' | 'floating';
-
-const NAV_LAYOUTS: { key: TNavLayoutKey; label: string; wide?: boolean }[] = [
-  { key: 'sidebar', label: 'Sidebar' },
-  { key: 'rail', label: 'Rail' },
-  { key: 'topbar', label: 'Top bar', wide: true },
-  { key: 'tabbar', label: 'Tab bar', wide: true },
-  { key: 'floating', label: 'Floating tab bar', wide: true },
-];
-
-// Which navigation layouts each direction puts on which screen size.
-const NAV_USAGE: Record<TDirectionKey, Partial<Record<TNavLayoutKey, string>>> = {
-  A: { sidebar: 'tablet & desktop', tabbar: 'phone' },
-  B: { sidebar: 'desktop', rail: 'tablet', tabbar: 'phone' },
-  C: {},
-  D: { tabbar: 'phone' },
-  E: { sidebar: 'tablet & desktop', floating: 'phone' },
-};
-
-const NAV_NOTE: Partial<Record<TDirectionKey, string>> = {
-  C: 'Activity first has no navigation bar at any size: an account switcher in the app bar and a Send/Receive dock replace it.',
-  D: 'From tablet up, Workspace navigates with its panes (accounts list, content, inspector) instead of a navigation bar.',
-};
+// The dark navigation panel's tokens (the sidebar keeps them in both themes).
+const DARK_PANEL = {
+  '--k-nav-bg': '#1D1D1B',
+  '--k-nav-text': '#999999',
+  '--k-nav-text-active': '#F5F5F5',
+  '--k-nav-active-bg': 'rgba(255, 255, 255, .08)',
+  '--k-nav-border': 'transparent',
+  '--k-nav-gap': '8px',
+  '--k-text': '#F5F5F5',
+  '--k-text-2': '#999999',
+  '--k-surface-2': '#333333',
+  background: '#1D1D1B',
+} as CSSProperties;
 
 export const KitPage = () => {
-  const { direction } = usePrototype();
   const chart = useChart();
   const [range, setRange] = useState<TRange>('year');
+  const [sort, setSort] = useState<'value' | 'name'>('value');
+  const [coin, setCoin] = useState(true);
   const [toggle, setToggle] = useState(true);
   const [text, setText] = useState('');
-  const [sheet, setSheet] = useState<'dialog' | 'panel' | null>(null);
+  const [popover, setPopover] = useState(false);
+  const [sheet, setSheet] = useState(false);
   return (
     <div className={styles.page}>
-      <PageHeader title="Component kit" subtitle={`Direction ${direction}: the only building blocks the screens use`} />
+      <PageHeader title="Component kit" subtitle="Calm cards: the only building blocks the screens use" />
 
-      <Section title="Brand">
-        <div className={styles.row}><Logo height={22} /></div>
+      <Section title="Logo">
+        <div className={styles.row}>
+          <Logo height={22} />
+          <span className={styles.darkTile} style={DARK_PANEL}><Logo height={22} onDark /></span>
+        </div>
       </Section>
 
       <Section title="Button">
         <div className={styles.row}>
-          <Button icon="send">Primary</Button>
-          <Button variant="secondary" icon="receive">Secondary</Button>
-          <Button variant="ghost">Ghost</Button>
-          <Button variant="danger">Danger</Button>
-          <Button disabled>Disabled</Button>
-          <Button size="sm" variant="secondary">Small</Button>
-          <Button size="lg">Large</Button>
+          <Button variant="primary" onClick={() => {}}>Show 5 accounts</Button>
+          <Button href="#/prototype/kit">Secondary</Button>
+          <Button variant="ghost" href="#/prototype/kit">Ghost</Button>
+          <Button variant="ghost" size="sm" href="#/prototype/kit">See all</Button>
+          <Button icon="external" href="#/prototype/kit">View in block explorer</Button>
         </div>
       </Section>
 
       <Section title="IconButton">
         <div className={styles.row}>
           <IconButton icon="eye" label="Plain" />
-          <IconButton icon="more" label="Filled" variant="filled" />
-          <IconButton icon="plus" label="Accent" variant="accent" />
-          <IconButton icon="send" label="Send" variant="filled" size="lg" caption />
-          <IconButton icon="receive" label="Receive" variant="filled" size="lg" caption />
-          <IconButton icon="buy" label="Buy" variant="filled" size="lg" caption />
-          <IconButton icon="swap" label="Swap" variant="filled" size="lg" caption />
+          <IconButton icon="filter" label="Active" active />
+          <IconButton icon="plus" label="Small" size="sm" />
+          <IconButton icon="close" label="Filled" variant="filled" size="sm" />
+          <span className={styles.actionRow}>
+            <IconButton icon="send" label="Send" variant="filled" size="lg" caption />
+            <IconButton icon="receive" label="Receive" variant="filled" size="lg" caption />
+            <IconButton icon="buy" label="Buy" variant="filled" size="lg" caption />
+            <IconButton icon="swap" label="Swap" variant="filled" size="lg" caption />
+          </span>
         </div>
       </Section>
 
-      <Section title="Amount">
+      <Section title="Amount and Delta">
         <div className={styles.stack}>
           <Amount value={SAMPLE} size="hero" />
-          <Amount value={SAMPLE} as="coin" size="xl" />
+          <Amount value={SAMPLE} as="coin" size="hero" />
           <div className={styles.row}>
-            <Amount value={SAMPLE} as="coin" size="lg" sign="+" />
-            <Amount value={SAMPLE} size="md" sign="−" />
-            <Amount value={SAMPLE} size="sm" tone="muted" />
-            <Amount value={undefined} size="md" />
+            <Amount value={SAMPLE} as="coin" size="xl" sign="+" />
+            <Amount value={SAMPLE} size="lg" tone="muted" />
+            <Amount value={SAMPLE} sign="−" />
+            <Amount value={SAMPLE} as="coin" size="sm" tone="muted" />
+            <Amount value={undefined} />
+          </div>
+          <div className={styles.row}>
+            <Delta value={0.2071} />
+            <Delta value={0.2071} label="1Y" />
+            <Delta value={-0.0312} />
           </div>
         </div>
       </Section>
 
-      <Section title="ListRow">
-        <List>
-          <ListRow leading={<CoinIcon coinCode="btc" />} title="Bitcoin" subtitle="0.38 708 272 BTC" trailing={<Amount value={SAMPLE} />} trailingSub="41.2%" href="#/prototype/kit" chevron />
-          <ListRow leading={<CoinIcon coinCode="eth" badge="receive" />} title="Received" subtitle="Today, 14:03" trailing={<Amount value={SAMPLE} as="coin" sign="+" />} trailingSub={<Amount value={SAMPLE} size="sm" tone="muted" />} href="#/prototype/kit" />
-          <ListRow leading={<GlyphIcon icon="clock" />} title="Pending" subtitle={<Badge tone="warning">Pending</Badge>} trailing="—" selected />
-          <ListRow title="Without leading" subtitle="Key/value use" trailing="Value" />
-        </List>
-      </Section>
-
-      <Section title="Badge and Delta">
+      <Section title="Badge">
         <div className={styles.row}>
           <Badge>Neutral</Badge>
-          <Badge tone="info">Info</Badge>
-          <Badge tone="success" dot>Connected</Badge>
+          <Badge tone="success" icon="check">Confirmed</Badge>
           <Badge tone="warning" icon="clock">Pending</Badge>
           <Badge tone="danger">Failed</Badge>
-          <Delta value={0.2071} />
-          <Delta value={-0.0312} />
         </div>
       </Section>
 
-      <Section title="SegmentedControl, TextField and Toggle">
+      <Section title="ListRow and coin icons">
+        <List>
+          <ListRow href="#/prototype/kit" leading={<GlyphIcon icon="wallet" size={40} />} title="All accounts" subtitle="5 accounts" trailing={<Amount value={SAMPLE} />} chevron />
+          <ListRow href="#/prototype/kit" leading={<CoinIcon coinCode="btc" size={40} />} title="Savings" subtitle={<Amount value={SAMPLE} as="coin" size="sm" tone="muted" />} trailing={<Amount value={SAMPLE} />} chevron />
+          <ListRow href="#/prototype/kit" selected leading={<CoinIcon coinCode="btc" size={36} badge="pending" />} title="Received" subtitle={<Badge tone="warning">Pending</Badge>} trailing={<Amount value={SAMPLE} as="coin" sign="+" />} trailingSub={<Amount value={SAMPLE} size="sm" tone="muted" sign="+" />} />
+          <ListRow title="Value when received" trailing="$542.10" />
+        </List>
+        <div className={styles.row}>
+          {['btc', 'eth', 'eth-erc20-usdc', 'ltc', 'lightning'].map(code => <CoinIcon key={code} coinCode={code} size={36} />)}
+          {(['receive', 'send', 'self', 'pending', 'failed'] as const).map(badge => <CoinIcon key={badge} coinCode="btc" size={36} badge={badge} />)}
+        </div>
+      </Section>
+
+      <Section title="SegmentedControl, TextField, Toggle and Chip">
         <div className={styles.stack}>
-          <SegmentedControl label="Range" options={RANGE_OPTIONS} value={range} onChange={setRange} />
-          <div className={styles.field}>
-            <TextField label="Search" icon="search" value={text} onChange={setText} placeholder="Address, amount or note" />
+          <div className={styles.row}>
+            <SegmentedControl label="Range" options={RANGE_OPTIONS} value={range} onChange={setRange} />
+            <span className={styles.field}><TextField icon="search" value={text} onChange={setText} placeholder="Search accounts" /></span>
+            <Toggle checked={toggle} onChange={setToggle} label="Toggle" />
           </div>
-          <div className={styles.row}><Toggle checked={toggle} onChange={setToggle} label="Toggle" /> <span>Toggle</span></div>
+          <div className={styles.row}>
+            <Chip selected={!coin} onClick={() => setCoin(false)}>All coins</Chip>
+            <Chip selected={coin} onClick={() => setCoin(value => !value)} leading={<CoinIcon coinCode="btc" size={20} />} count={2}>Bitcoin</Chip>
+            <Chip selected={false} onClick={() => {}} leading={<CoinIcon coinCode="eth" size={20} />} count={1}>Ethereum</Chip>
+          </div>
+        </div>
+      </Section>
+
+      <Section title="Popover and Sheet">
+        <div className={styles.row}>
+          <Popover
+            open={popover}
+            onClose={() => setPopover(false)}
+            label="Example popover"
+            trigger={<IconButton icon="filter" label="Open popover" active={popover} onClick={() => setPopover(value => !value)} />}>
+            <Section variant="plain" title="Sort by">
+              <SegmentedControl label="Sort" options={[{ value: 'value', label: 'Value' }, { value: 'name', label: 'Name' }]} value={sort} onChange={setSort} full />
+            </Section>
+          </Popover>
+          <Button onClick={() => setSheet(true)}>Open sheet</Button>
         </div>
       </Section>
 
       <Section title="Message">
-        <div className={styles.stack}>
-          <Message tone="info" title="Info">Keep your recovery words offline.</Message>
-          <Message tone="success" title="Success">Backup verified.</Message>
-          <Message tone="warning" title="Warning" action={<Button size="sm" variant="secondary">Update</Button>}>A firmware update is available.</Message>
-          <Message tone="danger" title="Error" onDismiss={() => {}}>Could not connect to the BitBox.</Message>
-        </div>
+        <Message title="Coming in the next design round">Screens that are not designed yet show this inside the app frame.</Message>
       </Section>
 
-      <Section title="DeviceStatus and DeviceConfirm">
-        <div className={styles.grid}>
-          <DeviceStatus name="My BitBox" state="connected" detail="Firmware 9.24.0, up to date" variant="card" />
-          <div className={styles.stack}>
-            <DeviceStatus name="My BitBox" state="connected" detail="Firmware 9.24.0" />
-            <DeviceStatus name="My BitBox" state="disconnected" detail="Watch-only" />
-            <div className={styles.row}><DeviceStatus name="My BitBox" state="connected" variant="chip" /><DeviceStatus name="My BitBox" state="confirm" variant="chip" /></div>
-          </div>
-          <DeviceConfirm title="Confirm on your BitBox" values={[{ label: 'Amount', value: '0.0214 BTC' }, { label: 'To', value: 'bc1q…f7k2', mono: true }]}>
-            Check that the address on the device matches.
-          </DeviceConfirm>
+      <Section title="DeviceStatus">
+        <div className={styles.row}>
+          <span className={styles.darkTile} style={DARK_PANEL}><DeviceStatus name="My BitBox" state="connected" detail="v9.24.0" onDark /></span>
+          <span className={styles.darkTile} style={DARK_PANEL}><DeviceStatus name="My BitBox" state="disconnected" onDark /></span>
         </div>
       </Section>
 
       <Section title="AreaChart">
-        <AreaChart points={chartPoints(chart, range)} height={140} formatLabel={(time) => new Date(time * 1000).toLocaleDateString()} />
+        <AreaChart points={chartPoints(chart, range)} height={140} />
       </Section>
 
-      <Section title="Navigation: what this direction uses">
+      <Section title="Navigation">
         <div className={styles.navPreviews}>
-          {NAV_LAYOUTS.map(layout => {
-            const usage = NAV_USAGE[direction][layout.key];
-            return (
-              <div key={layout.key} className={styles.navPreview}>
-                <div className={styles.navCaption}>
-                  <span>{layout.label}</span>
-                  {usage ? <Badge tone="success" icon="check">Used on {usage}</Badge> : <Badge>Not used here</Badge>}
-                </div>
-                <div className={`${styles.navFrame} ${layout.wide ? styles.navFrameWide : ''} ${usage ? '' : styles.navUnused}`}>
-                  {layout.key === 'sidebar' && <Navigation layout="sidebar" items={NAV} header={<Logo height={18} />} />}
-                  {layout.key === 'rail' && <Navigation layout="rail" items={NAV} />}
-                  {layout.key === 'topbar' && <Navigation layout="topbar" items={NAV} />}
-                  {layout.key === 'tabbar' && <Navigation layout="tabbar" items={NAV} />}
-                  {layout.key === 'floating' && <Navigation layout="tabbar" floating items={NAV} />}
-                </div>
-              </div>
-            );
-          })}
+          <div className={styles.navFrame} style={DARK_PANEL}>
+            <Navigation layout="sidebar" items={NAV.filter(item => item.key === 'portfolio' || item.key === 'market')} header={<Logo height={18} onDark />} />
+          </div>
+          <div className={`${styles.navFrame} ${styles.navFrameWide}`}>
+            <Navigation layout="tabbar" items={NAV} />
+          </div>
         </div>
-        {NAV_NOTE[direction] && <Message tone="info">{NAV_NOTE[direction]}</Message>}
       </Section>
 
-      <Section title="Sheet, PageHeader and Skeleton">
+      <Section title="PageHeader, Section and Skeleton">
         <div className={styles.stack}>
-          <div className={styles.row}>
-            <Button variant="secondary" onClick={() => setSheet('dialog')}>Open dialog sheet</Button>
-            <Button variant="secondary" onClick={() => setSheet('panel')}>Open panel sheet</Button>
-          </div>
-          <PageHeader title="Compact header" size="compact" back="#/prototype/kit" actions={<IconButton icon="more" label="More" />} />
-          <div className={styles.row}><Skeleton width={160} height={28} /><Skeleton width={80} height={28} radius="pill" /></div>
+          <PageHeader title="Savings" subtitle="Bitcoin" size="compact" back="#/prototype/kit" actions={<IconButton icon="eye" label="Hide amounts" />} />
+          <Section title="Card section"><p className={styles.copy}>A Section draws the calm white card.</p></Section>
+          <div className={styles.row}><Skeleton width={160} height={28} /><Skeleton width={40} height={40} radius="pill" /></div>
           <SkeletonRows count={2} />
         </div>
       </Section>
@@ -211,9 +205,8 @@ export const KitPage = () => {
         </div>
       </Section>
 
-      <Sheet open={sheet !== null} onClose={() => setSheet(null)} title="Sheet" presentation={sheet || 'dialog'}
-        footer={<><Button variant="secondary" full onClick={() => setSheet(null)}>Cancel</Button><Button full onClick={() => setSheet(null)}>Confirm</Button></>}>
-        <p>Bottom sheet on phones; {sheet === 'panel' ? 'side panel' : 'centered dialog'} from tablet up.</p>
+      <Sheet open={sheet} onClose={() => setSheet(false)} title="Sheet">
+        <p className={styles.copy}>A bottom sheet on phones and a side panel from tablet up.</p>
       </Sheet>
     </div>
   );

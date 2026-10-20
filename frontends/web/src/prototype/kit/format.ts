@@ -65,7 +65,6 @@ export const middleEllipsis = (value: string, keep = 8) => (
 
 const DAY = 24 * 60 * 60 * 1000;
 
-export const dayKey = (iso: string | null) => (iso ? new Date(iso).toDateString() : 'pending');
 
 export const formatDayLabel = (iso: string | null, locale: string, month: 'long' | 'short' = 'long') => {
   if (!iso) {
@@ -84,16 +83,7 @@ export const formatDayLabel = (iso: string | null, locale: string, month: 'long'
   return new Intl.DateTimeFormat(locale, { day: 'numeric', month, ...(sameYear ? {} : { year: 'numeric' }) }).format(date);
 };
 
-export const formatMonthLabel = (iso: string | null, locale: string) => {
-  if (!iso) {
-    return 'Pending';
-  }
-  return new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }).format(new Date(iso));
-};
 
-export const formatTime = (iso: string | null, locale: string) => (
-  iso ? new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' }).format(new Date(iso)) : ''
-);
 
 export const formatShortDate = (iso: string | null, locale: string) => (
   iso ? new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(iso)) : ''

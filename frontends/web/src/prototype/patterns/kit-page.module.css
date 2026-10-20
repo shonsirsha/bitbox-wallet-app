@@ -15,16 +15,26 @@
 .stack {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
-.field { max-width: 420px; }
+.field { width: min(320px, 100%); }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
-  align-items: start;
+.actionRow {
+  display: inline-flex;
+  gap: 8px;
+}
+
+.copy {
+  color: var(--k-text-2);
+  font-size: var(--k-fs-small);
+}
+
+.darkTile {
+  display: inline-flex;
+  min-width: 220px;
+  padding: 14px 16px;
+  border-radius: var(--k-radius-m);
 }
 
 .navPreviews {
@@ -33,38 +43,18 @@
   gap: 16px;
 }
 
-.navPreview {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.navCaption {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  font-size: var(--k-fs-small);
-  font-weight: 600;
-}
-
-.navUnused { opacity: .45; }
-
-/* transform makes the fixed tab bars position inside the frame */
+/* transform makes the fixed tab bar position inside the frame */
 .navFrame {
   position: relative;
   transform: translateZ(0);
-  height: 320px;
+  height: 220px;
   overflow: hidden;
-  border: 1px dashed var(--k-border-strong);
   border-radius: var(--k-radius-m);
   background: var(--k-bg);
+  box-shadow: inset 0 0 0 1px var(--k-border);
 }
 
-.navFrameWide {
-  height: 160px;
-  padding: 12px;
-}
+.navFrameWide { height: 140px; }
 
 .icons {
   display: grid;

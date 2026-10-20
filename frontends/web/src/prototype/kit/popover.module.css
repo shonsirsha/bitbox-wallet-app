@@ -1,0 +1,32 @@
+.anchor {
+  position: relative;
+  display: inline-flex;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  inset-inline-end: 0;
+  z-index: 30;
+  width: var(--k-popover-w, 300px);
+  max-width: calc(100vw - 24px);
+  padding: 16px;
+  border-radius: var(--k-radius-l);
+  background: var(--k-popover-bg, var(--k-surface));
+  color: var(--k-text);
+  box-shadow: 0 0 0 1px var(--k-border), var(--k-shadow-2);
+  animation: pop .16s var(--k-ease);
+  transform-origin: top right;
+}
+
+[dir='rtl'] .panel { transform-origin: top left; }
+
+@keyframes pop {
+  from { opacity: 0; transform: translateY(-4px) scale(.98); }
+}

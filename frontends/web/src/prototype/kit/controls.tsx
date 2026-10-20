@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import type { ReactNode } from 'react';
 import { IconButton } from './button';
 import { Icon, TIconName } from './icon';
 import styles from './controls.module.css';
@@ -12,14 +11,11 @@ type TSegmentedProps<T extends string> = {
   value: T;
   onChange: (value: T) => void;
   label: string;
-  size?: 'sm' | 'md';
   full?: boolean;
 };
 
-export const SegmentedControl = <T extends string>({
-  options, value, onChange, label, size = 'md', full = false,
-}: TSegmentedProps<T>) => (
-  <div className={`${styles.segmented} ${styles[size]} ${full ? styles.full : ''}`} role="radiogroup" aria-label={label}>
+export const SegmentedControl = <T extends string>({ options, value, onChange, label, full = false }: TSegmentedProps<T>) => (
+  <div className={`${styles.segmented} ${full ? styles.full : ''}`} role="radiogroup" aria-label={label}>
     {options.map(option => (
       <button
         key={option.value}
@@ -35,37 +31,24 @@ export const SegmentedControl = <T extends string>({
 );
 
 type TTextFieldProps = {
-  label?: string;
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
   icon?: TIconName;
-  trailing?: ReactNode;
-  helper?: ReactNode;
-  error?: ReactNode;
-  type?: 'text' | 'search';
-  mono?: boolean;
 };
 
-export const TextField = ({
-  label, value, onChange, placeholder, icon, trailing, helper, error, type = 'text', mono = false,
-}: TTextFieldProps) => (
-  <label className={styles.field}>
-    {label && <span className={styles.fieldLabel}>{label}</span>}
-    <span className={`${styles.inputWrap} ${error ? styles.inputError : ''}`}>
-      {icon && <Icon name={icon} size={18} className={styles.inputIcon} />}
-      <input
-        className={`${styles.input} ${mono ? styles.mono : ''}`}
-        type={type}
-        value={value}
-        placeholder={placeholder}
-        onChange={event => onChange(event.target.value)} />
-      {type === 'search' && value && (
-        <IconButton icon="close" label="Clear search" size="sm" onClick={() => onChange('')} className={styles.clear} />
-      )}
-      {trailing}
-    </span>
-    {(error || helper) && <span className={error ? styles.errorText : styles.helper}>{error || helper}</span>}
+// A search field with its own clear button.
+export const TextField = ({ value, onChange, placeholder, icon }: TTextFieldProps) => (
+  <label className={styles.inputWrap}>
+    {icon && <Icon name={icon} size={18} className={styles.inputIcon} />}
+    <input
+      className={styles.input}
+      type="search"
+      value={value}
+      placeholder={placeholder}
+      aria-label={placeholder}
+      onChange={event => onChange(event.target.value)} />
+    {value && <IconButton icon="close" label="Clear search" size="sm" onClick={() => onChange('')} className={styles.clear} />}
   </label>
 );
 

@@ -13,17 +13,9 @@
   background: var(--k-surface-2);
 }
 
-.dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: currentColor;
-}
-
-.info { background: var(--k-accent-soft); color: var(--k-accent-ink); }
 .success { background: var(--k-positive-soft); }
-.success .dot, .success svg { color: var(--k-positive); }
+.success svg { color: var(--k-positive); }
 .warning { background: var(--k-warning-soft); }
-.warning .dot, .warning svg { color: var(--k-warning); }
+.warning svg { color: var(--k-warning); }
 .danger { background: var(--k-negative-soft); }
-.danger .dot, .danger svg { color: var(--k-danger); }
+.danger svg { color: var(--k-danger); }

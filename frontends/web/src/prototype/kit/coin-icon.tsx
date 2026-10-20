@@ -37,9 +37,9 @@ export const CoinIcon = ({ coinCode, size = 36, badge }: TProps) => (
   </span>
 );
 
-// Neutral round icon for non-coin rows (e.g. "Send to self", settings entries).
-export const GlyphIcon = ({ icon, size = 36, tone = 'neutral' }: { icon: TIconName; size?: number; tone?: 'neutral' | 'accent' }) => (
-  <span className={`${styles.glyph} ${tone === 'accent' ? styles.glyphAccent : ''}`} style={{ width: size, height: size }}>
+// Neutral round icon for non-coin rows (e.g. "All accounts").
+export const GlyphIcon = ({ icon, size = 36 }: { icon: TIconName; size?: number }) => (
+  <span className={styles.glyph} style={{ width: size, height: size }}>
     <Icon name={icon} size={Math.round(size * .5)} />
   </span>
 );

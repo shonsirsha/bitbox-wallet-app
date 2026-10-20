@@ -62,7 +62,3 @@
   color: var(--k-text-2);
 }
 
-.glyphAccent {
-  background: var(--k-accent-soft);
-  color: var(--k-accent-ink);
-}

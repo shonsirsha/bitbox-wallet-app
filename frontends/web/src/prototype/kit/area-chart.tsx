@@ -12,9 +12,6 @@ type TProps = {
   points: TChartPoint[];
   height?: number;
   onScrub?: (point: TChartPoint | null) => void;
-  formatLabel?: (time: number) => string;
-  showRange?: boolean;
-  fill?: boolean;
 };
 
 const WIDTH = 1000;
@@ -33,7 +30,7 @@ const downsample = (points: TChartPoint[]) => {
   return sampled;
 };
 
-export const AreaChart = ({ points, height = 180, onScrub, formatLabel, showRange = true, fill = true }: TProps) => {
+export const AreaChart = ({ points, height = 180, onScrub }: TProps) => {
   const gradientId = useId();
   const [hover, setHover] = useState<number | null>(null);
   const data = useMemo(() => downsample(points), [points]);
@@ -69,8 +66,6 @@ export const AreaChart = ({ points, height = 180, onScrub, formatLabel, showRang
   };
 
   const hovered = hover !== null ? coords[hover] : undefined;
-  const first = data[0];
-  const last = data[data.length - 1];
 
   return (
     <div className={styles.chart}>
@@ -90,7 +85,7 @@ export const AreaChart = ({ points, height = 180, onScrub, formatLabel, showRang
               <stop offset="100%" stopColor="var(--k-chart-line)" stopOpacity="0" />
             </linearGradient>
           </defs>
-          {fill && <path d={area} fill={`url(#${gradientId})`} />}
+          <path d={area} fill={`url(#${gradientId})`} />
           <path d={line} fill="none" stroke="var(--k-chart-line)" strokeWidth="2" vectorEffect="non-scaling-stroke" strokeLinejoin="round" />
         </svg>
         {hovered && (
@@ -100,12 +95,6 @@ export const AreaChart = ({ points, height = 180, onScrub, formatLabel, showRang
           </>
         )}
       </div>
-      {showRange && formatLabel && first && last && (
-        <div className={styles.range}>
-          <span>{formatLabel(hover !== null && data[hover] ? data[hover].time : first.time)}</span>
-          {hover === null && <span>{formatLabel(last.time)}</span>}
-        </div>
-      )}
     </div>
   );
 };

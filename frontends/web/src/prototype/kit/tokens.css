@@ -10,7 +10,7 @@
  * Filled buttons use darkblue: white on #4F7998 is 4.6:1 (WCAG AA), white on #5E94BF is 3.25:1.
  * One extra neutral step, #6B6B6B, keeps tertiary text at AA on white (5.3:1) and #F5F5F5 (4.9:1);
  * the palette's #777 is 4.48:1 / 4.1:1.
- * Kit components only read --k-* tokens; directions only differ in these values and in layout.
+ * Kit components only read --k-* tokens. The Calm cards values follow the shared defaults.
  */
 
 .proto-root {
@@ -119,123 +119,7 @@
 }
 
 /* ---------------------------------------------------------------------------------------- */
-/* A · Quiet Swiss: no cards, hairlines, large light numerals, lots of white.               */
-
-.proto-root[data-direction='A'] {
-  --k-bg-elevated: #F5F5F5;
-  --k-radius-s: 4px;
-  --k-radius-m: 6px;
-  --k-radius-l: 8px;
-  --k-radius-xl: 10px;
-}
-
-.proto-root[data-direction='A'][data-theme='dark'] {
-  --k-bg-elevated: #262624;
-}
-
-/* ---------------------------------------------------------------------------------------- */
-/* B · Vault: dark-first, device-centric, quiet panels.                                     */
-
-.proto-root[data-direction='B'] {
-  --k-bg: #F5F5F5;
-  --k-bg-elevated: #1D1D1B;
-  --k-surface: #FFFFFF;
-  --k-section-bg: var(--k-surface);
-  --k-section-border: 1px solid var(--k-border);
-  --k-section-pad: 20px;
-  --k-row-pad-x: 0px;
-  --k-radius-s: 6px;
-  --k-radius-m: 10px;
-  --k-radius-l: 14px;
-  --k-radius-xl: 18px;
-  --k-row-min-h: 60px;
-  --k-fw-hero: 400;
-  --k-label-transform: none;
-  --k-label-ls: 0;
-  --k-label-fs: 13px;
-  --k-label-color: var(--k-text-2);
-}
-
-.proto-root[data-direction='B'][data-theme='dark'] {
-  --k-bg: #1D1D1B;
-  --k-bg-elevated: #161615;
-  --k-surface: #232321;
-}
-
-/* ---------------------------------------------------------------------------------------- */
-/* C · Activity-first: one column, soft and round, the feed is the home screen.             */
-
-.proto-root[data-direction='C'] {
-  --k-bg: #FFFFFF;
-  --k-section-bg: #F5F5F5;
-  --k-section-pad: 6px 16px;
-  --k-row-pad-x: 0px;
-  --k-row-divider: 1px solid var(--k-border);
-  --k-radius-s: 10px;
-  --k-radius-m: 14px;
-  --k-radius-l: 20px;
-  --k-radius-xl: 28px;
-  --k-row-min-h: 64px;
-  --k-control-h: 48px;
-  --k-fw-hero: 600;
-  --k-ls-hero: -0.03em;
-  --k-content-max: 640px;
-  --k-label-transform: none;
-  --k-label-ls: 0;
-  --k-label-fs: 13px;
-  --k-label-color: var(--k-text-2);
-}
-
-.proto-root[data-direction='C'][data-theme='dark'] {
-  --k-bg: #1D1D1B;
-  --k-section-bg: #262624;
-}
-
-/* ---------------------------------------------------------------------------------------- */
-/* D · Workspace: dense master-detail panes, mono for identifiers.                          */
-
-.proto-root[data-direction='D'] {
-  --k-bg: #F5F5F5;
-  --k-bg-elevated: #FFFFFF;
-  --k-surface: #FFFFFF;
-  --k-radius-s: 3px;
-  --k-radius-m: 5px;
-  --k-radius-l: 6px;
-  --k-radius-xl: 8px;
-  --k-row-min-h: 44px;
-  --k-row-pad-x: 12px;
-  --k-control-h: 36px;
-  --k-gap: 12px;
-  --k-fs-hero: 34px;
-  --k-fw-hero: 500;
-  --k-fs-display: 20px;
-  --k-fs-title: 14px;
-  --k-fs-body: 14px;
-  --k-fs-small: 12px;
-  --k-label-fs: 11px;
-}
-
-@media (min-width: 769px) {
-  .proto-root[data-direction='D'] { --k-page-pad: 24px; --k-fs-hero: 36px; }
-}
-
-/* Touch screens keep 44px controls even in the dense direction. */
-@media (pointer: coarse) {
-  .proto-root[data-direction='D'] { --k-control-h: 44px; }
-}
-
-@media (min-width: 1200px) {
-  .proto-root[data-direction='D'] { --k-page-pad: 24px; --k-fs-hero: 40px; }
-}
-
-.proto-root[data-direction='D'][data-theme='dark'] {
-  --k-bg: #161615;
-  --k-bg-elevated: #1D1D1B;
-  --k-surface: #1D1D1B;
-}
-
-/* ---------------------------------------------------------------------------------------- */
-/* E · Calm cards: soft surfaces on light grey, action row, generous radius.                */
+/* Calm cards: soft surfaces on light grey, action row, generous radius.                    */
 
 .proto-root[data-direction='E'] {
   --k-bg: #F5F5F5;

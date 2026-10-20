@@ -24,21 +24,21 @@
   transition: background-color .15s var(--k-ease), color .15s var(--k-ease);
 }
 
-.item:hover { color: var(--nav-text-active); }
-
+.item:hover,
 .active,
 .active:hover { color: var(--nav-text-active); }
 
 .icon { flex: none; }
 
-/* Tab bar ------------------------------------------------------------------------------- */
+/* Floating tab bar (phones) ---------------------------------------------------------------- */
 
 .tabbar {
   position: fixed;
-  inset: auto 0 0 0;
+  inset: auto 12px calc(10px + var(--k-safe-bottom)) 12px;
   z-index: 20;
-  padding: 6px 8px calc(6px + var(--k-safe-bottom));
-  border-top: 1px solid var(--nav-border);
+  padding: 6px;
+  border-radius: var(--k-radius-xl);
+  box-shadow: 0 1px 2px rgba(29, 29, 27, .06), 0 10px 32px rgba(29, 29, 27, .14);
 }
 
 .tabbar .items { justify-content: space-around; }
@@ -54,42 +54,7 @@
 
 .tabbar .active { color: var(--k-accent-ink); }
 
-.floating {
-  inset: auto 12px calc(10px + var(--k-safe-bottom)) 12px;
-  padding: 6px;
-  border: 0;
-  border-radius: var(--k-radius-xl);
-  box-shadow: 0 1px 2px rgba(29, 29, 27, .06), 0 10px 32px rgba(29, 29, 27, .14);
-}
-
-/* Rail ------------------------------------------------------------------------------------ */
-
-.rail {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  width: var(--k-rail-w, 80px);
-  height: 100%;
-  padding: 16px 8px;
-  border-inline-end: 1px solid var(--nav-border);
-}
-
-.rail .items { flex-direction: column; gap: 6px; width: 100%; }
-
-.rail .item {
-  flex-direction: column;
-  gap: 4px;
-  padding: 10px 0 8px;
-  font-size: 11px;
-  border-radius: var(--k-radius-m);
-}
-
-.rail .active { background: var(--nav-active-bg); }
-
-.rail .footer { margin-top: auto; }
-
-/* Sidebar --------------------------------------------------------------------------------- */
+/* Sidebar (tablet and desktop) ------------------------------------------------------------- */
 
 .sidebar {
   display: flex;
@@ -112,32 +77,7 @@
   font-size: var(--k-fs-body);
 }
 
-.sidebar .item:hover { background: var(--nav-active-bg); }
+.sidebar .item:hover,
 .sidebar .active { background: var(--nav-active-bg); }
 
 .sidebar .extra { margin-top: 24px; }
-
-.sidebar .footer { margin-top: auto; padding-top: 16px; }
-
-/* Top bar ---------------------------------------------------------------------------------- */
-
-.topbar { background: transparent; }
-
-.topbar .items { gap: 4px; }
-
-.topbar .item {
-  height: 36px;
-  padding: 0 14px;
-  gap: 8px;
-  border-radius: var(--k-radius-pill);
-  font-size: var(--k-fs-small);
-  font-weight: 600;
-}
-
-.topbar .item:hover { background: var(--k-surface-2); }
-
-.topbar .active,
-.topbar .active:hover {
-  background: var(--k-text);
-  color: var(--k-bg);
-}

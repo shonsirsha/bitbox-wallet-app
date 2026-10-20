@@ -10,7 +10,7 @@ type TProps = {
   // 'fiat' shows the main fiat conversion, 'coin' the coin amount.
   as?: 'fiat' | 'coin';
   size?: 'hero' | 'xl' | 'lg' | 'md' | 'sm';
-  tone?: 'default' | 'muted' | 'positive' | 'negative';
+  tone?: 'default' | 'muted';
   sign?: '+' | '−' | '';
   className?: string;
 };

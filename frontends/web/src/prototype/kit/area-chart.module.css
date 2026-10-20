@@ -35,10 +35,3 @@
   pointer-events: none;
 }
 
-.range {
-  display: flex;
-  justify-content: space-between;
-  font-size: var(--k-fs-micro);
-  color: var(--k-text-3);
-  font-variant-numeric: tabular-nums;
-}

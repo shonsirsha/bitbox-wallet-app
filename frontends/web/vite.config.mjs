@@ -11,7 +11,11 @@ import { configDefaults } from 'vitest/config';
 // backend, so no Go backend is needed and nothing connects to :8082.
 const prototypeEntry = () => ({
   name: 'bitbox-prototype-entry',
-  transformIndexHtml: (html) => html.replace('/src/index.tsx', '/src/prototype/main.tsx'),
+  // 'pre' so the build picks up the swapped entry, not only the dev server.
+  transformIndexHtml: {
+    order: 'pre',
+    handler: (html) => html.replace('/src/index.tsx', '/src/prototype/main.tsx'),
+  },
 });
 
 export default defineConfig((env) => {

@@ -1,8 +1,10 @@
-# UI refresh prototypes (throwaway)
+# Calm cards UI preview (throwaway)
 
-Five radically different directions for the whole BitBoxApp UI, rendered on the existing hash
-routes and switchable at runtime. Built with the `prototype` skill (UI branch, sub-shape A).
-This code lives on the `prototype/ui-refresh` branch only and must never be merged as is.
+A UI-refresh prototype of the BitBoxApp ("Calm cards", variant E) next to today's app
+(variant 0), rendered on the existing hash routes and switchable at runtime. Built with the
+`prototype` skill. This code lives on prototype branches only and must never be merged as is:
+`prototype/ui-refresh` keeps all five explored directions, `prototype/calm-cards-preview` (this
+one) only the chosen direction.
 
 ## Run
 
@@ -12,42 +14,44 @@ npm run prototype        # http://localhost:8090
 ```
 
 No Go backend is needed: `mock/install.ts` intercepts the app's `fetch` calls to
-`localhost:8082/api/*` and its `/api/events` WebSocket, and answers from an in-memory demo
-wallet (`mock/demo-data.ts`). Nothing ever reaches a real backend, so it can run next to
-`make servewallet` + `make webdev` without the one-frontend-at-a-time limitation.
+`localhost:8082/api/*` and its `/api/events` WebSocket and answers from an in-memory demo
+wallet (`mock/demo-data.ts`). Nothing reaches a real backend.
+
+## Static preview build
+
+```
+cd frontends/web
+npx vite build --mode prototype     # writes build/ (relative asset paths, hash routing)
+```
+
+`build/` is a plain static site: any static host serves it without rewrites.
 
 ## URL parameters
 
 | Param | Values | Effect |
 |---|---|---|
-| `variant` | `0`, `A`–`E` | `0` is today's app on the demo wallet; `A`–`E` are the directions |
+| `variant` | `0`, `E` | `0` is today's app on the demo wallet, `E` the Calm cards UI (default) |
 | `lang` | e.g. `de`, `ar` | switch language (long strings / right-to-left) |
 
-The floating black pill switches variants (also ← / →), cycles the theme (Auto / Light / Dark)
-and opens the component kit (`#/prototype/kit`). Example:
-`http://localhost:8090/?variant=B#/account/v0-f2a91c07-btc-0`.
+The floating black pill (a slim edge tab on phones) switches variants (also ← / →), cycles the
+theme (Auto / Light / Dark) and opens the component kit (`#/prototype/kit`).
 
-## Directions
+## What the preview covers
 
-| Key | Name | Structure |
-|---|---|---|
-| A | Quiet Swiss | No cards, hairline lists, large light numerals; sidebar from tablet up, tab bar on phones |
-| B | Vault | Dark-first, device-centric; BitBox status leads; dark sidebar / rail |
-| C | Activity first | One centered column, no navigation chrome; feed is home; account switcher sheet |
-| D | Workspace | Master–detail panes (accounts / content / inspector) on desktop, stacked on phones |
-| E | Calm cards (round 1 pick) | Soft cards and action row; B's dark sidebar with a compact device row (rail on tablet), a D-style top bar with total and Settings, C's accounts list; floating tab bar on phones |
+Portfolio, Accounts (sidebar list with search, sort and coin filter; Accounts tab on phones),
+the account screen and transaction details, on phones, tablets and desktop, light and dark.
+Other routes show a "next design round" placeholder inside the app frame.
 
-Round 1 covers the app frame, Portfolio, Accounts, Account and Transaction details. Other routes
-show a placeholder inside each direction's shell.
+## Rules the screens follow
 
-## Rules the directions follow
-
-- Screens are composed only from the kit in `kit/` (see `kit/index.ts` and the live kit page).
-  Direction folders contain layout only (grid, sizing, breakpoints, token overrides).
+- Screens are composed only from the kit in `kit/` (see `kit/index.ts` and the kit page); the
+  kit contains exactly what the screens use.
 - All colours come from the BitBox palette (`src/style/variables.css`) through the `--k-*`
-  tokens in `kit/tokens.css`. Filled buttons use `#4F7998` (white text 4.6:1, WCAG AA; today's `#5E94BF` is 3.25:1).
-  Tertiary text uses one extra neutral grey, `#6B6B6B`, so small labels pass AA.
-- Touch screens get 44px minimum controls; no blur or heavy effects (Qt's Chromium may render in software).
+  tokens in `kit/tokens.css`. Filled buttons use `#4F7998` (white text 4.6:1, WCAG AA; today's
+  `#5E94BF` is 3.25:1). Tertiary text uses one extra neutral grey, `#6B6B6B`, so small labels
+  pass AA.
+- Touch screens get 44px minimum controls; no blur or heavy effects (Qt's Chromium may render
+  in software).
 - Lightning has no tablet/desktop navigation entry; phones keep it in the tab bar.
 - Breakpoints match the app: phone ≤768px, tablet 769–1199px, desktop ≥1200px.
 - Data comes from the app's real API modules (`src/api/*`) and hooks (`useLoad`) via `data.ts`.
@@ -57,17 +61,15 @@ show a placeholder inside each direction's shell.
 ```
 prototype/
   main.tsx            entry (installs the mock first)
-  prototype-root.tsx  variant switching (?variant=), theme, ?lang
-  prototype-app.tsx   wraps a direction in tokens + context
-  prototype-bar.tsx   floating switcher (not part of any design)
+  prototype-root.tsx  variant switching (?variant=), theme
+  prototype-app.tsx   wraps the screens in tokens + context
+  prototype-bar.tsx   floating switcher (not part of the design)
   routing.ts          parses the existing hash routes
   data.ts             data hooks over src/api/*
   kit/                the component kit + tokens
   patterns/           shared compositions (transaction row/details, kit page, placeholder)
-  directions/         one folder per direction (layout only)
+  directions/         the Calm cards screens (layout only)
   mock/               mock backend + demo wallet
 ```
 
-## Research
-
-The design research behind the directions is in `RESEARCH.md` (sources included).
+The design research behind the refresh is in `RESEARCH.md`.

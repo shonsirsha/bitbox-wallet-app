@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
-// PROTOTYPE (throwaway): small helpers shared by the directions (no layouts here).
+// PROTOTYPE (throwaway): small screen helpers (no layouts here).
 
 import type { TAccount } from '@/api/account';
-import { Amount, IconButton, TNavItem } from '../kit';
+import { IconButton, TNavItem } from '../kit';
 import { usePrototype } from '../context';
-import { useBalance } from '../data';
 import { href, TScreen } from '../routing';
 
 export type TNavKey = 'portfolio' | 'accounts' | 'lightning' | 'market' | 'settings';
@@ -60,16 +59,6 @@ export const HideAmountsButton = () => {
   );
 };
 
-// Balance of one account, loaded on demand (used inside list rows).
-export const AccountBalance = ({ account, as = 'fiat', size = 'md', tone = 'default' }: {
-  account: TAccount;
-  as?: 'fiat' | 'coin';
-  size?: 'md' | 'sm';
-  tone?: 'default' | 'muted';
-}) => {
-  const balance = useBalance(account.code);
-  return <Amount value={balance?.available} as={as} size={size} tone={tone} />;
-};
 
 export const closeTransaction = (code: string) => {
   window.location.hash = href.account(code).slice(1);

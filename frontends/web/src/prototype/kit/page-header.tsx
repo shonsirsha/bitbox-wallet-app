@@ -12,14 +12,12 @@ type TProps = {
   actions?: ReactNode;
   // 'large' for top-level screens, 'compact' for pushed screens (centered small title on phones).
   size?: 'large' | 'compact';
-  leading?: ReactNode;
 };
 
-export const PageHeader = ({ title, subtitle, back, actions, size = 'large', leading }: TProps) => (
+export const PageHeader = ({ title, subtitle, back, actions, size = 'large' }: TProps) => (
   <header className={`${styles.header} ${styles[size]}`}>
     <div className={styles.start}>
       {back && <IconButton icon="back" label="Back" href={back} className={styles.back} />}
-      {leading}
     </div>
     <div className={styles.titles}>
       <h1 className={styles.title}>{title}</h1>

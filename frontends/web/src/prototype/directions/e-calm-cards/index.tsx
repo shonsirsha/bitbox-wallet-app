@@ -9,9 +9,9 @@
 import { ReactNode, useMemo, useState } from 'react';
 import { useMediaQuery } from '@/hooks/mediaquery';
 import {
-  Amount, AreaChart, Badge, Button, CoinIcon, Delta, DeviceStatus, GlyphIcon, IconButton, List, ListRow, Logo,
-  Navigation, PageHeader, Section, SegmentedControl, Sheet, Skeleton, SkeletonRows, TChartPoint, TIconName, TextField,
-  Toggle, format,
+  Amount, AreaChart, Badge, Button, Chip, CoinIcon, Delta, DeviceStatus, GlyphIcon, IconButton, List, ListRow, Logo,
+  Navigation, PageHeader, Popover, Section, SegmentedControl, Sheet, Skeleton, SkeletonRows, TChartPoint, TIconName,
+  TextField, format,
 } from '../../kit';
 import { usePrototype } from '../../context';
 import {
@@ -93,7 +93,7 @@ const Portfolio = () => {
         <div className={styles.stack}>
           <Section
             title={scrub ? format.formatShortDate(new Date(scrub.time * 1000).toISOString(), locale) : 'Portfolio value'}
-            action={<SegmentedControl label="Chart range" options={RANGE_OPTIONS} value={range} onChange={setRange} size="sm" />}
+            action={<SegmentedControl label="Chart range" options={RANGE_OPTIONS} value={range} onChange={setRange} />}
             className={styles.heroCard}>
             <div className={styles.balance}>
               <div className={styles.balanceHead}>
@@ -138,7 +138,7 @@ const Portfolio = () => {
             {activity ? (
               <List>
                 {activity.slice(0, 6).map(({ account, tx }) => (
-                  <TxRow key={`${account.code}:${tx.internalID}`} tx={tx} account={account} leading="coin" showAccount primary="fiat" amounts="primary" />
+                  <TxRow key={`${account.code}:${tx.internalID}`} tx={tx} account={account} showAccount primary="fiat" amounts="primary" />
                 ))}
                 {activity.length === 0 && <ListRow title="No activity yet" subtitle="Received and sent coins show up here." />}
               </List>
@@ -157,14 +157,50 @@ const SORT_OPTIONS: { value: TSort; label: string }[] = [
   { value: 'name', label: 'Name' },
 ];
 
+type TCoinType = { code: string; name: string; count: number };
+
+type TFiltersProps = {
+  sort: TSort;
+  onSort: (sort: TSort) => void;
+  coinTypes: TCoinType[];
+  selectedCoins: string[];
+  onToggleCoin: (code: string) => void;
+  onAllCoins: () => void;
+};
+
+// Sort by value or name, filter by coin type: the same controls in the popover and the sheet.
+const AccountFilters = ({ sort, onSort, coinTypes, selectedCoins, onToggleCoin, onAllCoins }: TFiltersProps) => (
+  <div className={styles.filters}>
+    <Section variant="plain" title="Sort by">
+      <SegmentedControl label="Sort accounts" options={SORT_OPTIONS} value={sort} onChange={onSort} full />
+    </Section>
+    <Section variant="plain" title="Coins">
+      <div className={styles.chips}>
+        <Chip selected={selectedCoins.length === 0} onClick={onAllCoins}>All coins</Chip>
+        {coinTypes.map(coin => (
+          <Chip
+            key={coin.code}
+            selected={selectedCoins.includes(coin.code)}
+            onClick={() => onToggleCoin(coin.code)}
+            leading={<CoinIcon coinCode={coin.code} size={20} />}
+            count={coin.count}>
+            {coin.name}
+          </Chip>
+        ))}
+      </div>
+    </Section>
+  </div>
+);
+
 type TAccountsListProps = {
   // sidebar: compact rows in the dark panel · page: the phone Accounts tab (and #/accounts/all)
   variant: 'sidebar' | 'page';
   selected?: string;
 };
 
-// The account list with search, sort/filter and Add account; the same list in the sidebar and on
-// the phone Accounts page. Lightning is listed on the page only (it has no desktop navigation).
+// The account list with search, sort and coin filter, and Add account; the same list in the
+// sidebar and on the phone Accounts page. Lightning is listed on the page only (it has no
+// desktop navigation). Sort and filter open in a popover, or a bottom sheet on phones.
 const AccountsList = ({ variant, selected }: TAccountsListProps) => {
   const { fiat } = usePrototype();
   const accounts = useAccounts();
@@ -172,9 +208,10 @@ const AccountsList = ({ variant, selected }: TAccountsListProps) => {
   const summary = useSummary();
   const chart = useChart();
   const [query, setQuery] = useState('');
-  const [showFilters, setShowFilters] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [sort, setSort] = useState<TSort>('value');
-  const [hideEmpty, setHideEmpty] = useState(false);
+  const [selectedCoins, setSelectedCoins] = useState<string[]>([]);
+  const phone = useMediaQuery('(max-width: 768px)');
   const sidebar = variant === 'sidebar';
   // The tablet sidebar is too narrow for both amounts: its rows show name and fiat value only.
   const wideSidebar = useMediaQuery('(min-width: 1200px)');
@@ -182,20 +219,67 @@ const AccountsList = ({ variant, selected }: TAccountsListProps) => {
   const iconSize = sidebar ? 28 : 40;
   const needle = query.trim().toLowerCase();
   const matches = (...values: string[]) => !needle || values.some(value => value.toLowerCase().includes(needle));
+  const flat = useMemo(() => groupAccounts(accounts)?.flatMap(({ account, tokens }) => [account, ...tokens]) || [], [accounts]);
+  const coinTypes = useMemo(() => {
+    const types: TCoinType[] = [];
+    flat.forEach(account => {
+      const type = types.find(candidate => candidate.code === account.coinCode);
+      if (type) {
+        type.count++;
+      } else {
+        types.push({ code: account.coinCode, name: account.coinName, count: 1 });
+      }
+    });
+    return types;
+  }, [flat]);
   const filtered = useMemo(() => {
-    const flat = groupAccounts(accounts)?.flatMap(({ account, tokens }) => [account, ...tokens]) || [];
     const value = (code: string) => Number(balances?.[code]?.available.unformattedConversions?.[fiat as 'USD'] || 0);
     return flat
       .filter(account => matches(account.name, account.coinName, account.coinUnit))
-      .filter(account => !hideEmpty || balances?.[account.code]?.hasAvailable)
+      .filter(account => selectedCoins.length === 0 || selectedCoins.includes(account.coinCode))
       .sort((a, b) => (sort === 'name' ? a.name.localeCompare(b.name) : value(b.code) - value(a.code)));
-  }, [accounts, balances, fiat, needle, hideEmpty, sort]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [flat, balances, fiat, needle, selectedCoins, sort]); // eslint-disable-line react-hooks/exhaustive-deps
   const lightning = summary?.coinsTotalBalance.find(coin => coin.coinCode === 'lightning')?.formattedAmount;
   const accountCount = accounts ? `${accounts.length} accounts` : '';
-  const filtersActive = sort !== 'value' || hideEmpty;
+  const filtersActive = sort !== 'value' || selectedCoins.length > 0;
+  const showLightning = !sidebar && matches('Lightning') && selectedCoins.length === 0;
+  const resetFilters = () => {
+    setSort('value');
+    setSelectedCoins([]);
+  };
+  const toggleCoin = (code: string) => setSelectedCoins(current => (
+    current.includes(code) ? current.filter(candidate => candidate !== code) : [...current, code]
+  ));
+  const filters = (
+    <AccountFilters
+      sort={sort}
+      onSort={setSort}
+      coinTypes={coinTypes}
+      selectedCoins={selectedCoins}
+      onToggleCoin={toggleCoin}
+      onAllCoins={() => setSelectedCoins([])} />
+  );
+  const resultCount = filtered.length + (showLightning ? 1 : 0);
+  const filterButton = (
+    <IconButton
+      icon="filter"
+      label="Sort and filter"
+      size={sidebar ? 'sm' : 'md'}
+      active={filtersOpen || filtersActive}
+      onClick={() => setFiltersOpen(open => !open)} />
+  );
+  const tools = (
+    <div className={styles.accountsTools}>
+      <div className={styles.accountsSearch}>
+        <TextField icon="search" value={query} onChange={setQuery} placeholder={sidebar ? 'Accounts' : 'Search accounts'} />
+      </div>
+      {filterButton}
+      <IconButton icon="plus" label="Add account" size={sidebar ? 'sm' : 'md'} href="#/add-account" />
+    </div>
+  );
   const list = !accounts ? <SkeletonRows count={5} /> : (
     <List>
-      {!sidebar && !needle && (
+      {!sidebar && !needle && selectedCoins.length === 0 && (
         <ListRow
           href={href.portfolio}
           leading={<GlyphIcon icon="wallet" size={iconSize} />}
@@ -215,7 +299,7 @@ const AccountsList = ({ variant, selected }: TAccountsListProps) => {
           trailing={compactRows ? undefined : <Amount value={balances?.[account.code]?.available} size={sidebar ? 'sm' : 'md'} />}
           chevron={!sidebar} />
       ))}
-      {!sidebar && matches('Lightning') && (
+      {showLightning && (
         <ListRow
           href={href.lightning}
           leading={<CoinIcon coinCode="lightning" size={iconSize} />}
@@ -224,32 +308,35 @@ const AccountsList = ({ variant, selected }: TAccountsListProps) => {
           trailing={<Amount value={lightning} />}
           chevron />
       )}
-      {filtered.length === 0 && (sidebar || !matches('Lightning')) && (
-        <ListRow title="No matching accounts" subtitle="Try another name or coin." />
-      )}
+      {resultCount === 0 && <ListRow title="No matching accounts" subtitle="Try another name or coin." />}
     </List>
   );
   return (
     <div className={sidebar ? styles.sidebarAccounts : styles.pageAccounts}>
-      <div className={styles.accountsTools}>
-        <div className={styles.accountsSearch}>
-          <TextField type="search" icon="search" value={query} onChange={setQuery} placeholder={sidebar ? 'Accounts' : 'Search accounts'} />
-        </div>
-        <IconButton
-          icon="filter"
-          label={showFilters ? 'Hide sort and filter' : 'Sort and filter'}
-          size={sidebar ? 'sm' : 'md'}
-          active={showFilters || filtersActive}
-          onClick={() => setShowFilters(value => !value)} />
-        <IconButton icon="plus" label="Add account" size={sidebar ? 'sm' : 'md'} href="#/add-account" />
-      </div>
-      {showFilters && (
-        <div className={styles.accountsFilters}>
-          <SegmentedControl label="Sort accounts" options={SORT_OPTIONS} value={sort} onChange={setSort} size="sm" full />
-          <ListRow title="Hide empty accounts" trailing={<Toggle checked={hideEmpty} onChange={setHideEmpty} label="Hide empty accounts" />} />
-        </div>
+      {phone ? tools : (
+        <Popover open={filtersOpen} onClose={() => setFiltersOpen(false)} label="Sort and filter accounts" trigger={tools} block>
+          <Section
+            variant="plain"
+            title="Sort and filter"
+            action={filtersActive ? <Button variant="ghost" size="sm" onClick={resetFilters}>Reset</Button> : undefined}>
+            {filters}
+          </Section>
+        </Popover>
       )}
       {sidebar ? list : <Section className={styles.listCard}>{list}</Section>}
+      {phone && (
+        <Sheet open={filtersOpen} onClose={() => setFiltersOpen(false)} title="Sort and filter">
+          <div className={styles.sheetFilters}>
+            {filters}
+            <div className={styles.sheetActions}>
+              <Button onClick={resetFilters}>Reset</Button>
+              <Button variant="primary" onClick={() => setFiltersOpen(false)}>
+                {`Show ${resultCount} ${resultCount === 1 ? 'account' : 'accounts'}`}
+              </Button>
+            </div>
+          </div>
+        </Sheet>
+      )}
     </div>
   );
 };
@@ -315,14 +402,14 @@ const Account = ({ code, txId }: TAccountProps) => {
           {transactions && account ? (
             <List>
               {transactions.map(tx => (
-                <TxRow key={tx.internalID} tx={tx} account={account} leading="coin" primary="coin" selected={tx.internalID === txId} />
+                <TxRow key={tx.internalID} tx={tx} account={account} primary="coin" selected={tx.internalID === txId} />
               ))}
               {transactions.length === 0 && <ListRow title="No transactions yet" subtitle="Receive coins to get started." />}
             </List>
           ) : <SkeletonRows count={6} />}
         </Section>
       </div>
-      <Sheet open={!!(selectedTx && account)} onClose={() => closeTransaction(code)} title="Transaction" presentation="panel">
+      <Sheet open={!!(selectedTx && account)} onClose={() => closeTransaction(code)} title="Transaction">
         {selectedTx && account && <TransactionDetails tx={selectedTx} account={account} />}
       </Sheet>
     </>
@@ -383,7 +470,7 @@ export const DirectionE = ({ screen }: TDirectionProps) => {
         </main>
       </div>
       <div className={styles.tabbar}>
-        <Navigation layout="tabbar" floating items={navItems(screen, undefined, true)} />
+        <Navigation layout="tabbar" items={navItems(screen, undefined, true)} />
       </div>
     </div>
   );

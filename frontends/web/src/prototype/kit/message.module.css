@@ -4,20 +4,11 @@
   gap: 12px;
   padding: 14px 16px;
   border-radius: var(--k-radius-l);
-  background: var(--k-surface-2);
+  background: var(--k-accent-soft);
   color: var(--k-text);
 }
 
-.icon { flex: none; margin-top: 1px; }
-
-.info { background: var(--k-accent-soft); }
-.info .icon { color: var(--k-accent-ink); }
-.success { background: var(--k-positive-soft); }
-.success .icon { color: var(--k-positive); }
-.warning { background: var(--k-warning-soft); }
-.warning .icon { color: var(--k-warning); }
-.danger { background: var(--k-negative-soft); }
-.danger .icon { color: var(--k-danger); }
+.icon { flex: none; margin-top: 1px; color: var(--k-accent-ink); }
 
 .content {
   flex: 1;
@@ -30,5 +21,3 @@
 .title { font-weight: 600; }
 
 .text { font-size: var(--k-fs-small); color: var(--k-text-2); }
-
-.action { margin-top: 6px; }

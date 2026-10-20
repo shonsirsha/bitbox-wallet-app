@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-// PROTOTYPE (throwaway): transaction details content, shown in a Sheet or an inspector pane.
+// PROTOTYPE (throwaway): transaction details content, shown in the Sheet.
 
 import type { TAccount, TTransaction } from '@/api/account';
 import { Amount, Badge, Button, CoinIcon, IconButton, List, ListRow, format } from '../kit';
@@ -11,15 +11,13 @@ import styles from './patterns.module.css';
 type TProps = {
   tx: TTransaction;
   account: TAccount;
-  // Dense: key/value rows without the large header (inspector panes).
-  dense?: boolean;
 };
 
 const copy = (value: string) => {
   navigator.clipboard?.writeText(value).catch(() => {});
 };
 
-export const TransactionDetails = ({ tx, account, dense = false }: TProps) => {
+export const TransactionDetails = ({ tx, account }: TProps) => {
   const { locale } = usePrototype();
   const kind = txKind(tx);
   const confirmed = tx.numConfirmations >= tx.numConfirmationsComplete;
@@ -32,18 +30,14 @@ export const TransactionDetails = ({ tx, account, dense = false }: TProps) => {
   const hasFee = tx.type !== 'receive' && !!tx.fee.amount;
   return (
     <div className={styles.details}>
-      {!dense && (
-        <div className={styles.detailsHeader}>
+      <div className={styles.detailsHeader}>
           <CoinIcon coinCode={account.coinCode} size={48} badge={kind} />
           <p className={styles.detailsTitle}>{txTitle(tx)}</p>
           <Amount value={tx.amount} as="coin" size="xl" sign={txSign(tx)} />
           <Amount value={tx.amount} as="fiat" size="md" tone="muted" sign={txSign(tx)} />
           <div className={styles.detailsStatus}>{status}</div>
-        </div>
-      )}
+      </div>
       <List>
-        {dense && <ListRow title="Amount" trailing={<Amount value={tx.amount} as="coin" sign={txSign(tx)} />} trailingSub={<Amount value={tx.amount} as="fiat" size="sm" tone="muted" />} />}
-        {dense && <ListRow title="Status" trailing={status} />}
         <ListRow title="Date" trailing={format.formatDateTime(tx.time, locale)} />
         <ListRow title="Account" trailing={account.name} trailingSub={account.coinName} />
         <ListRow

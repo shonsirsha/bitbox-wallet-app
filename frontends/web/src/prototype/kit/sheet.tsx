@@ -9,12 +9,10 @@ type TProps = {
   onClose: () => void;
   title?: ReactNode;
   children: ReactNode;
-  footer?: ReactNode;
-  // On phones every presentation is a bottom sheet. From tablet up: centered dialog or side panel.
-  presentation?: 'dialog' | 'panel';
 };
 
-export const Sheet = ({ open, onClose, title, children, footer, presentation = 'dialog' }: TProps) => {
+// A bottom sheet on phones and a full-height side panel from tablet up.
+export const Sheet = ({ open, onClose, title, children }: TProps) => {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!open) {
@@ -33,7 +31,7 @@ export const Sheet = ({ open, onClose, title, children, footer, presentation = '
     return null;
   }
   return (
-    <div className={`${styles.layer} ${styles[presentation]}`}>
+    <div className={styles.layer}>
       <div className={styles.overlay} onClick={onClose} aria-hidden="true" />
       <div ref={ref} className={styles.sheet} role="dialog" aria-modal="true" tabIndex={-1}>
         <span className={styles.grabber} aria-hidden="true" />
@@ -42,7 +40,6 @@ export const Sheet = ({ open, onClose, title, children, footer, presentation = '
           <IconButton icon="close" label="Close" onClick={onClose} size="sm" variant="filled" />
         </header>
         <div className={styles.body}>{children}</div>
-        {footer && <footer className={styles.footer}>{footer}</footer>}
       </div>
     </div>
   );

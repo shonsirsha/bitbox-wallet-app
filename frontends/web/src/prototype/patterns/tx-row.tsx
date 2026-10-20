@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
-// PROTOTYPE (throwaway): one transaction as a kit ListRow, used by every direction.
+// PROTOTYPE (throwaway): one transaction as a kit ListRow.
 
 import type { TAccount, TTransaction } from '@/api/account';
-import { Amount, Badge, CoinIcon, GlyphIcon, ListRow, TCoinBadge, TIconName, format } from '../kit';
+import { Amount, Badge, CoinIcon, ListRow, TCoinBadge, format } from '../kit';
 import { usePrototype } from '../context';
 import { href } from '../routing';
 import styles from './patterns.module.css';
@@ -32,18 +32,13 @@ export const txKind = (tx: TTransaction): TCoinBadge => {
   return tx.type === 'receive' ? 'receive' : tx.type === 'send_to_self' ? 'self' : 'send';
 };
 
-const GLYPHS: Record<TCoinBadge, TIconName> = {
-  receive: 'arrowDown', send: 'arrowUp', self: 'self', pending: 'clock', failed: 'failed',
-};
 
 export const txSign = (tx: TTransaction) => (tx.type === 'receive' ? '+' : tx.type === 'send' ? '−' : '');
 
 type TProps = {
   tx: TTransaction;
   account: TAccount;
-  leading?: 'coin' | 'glyph' | 'none';
   showAccount?: boolean;
-  date?: 'time' | 'day' | 'full';
   // Which amount leads on the right; the other one goes underneath.
   primary?: 'coin' | 'fiat';
   // 'primary' drops the second amount (narrow summary lists like "Recent activity").
@@ -52,15 +47,11 @@ type TProps = {
 };
 
 export const TxRow = ({
-  tx, account, leading = 'glyph', showAccount = false, date = 'day', primary = 'coin', amounts = 'both', selected = false,
+  tx, account, showAccount = false, primary = 'coin', amounts = 'both', selected = false,
 }: TProps) => {
   const { locale } = usePrototype();
   const kind = txKind(tx);
-  const when = date === 'time'
-    ? format.formatTime(tx.time, locale)
-    : date === 'full'
-      ? format.formatShortDate(tx.time, locale)
-      : format.formatDayLabel(tx.time, locale, 'short');
+  const when = format.formatDayLabel(tx.time, locale, 'short');
   // A pending or failed transaction shows its status in place of the date, so it never truncates.
   const status = tx.status === 'pending'
     ? <Badge tone="warning">Pending</Badge>
@@ -83,9 +74,7 @@ export const TxRow = ({
     <ListRow
       href={href.transaction(account.code, tx.internalID)}
       selected={selected}
-      leading={leading === 'coin'
-        ? <CoinIcon coinCode={account.coinCode} size={36} badge={kind} />
-        : leading === 'glyph' ? <GlyphIcon icon={GLYPHS[kind]} size={36} /> : undefined}
+      leading={<CoinIcon coinCode={account.coinCode} size={36} badge={kind} />}
       title={txTitle(tx)}
       subtitle={subtitle}
       trailing={primary === 'coin' ? coin : fiat}
