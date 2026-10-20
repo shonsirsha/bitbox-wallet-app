@@ -1,0 +1,42 @@
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detailsHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  padding: 8px 0 12px;
+}
+
+.detailsTitle {
+  margin-top: 6px;
+  font-size: var(--k-fs-small);
+  color: var(--k-text-2);
+}
+
+.detailsStatus { margin-top: 6px; }
+
+.subtitlePart { margin-inline-start: 6px; }
+
+.mono {
+  font-family: var(--k-font-mono);
+  font-size: var(--k-fs-small);
+}
+
+.comingSoon {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 560px;
+}
+
+.comingSoonActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

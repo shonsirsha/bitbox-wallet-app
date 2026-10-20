@@ -1,0 +1,39 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 28px;
+}
+
+.title {
+  font-size: var(--k-label-fs);
+  font-weight: 600;
+  text-transform: var(--k-label-transform);
+  letter-spacing: var(--k-label-ls);
+  color: var(--k-label-color);
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  /* Stays at the end also when the section has no title. */
+  margin-inline-start: auto;
+}
+
+.surface {
+  background: var(--k-section-bg);
+  border: var(--k-section-border);
+  box-shadow: var(--k-section-shadow);
+  border-radius: var(--k-radius-l);
+  padding: var(--k-section-pad);
+  min-width: 0;
+}

@@ -1,0 +1,348 @@
+/* Direction E · Calm cards — layout only; all visuals come from kit components + tokens. */
+
+.shell {
+  min-height: 100dvh;
+  --k-sidebar-w: 240px;
+  --e-topbar-h: 64px;
+}
+
+/* Controls placed straight on the grey canvas (not inside a card) take the card colour for
+   their filled shapes, so round actions, chips and secondary buttons stay visible. */
+.onCanvas {
+  --k-surface-2: var(--k-surface);
+  --k-secondary-bg: var(--k-surface);
+}
+
+/* The navigation panel stays dark in both themes (B's sidebar), and everything inside it
+   (logo, device row, active item) reads the dark palette. */
+.dark {
+  --k-nav-bg: #1D1D1B;
+  --k-nav-text: #999999;
+  --k-nav-text-active: #F5F5F5;
+  --k-nav-active-bg: rgba(255, 255, 255, .08);
+  --k-nav-border: transparent;
+  --k-text: #F5F5F5;
+  --k-text-2: #999999;
+  --k-text-3: #777777;
+  --k-surface-2: #333333;
+  --k-accent-ink: #73A5CD;
+  /* Menu items and account rows keep clear space between their highlight shapes. */
+  --k-nav-gap: 8px;
+  --k-list-gap: 8px;
+}
+
+/* In dark theme the panel steps one shade below the page so it keeps an edge. */
+[data-theme='dark'] .dark { --k-nav-bg: #161615; }
+
+/* Frame ------------------------------------------------------------------------------------ */
+
+.sidebar,
+.topbar {
+  display: none;
+}
+
+.sidebarHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-block: 4px 12px;
+}
+
+.column { min-width: 0; }
+
+.main {
+  padding: calc(var(--k-safe-top) + 4px) var(--k-page-pad) calc(112px + var(--k-safe-bottom));
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.tabbar { display: block; }
+
+.total {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.tools {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-inline-start: auto;
+}
+
+/* Screens --------------------------------------------------------------------------------- */
+
+.portfolio,
+.account {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+.aside { min-width: 0; }
+
+.balance {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.balanceHead {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--k-fs-small);
+  color: var(--k-text-2);
+}
+
+/* The chart runs edge to edge inside the card; its scrub dot rings in the card colour. */
+.chart {
+  margin-inline: calc(var(--k-section-pad) * -1);
+  --k-bg: var(--k-surface);
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  justify-items: center;
+  gap: 8px;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+/* A card that is one tappable row: the row fills the card, hover follows the card radius. */
+.rowCard {
+  --k-section-pad: 0px;
+  --k-row-pad-x: 20px;
+  --k-row-min-h: 76px;
+  --k-row-radius: var(--k-radius-l);
+}
+
+/* A card holding a list: rows inset by 8px with concentric corners, no dividers. */
+.listCard {
+  --k-section-pad: 8px;
+  --k-row-pad-x: 12px;
+  --k-row-radius: calc(var(--k-radius-l) - 8px);
+  --k-row-divider: none;
+}
+
+/* Account list ---------------------------------------------------------------------------- */
+
+.accountsTools {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.accountsSearch {
+  flex: 1;
+  min-width: 0;
+  /* No focus ring on the account search; focus shows as a slightly lighter fill. */
+  --k-input-focus-ring: none;
+  --k-input-focus-bg: var(--k-surface-3);
+}
+
+.accountsFilters {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  --k-row-min-h: 44px;
+}
+
+/* In the sidebar: a separator under the menu, then compact dark rows like the menu items. */
+.sidebarAccounts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, .08);
+  --k-row-min-h: 52px;
+  --k-row-pad-x: 10px;
+  --k-row-gap: 10px;
+  --k-row-radius: var(--k-radius-m);
+  --k-row-divider: none;
+  --k-row-hover: rgba(255, 255, 255, .05);
+  --k-accent-soft: rgba(255, 255, 255, .08);
+  --k-fs-body: 14px;
+  --k-control-h: 40px;
+}
+
+.sidebarAccounts .accountsSearch {
+  --k-surface-2: transparent;
+  --k-input-focus-bg: rgba(255, 255, 255, .06);
+}
+
+.sidebarAccounts .accountsTools { margin-inline: 2px -4px; }
+
+/* On the page: tools sit on the grey canvas, so their fills take the card colour. */
+.pageAccounts {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pageAccounts .accountsTools,
+.pageAccounts .accountsFilters {
+  --k-surface-2: var(--k-surface);
+  --k-secondary-bg: var(--k-surface);
+}
+
+/* Accounts: C's single list, one card in a calm centred column. */
+.accounts {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 720px;
+  margin-inline: auto;
+}
+
+.accounts .listCard { --k-row-min-h: 68px; }
+
+.accountBody {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Coin amounts run longer than fiat totals: a smaller hero keeps them on one line in the card. */
+.accountCard { --k-fs-hero: 36px; }
+
+/* Phones: cards bring their own inner padding, so the page gutter can be slimmer, and
+   transaction lists step down to 14px so titles fit next to full coin amounts. */
+@media (max-width: 768px) {
+  .shell { --k-page-pad: 16px; }
+
+  .listCard { --k-fs-body: 14px; }
+
+  /* Small phones (360-400px): tighter row spacing so titles fit next to full coin amounts. */
+  @media (max-width: 400px) {
+    .listCard {
+      --k-row-gap: 10px;
+      --k-row-pad-x: 8px;
+    }
+  }
+
+  /* The phone header carries the page title (and the account's name and wallet). */
+  .wideHeader,
+  .identity { display: none; }
+}
+
+/* Tablet: dark sidebar (with the account list) + top bar ------------------------------- */
+
+@media (min-width: 769px) {
+  /* Landscape phones and iPads: keep the sidebar and content clear of side notches. */
+  .shell {
+    display: grid;
+    grid-template-columns: calc(var(--k-sidebar-w) + env(safe-area-inset-left, 0px)) minmax(0, 1fr);
+  }
+
+  .sidebar {
+    display: block;
+    position: sticky;
+    top: 0;
+    height: 100dvh;
+    padding-top: var(--k-safe-top);
+    padding-inline-start: env(safe-area-inset-left, 0px);
+    background: var(--k-nav-bg);
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    height: calc(var(--e-topbar-h) + var(--k-safe-top));
+    padding: var(--k-safe-top) var(--k-page-pad) 0;
+    background: var(--k-bg);
+  }
+
+  .phoneHeader { display: none; }
+
+  .tabbar { display: none; }
+
+  .main { padding: 8px var(--k-page-pad) 72px; }
+
+  .content { gap: 24px; }
+
+  .heroCard { --k-section-pad: 24px; }
+
+  .balance { gap: 24px; }
+
+  .cardGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .accountCard { --k-fs-hero: 48px; }
+
+  /* After the padding shorthands above: clear of a right-hand notch in landscape. */
+  .topbar,
+  .main { padding-inline-end: max(var(--k-page-pad), env(safe-area-inset-right, 0px)); }
+}
+
+/* Desktop: dark sidebar, two-column screens --------------------------------------------- */
+
+@media (min-width: 1200px) {
+  .shell { --k-sidebar-w: 288px; }
+
+  .main { padding-top: 8px; }
+
+  .portfolio {
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: 28px;
+  }
+
+  .account {
+    grid-template-columns: 400px minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  /* Below the sticky top bar (plus status bar inset in webviews) with the content's top gap. */
+  .aside,
+  .accountSide {
+    position: sticky;
+    top: calc(var(--k-safe-top) + var(--e-topbar-h) + 8px);
+  }
+
+  /* The activity card sits under its Section header (28px + 10px gap); start both cards on
+     one line, and keep the stuck card where the portfolio's activity card sticks. */
+  .accountSide {
+    padding-top: 38px;
+    top: calc(var(--k-safe-top) + var(--e-topbar-h) + 8px - 38px);
+  }
+
+  .accountCard { --k-fs-hero: 44px; }
+}

@@ -1,0 +1,87 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding-bottom: 96px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.field { max-width: 420px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+.navPreviews {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.navPreview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.navCaption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: var(--k-fs-small);
+  font-weight: 600;
+}
+
+.navUnused { opacity: .45; }
+
+/* transform makes the fixed tab bars position inside the frame */
+.navFrame {
+  position: relative;
+  transform: translateZ(0);
+  height: 320px;
+  overflow: hidden;
+  border: 1px dashed var(--k-border-strong);
+  border-radius: var(--k-radius-m);
+  background: var(--k-bg);
+}
+
+.navFrameWide {
+  height: 160px;
+  padding: 12px;
+}
+
+.icons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: 8px;
+}
+
+.iconCell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 4px;
+  border-radius: var(--k-radius-m);
+  color: var(--k-text);
+  font-size: var(--k-fs-micro);
+  background: var(--k-surface-2);
+}
+
+.iconCell span { color: var(--k-text-3); }

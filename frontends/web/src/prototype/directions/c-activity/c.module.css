@@ -1,0 +1,214 @@
+/* Direction C · Activity first — layout only; all visuals come from kit components + tokens. */
+
+.shell {
+  min-height: 100dvh;
+  background: var(--k-bg);
+  /* Soft and round: pill buttons and range control, concentric with the pill dock. */
+  --k-button-radius: var(--k-radius-pill);
+  --k-segmented-radius: var(--k-radius-pill);
+}
+
+/* tokens.css sets C's light page background after the dark theme and does not reset it in C's
+   dark block, so the dark page background is restored here. */
+
+/* App bar: spans the full width; its row follows the content column until desktop. */
+
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding-top: var(--k-safe-top);
+  background: var(--k-bg);
+}
+
+.barRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 64px;
+  max-width: calc(var(--k-content-max) + 2 * var(--k-page-pad));
+  margin-inline: auto;
+  padding-inline: var(--k-page-pad);
+}
+
+.barStart,
+.barEnd {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.barStart { gap: 24px; }
+.barEnd { gap: 4px; flex: none; }
+
+.logo { display: none; }
+
+/* The scope switcher is a dropdown trigger: chevron after the label. */
+.switcher { flex-direction: row-reverse; }
+
+/* Content column */
+
+.main {
+  padding: 8px var(--k-page-pad) calc(144px + var(--k-safe-bottom));
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+  max-width: var(--k-content-max);
+  margin-inline: auto;
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding-top: 12px;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  text-align: center;
+}
+
+.label {
+  font-size: var(--k-label-fs);
+  font-weight: 600;
+  text-transform: var(--k-label-transform);
+  letter-spacing: var(--k-label-ls);
+  color: var(--k-label-color);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 22px;
+  font-size: var(--k-fs-small);
+  color: var(--k-text-2);
+}
+
+
+.chart {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-inline: calc(var(--k-page-pad) * -1);
+}
+
+.ranges {
+  display: flex;
+  justify-content: center;
+}
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Lists on the grey C cards: rows inset in the card with a rounded hover instead of dividers;
+   surface-2 (glyph circles, loading amounts, hover) steps up one shade to stay visible on the
+   card, and coin badges cut out against it. Row content keeps 16px to the card edge (12px on
+   phones). */
+.cards {
+  --k-surface-2: var(--k-surface-3);
+  --k-badge-ring: var(--k-section-bg);
+  --k-section-pad: 6px;
+  --k-row-pad-x: 10px;
+  --k-row-radius: var(--k-radius-m);
+  --k-row-divider: none;
+}
+
+.more {
+  display: flex;
+  justify-content: center;
+}
+
+/* Receive / Send: floating dock on phones and tablets (above the safe area). */
+
+.actions {
+  position: fixed;
+  inset-inline: 0;
+  bottom: calc(16px + var(--k-safe-bottom));
+  z-index: 20;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: min(calc(100% - 2 * var(--k-page-pad)), 400px);
+  margin-inline: auto;
+  padding: 8px;
+  border-radius: var(--k-radius-pill);
+  background: var(--k-surface);
+  box-shadow: var(--k-shadow-2);
+}
+
+/* Switcher sheet: padded, rounded rows without dividers, aligned with the sheet title. */
+
+.menuList {
+  --k-row-pad-x: 12px;
+  --k-row-radius: var(--k-radius-m);
+  --k-row-divider: none;
+  margin-inline: -12px;
+}
+
+/* Phones: tighter margins so feed rows keep their titles at 390px. */
+@media (max-width: 768px) {
+  .shell { --k-page-pad: 16px; }
+  .cards { --k-row-pad-x: 6px; }
+}
+
+/* Narrow phones: a full sat-grouped BTC balance still fits on one line. */
+@media (max-width: 359px) {
+  .shell { --k-fs-hero: 38px; }
+}
+
+@media (min-width: 769px) {
+  .main { padding-top: 16px; padding-bottom: calc(176px + var(--k-safe-bottom)); }
+
+  .summary { padding-top: 24px; }
+
+  .chart { margin-inline: 0; }
+
+  /* Clears the prototype switcher, which sits at the bottom centre from tablet up. */
+  .actions {
+    bottom: calc(72px + var(--k-safe-bottom));
+    width: 360px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .barRow {
+    max-width: none;
+    height: 72px;
+  }
+
+  .logo { display: flex; }
+
+  .main { padding-bottom: 96px; }
+
+  .content { gap: 40px; }
+
+  .summary { padding-top: 32px; }
+
+  /* Inline under the balance on desktop. */
+  .actions {
+    position: static;
+    width: 100%;
+    max-width: 336px;
+    padding: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+  }
+}

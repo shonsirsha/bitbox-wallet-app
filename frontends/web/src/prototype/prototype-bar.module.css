@@ -1,0 +1,100 @@
+.bar {
+  position: fixed;
+  left: 50%;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 40px;
+  padding: 0 6px;
+  border-radius: 20px;
+  background: #0b0b0a;
+  color: #fff;
+  font: 500 13px/1 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .14), 0 8px 28px rgba(0, 0, 0, .35);
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* Sit above the phone tab bars of the designs being evaluated. */
+@media (max-width: 768px) {
+  .bar { bottom: calc(92px + env(safe-area-inset-bottom, 0px)); }
+}
+
+.arrow,
+.text {
+  height: 30px;
+  min-width: 30px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 15px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrow { font-size: 20px; padding-bottom: 2px; }
+
+.arrow:hover,
+.text:hover { background: rgba(255, 255, 255, .14); }
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 168px;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+.key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 11px;
+  background: #fff;
+  color: #0b0b0a;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.divider {
+  width: 1px;
+  height: 18px;
+  margin: 0 4px;
+  background: rgba(255, 255, 255, .2);
+}
+
+.collapsed {
+  width: 40px;
+  padding: 0;
+  justify-content: center;
+  font-weight: 700;
+  cursor: pointer;
+  border: 0;
+}
+
+/* Phones: collapsed, the switcher is a slim tab on the left edge, inside the page gutter. */
+@media (max-width: 768px) {
+  .collapsed {
+    left: 0;
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+    width: 14px;
+    height: 52px;
+    border-radius: 0 10px 10px 0;
+    font-size: 9px;
+    opacity: .7;
+  }
+}

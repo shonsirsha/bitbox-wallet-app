@@ -1,0 +1,59 @@
+.amount {
+  display: inline-flex;
+  unicode-bidi: isolate;
+  align-items: baseline;
+  white-space: nowrap;
+  color: var(--k-text);
+  line-height: 1.15;
+}
+
+.hero {
+  font-size: var(--k-fs-hero);
+  font-weight: var(--k-fw-hero);
+  letter-spacing: var(--k-ls-hero);
+  line-height: 1.05;
+}
+
+.hero .decimals {
+  font-size: var(--k-hero-decimals-size, 1em);
+  color: var(--k-hero-decimals-color, inherit);
+}
+
+.hero .prefix {
+  font-size: var(--k-hero-prefix-size, 1em);
+  margin-right: .04em;
+}
+
+.xl { font-size: 28px; font-weight: 500; letter-spacing: -0.01em; }
+.lg { font-size: 19px; font-weight: 500; }
+.md { font-size: var(--k-fs-body); font-weight: 500; }
+.sm { font-size: var(--k-fs-small); font-weight: 400; }
+
+.muted { color: var(--k-text-2); }
+.positive { color: var(--k-positive); }
+.negative { color: var(--k-text); }
+
+.unit {
+  font-size: .78em;
+  font-weight: 400;
+  color: var(--k-text-3);
+  letter-spacing: 0;
+  white-space: pre;
+}
+
+.hero .unit { font-size: .4em; color: var(--k-text-2); }
+
+.sign { margin-right: .12em; }
+
+.mask { letter-spacing: .08em; }
+
+.loading {
+  min-width: 5em;
+  border-radius: var(--k-radius-s);
+  background: var(--k-surface-2);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% { opacity: .5; }
+}

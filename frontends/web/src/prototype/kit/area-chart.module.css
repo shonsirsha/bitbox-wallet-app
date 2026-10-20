@@ -1,0 +1,44 @@
+.chart {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.plot {
+  position: relative;
+  width: 100%;
+  touch-action: pan-y;
+  cursor: crosshair;
+}
+
+.plot svg { display: block; overflow: visible; }
+
+.cursor {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--k-border-strong);
+  opacity: .5;
+  pointer-events: none;
+}
+
+.dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: var(--k-chart-line);
+  box-shadow: 0 0 0 3px var(--k-bg);
+  pointer-events: none;
+}
+
+.range {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--k-fs-micro);
+  color: var(--k-text-3);
+  font-variant-numeric: tabular-nums;
+}
