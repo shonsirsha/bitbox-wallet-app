@@ -139,7 +139,7 @@ const Portfolio = () => {
   const total = chart?.formattedChartTotal ? fiatAmount(chart.formattedChartTotal, fiat) : undefined;
   return (
     <>
-      <PhoneHeader title="Portfolio" />
+      <PhoneHeader title="My Portfolio" />
       <div className={styles.portfolio}>
         <div className={styles.stack}>
           <Section
@@ -415,13 +415,10 @@ const AccountsList = ({ variant, selected, coin }: TAccountsListProps) => {
 };
 
 // Phones: the Accounts tab. From tablet up the same list lives in the sidebar; this route stays
-// reachable (e.g. from "See all", or an asset held in several accounts) with the page header.
+// reachable (e.g. from "See all", or an asset held in several accounts) under the top bar title.
 const Accounts = ({ coin }: { coin?: string }) => (
   <div className={styles.accounts}>
     <PhoneHeader title="Accounts" />
-    <div className={`${styles.wideHeader} ${styles.onCanvas}`}>
-      <PageHeader title="Accounts" />
-    </div>
     <AccountsList variant="page" coin={coin} />
   </div>
 );
@@ -518,15 +515,40 @@ const Account = ({ code, txId }: TAccountProps) => {
   );
 };
 
-// Top bar (tablet and desktop): Hide amounts and Settings.
-const TopBar = ({ screen }: { screen: TDirectionProps['screen'] }) => (
-  <header className={`${styles.topbar} ${styles.onCanvas}`}>
-    <div className={styles.tools}>
+// The screen's title in the top bar (the kit page keeps its own header).
+const screenTitle = (screen: TDirectionProps['screen']) => {
+  switch (screen.name) {
+  case 'portfolio':
+    return 'My Portfolio';
+  case 'accounts':
+    return 'Accounts';
+  case 'account':
+    return 'Account';
+  case 'other':
+    return screen.title;
+  default:
+    return undefined;
+  }
+};
+
+// Top bar (tablet and desktop): the screen title, then Hide amounts and Settings, lined up with
+// the content column below.
+const TopBar = ({ screen }: { screen: TDirectionProps['screen'] }) => {
+  const title = screenTitle(screen);
+  const tools = (
+    <>
       <HideAmountsButton />
       <IconButton icon="settings" label="Settings" href={href.settings} active={activeNav(screen) === 'settings'} />
-    </div>
-  </header>
-);
+    </>
+  );
+  return (
+    <header className={`${styles.topbar} ${styles.onCanvas}`}>
+      <div className={styles.topbarInner}>
+        {title ? <PageHeader title={title} actions={tools} /> : <div className={styles.tools}>{tools}</div>}
+      </div>
+    </header>
+  );
+};
 
 export const DirectionE = ({ screen }: TDirectionProps) => {
   const device = useDevice();
@@ -559,7 +581,12 @@ export const DirectionE = ({ screen }: TDirectionProps) => {
             {screen.name === 'accounts' && <Accounts coin={screen.coin} />}
             {screen.name === 'account' && <Account code={screen.code} txId={screen.txId} />}
             {screen.name === 'kit' && <KitPage />}
-            {screen.name === 'other' && <div className={styles.onCanvas}><ComingSoon title={screen.title} /></div>}
+            {screen.name === 'other' && (
+              <>
+                <PhoneHeader title={screen.title} />
+                <div className={styles.onCanvas}><ComingSoon /></div>
+              </>
+            )}
           </div>
         </main>
       </div>

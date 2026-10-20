@@ -83,6 +83,16 @@
   margin-inline-start: auto;
 }
 
+/* The top bar's row shares the content column's width, so its title lines up with the page. */
+.topbarInner {
+  display: grid;
+  width: 100%;
+  max-width: 1120px;
+  margin-inline: auto;
+}
+
+.topbarInner > .tools { justify-self: end; }
+
 /* Screens --------------------------------------------------------------------------------- */
 
 .portfolio,
@@ -106,7 +116,7 @@
    list that scrolls; the last row scrolls clear of the fade. On phones the page takes over at
    either end. */
 .recentList {
-  max-height: 440px;
+  max-height: 400px;
   overflow-y: auto;
   padding-bottom: 20px;
   -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);
@@ -312,7 +322,6 @@
   }
 
   /* The phone header carries the page title (and the account's name and wallet). */
-  .wideHeader,
   .identity { display: none; }
 
   /* It stays at the top, slides away while scrolling down and comes back on any scroll up.
@@ -430,9 +439,9 @@
 
   .accountCard { --k-fs-hero: 44px; }
 
-  /* Beside the chart the card fills the window below the top bar and its own heading. */
+  /* Beside the chart the card takes most of the window below the top bar and its heading. */
   .recentList {
-    max-height: calc(100dvh - var(--k-safe-top) - var(--e-topbar-h) - 120px);
+    max-height: calc(100dvh - var(--k-safe-top) - var(--e-topbar-h) - 200px);
   }
 
   /* The Accounts table: Balance and Value line up in fixed columns. */
