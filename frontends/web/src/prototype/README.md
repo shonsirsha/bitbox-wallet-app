@@ -46,8 +46,8 @@ Other routes show a "next design round" placeholder inside the app frame.
 - Screens are composed only from the kit in `kit/` (see `kit/index.ts` and the kit page); the
   kit contains exactly what the screens use.
 - All colours come from the BitBox palette (`src/style/variables.css`) through the `--k-*`
-  tokens in `kit/tokens.css`. Filled buttons use `#4F7998` (white text 4.6:1, WCAG AA; today's
-  `#5E94BF` is 3.25:1). Tertiary text uses one extra neutral grey, `#6B6B6B`, so small labels
+  tokens in `kit/tokens.css`. Filled buttons use the app's blue `#5E94BF` (white text 3.25:1, AA
+  for large text). Tertiary text uses one extra neutral grey, `#6B6B6B`, so small labels
   pass AA.
 - Touch screens get 44px minimum controls; no blur or heavy effects (Qt's Chromium may render
   in software).

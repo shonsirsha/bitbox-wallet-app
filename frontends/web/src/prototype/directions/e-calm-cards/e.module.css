@@ -116,11 +116,18 @@
    list that scrolls; the last row scrolls clear of the fade. On phones the page takes over at
    either end. */
 .recentList {
-  max-height: 400px;
+  --recent-h: 400px;
+  max-height: var(--recent-h);
   overflow-y: auto;
   padding-bottom: 20px;
   -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);
   mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);
+}
+
+/* While loading, the placeholder rows take the list's full height, so the card does not jump. */
+.recentLoading {
+  height: var(--recent-h);
+  overflow: hidden;
 }
 
 .balance {
@@ -446,9 +453,7 @@
   .accountCard { --k-fs-hero: 44px; }
 
   /* Beside the chart the card takes most of the window below the top bar and its heading. */
-  .recentList {
-    max-height: calc(100dvh - var(--k-safe-top) - var(--e-topbar-h) - 200px);
-  }
+  .recentList { --recent-h: calc(100dvh - var(--k-safe-top) - var(--e-topbar-h) - 200px); }
 
   /* The Accounts table: Balance and Value line up in fixed columns. */
   .accounts .listCard {

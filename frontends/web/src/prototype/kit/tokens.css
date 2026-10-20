@@ -1,13 +1,14 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*
- * PROTOTYPE (throwaway): design tokens for the five UI-refresh directions.
+ * PROTOTYPE (throwaway): design tokens for the redesigned UI.
  * Every value comes from the BitBox palette in src/style/variables.css:
  *   blue #5E94BF · darkblue #4F7998 · lightblue #73A5CD · light-skyblue #ECF7FF
  *   darkgreen #4f9879 · softred #EC644B · swissred #E30613 · orange #F5A04C
  *   white · lightgray #F5F5F5 · mediumgray #E5E5E5 · gray-alt #999 · gray #777
  *   darkgray #505050 · softblack #333 · dark #1D1D1B
- * Filled buttons use darkblue: white on #4F7998 is 4.6:1 (WCAG AA), white on #5E94BF is 3.25:1.
+ * Filled buttons and accents use the app's blue #5E94BF (white text on it is 3.25:1, AA for large
+ * text only); darkblue #4F7998 is its hover in light mode, lightblue #73A5CD in dark.
  * One extra neutral step, #6B6B6B, keeps tertiary text at AA on white (5.3:1) and #F5F5F5 (4.9:1);
  * the palette's #777 is 4.48:1 / 4.1:1.
  * Kit components only read --k-* tokens. The Calm cards values follow the shared defaults.
@@ -40,10 +41,10 @@
   --k-text: #1D1D1B;
   --k-text-2: #505050;
   --k-text-3: #6B6B6B;
-  --k-accent: #4F7998;
-  --k-accent-hover: #456b87;
+  --k-accent: #5E94BF;
+  --k-accent-hover: #4F7998;
   --k-on-accent: #FFFFFF;
-  --k-accent-ink: #4F7998;
+  --k-accent-ink: #5E94BF;
   --k-accent-soft: #ECF7FF;
   --k-positive-soft: rgba(79, 152, 121, .14);
   --k-negative-soft: rgba(236, 100, 75, .14);
@@ -107,8 +108,8 @@
   --k-text: #F5F5F5;
   --k-text-2: #B8B8B8;
   --k-text-3: #999999;
-  --k-accent: #4F7998;
-  --k-accent-hover: #5E94BF;
+  --k-accent: #5E94BF;
+  --k-accent-hover: #73A5CD;
   --k-on-accent: #FFFFFF;
   --k-accent-ink: #73A5CD;
   --k-accent-soft: rgba(94, 148, 191, .16);

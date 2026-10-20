@@ -127,18 +127,14 @@ const Portfolio = () => {
   const activity = useActivity(accounts);
   const [range, setRange] = useState<TRange>('year');
   const [scrub, setScrub] = useState<TChartPoint | null>(null);
-  // The value rolls in when the chart loads or its range changes (with the line drawing in);
-  // values read off the chart while scrubbing replace each other at once.
+  // The value rolls in once, when the page loads; values read off the chart replace each other at
+  // once.
   const [scrubbed, setScrubbed] = useState(false);
   const onScrub = (point: TChartPoint | null) => {
     setScrub(point);
     if (point) {
       setScrubbed(true);
     }
-  };
-  const changeRange = (next: TRange) => {
-    setRange(next);
-    setScrubbed(false);
   };
   // Stable points, so scrubbing (a re-render per pointer move) does not rebuild the chart path.
   const points = useMemo(() => chartPoints(chart, range), [chart, range]);
@@ -157,11 +153,11 @@ const Portfolio = () => {
         <div className={styles.stack}>
           <Section
             title={scrub ? format.formatShortDate(new Date(scrub.time * 1000).toISOString(), locale) : 'Portfolio value'}
-            action={<SegmentedControl label="Chart range" options={RANGE_OPTIONS} value={range} onChange={changeRange} />}
+            action={<SegmentedControl label="Chart range" options={RANGE_OPTIONS} value={range} onChange={setRange} />}
             className={styles.heroCard}>
             <div className={styles.balance}>
               <div className={styles.balanceHead}>
-                <Amount key={range} value={scrub?.label ? fiatAmount(scrub.label, fiat) : total} size="hero" animated instant={scrubbed} />
+                <Amount value={scrub?.label ? fiatAmount(scrub.label, fiat) : total} size="hero" animated instant={scrubbed} />
                 <span className={styles.meta}>
                   <Delta value={performance} />
                   <span>{RANGE_LABEL[range]}</span>
@@ -208,7 +204,11 @@ const Portfolio = () => {
                   {activity.length === 0 && <ListRow title="No activity yet" subtitle="Received and sent coins show up here." />}
                 </List>
               </div>
-            ) : <SkeletonRows count={6} />}
+            ) : (
+              <div className={`${styles.recentList} ${styles.recentLoading}`} aria-busy="true">
+                <SkeletonRows count={16} />
+              </div>
+            )}
           </Section>
         </div>
       </div>
