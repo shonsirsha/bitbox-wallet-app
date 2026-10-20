@@ -64,15 +64,14 @@ export const closeTransaction = (code: string) => {
   window.location.hash = href.account(code).slice(1);
 };
 
-export const accountForCoin = (accounts: TAccount[] | undefined, coinCode: string) => {
-  const matching = accounts?.filter(account => account.coinCode === coinCode) || [];
-  return matching.length === 1 ? matching[0] : undefined;
-};
-
+// A coin opens its account, or the Accounts page filtered to it when several accounts hold it.
 export const coinHref = (accounts: TAccount[] | undefined, coinCode: string) => {
   if (coinCode === 'lightning') {
     return href.lightning;
   }
-  const account = accountForCoin(accounts, coinCode);
-  return account ? href.account(account.code) : href.accounts;
+  const matching = accounts?.filter(account => account.coinCode === coinCode) || [];
+  if (matching.length === 1 && matching[0]) {
+    return href.account(matching[0].code);
+  }
+  return matching.length ? href.accountsFor(coinCode) : href.accounts;
 };

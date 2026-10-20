@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 export type TScreen =
   | { name: 'portfolio' }
-  | { name: 'accounts' }
+  | { name: 'accounts'; coin?: string }
   | { name: 'account'; code: string; txId?: string }
   | { name: 'kit' }
   | { name: 'other'; path: string; title: string };
@@ -28,7 +28,7 @@ export const parseHash = (hash: string): TScreen => {
     return { name: 'portfolio' };
   }
   if (path === '/accounts/all') {
-    return { name: 'accounts' };
+    return { name: 'accounts', coin: query.get('coin') || undefined };
   }
   if (path === '/prototype/kit') {
     return { name: 'kit' };
@@ -62,6 +62,7 @@ export const useScreen = () => {
 export const href = {
   portfolio: '#/account-summary',
   accounts: '#/accounts/all',
+  accountsFor: (coinCode: string) => `#/accounts/all?coin=${encodeURIComponent(coinCode)}`,
   account: (code: string) => `#/account/${encodeURIComponent(code)}`,
   transaction: (code: string, txId: string) => `#/account/${encodeURIComponent(code)}?tx=${encodeURIComponent(txId)}`,
   send: (code: string) => `#/account/${encodeURIComponent(code)}/send`,

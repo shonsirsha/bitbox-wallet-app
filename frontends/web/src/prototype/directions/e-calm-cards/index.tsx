@@ -16,7 +16,7 @@ import {
 } from '../../kit';
 import { usePrototype } from '../../context';
 import {
-  TRange, RANGE_OPTIONS, allocation, chartPoints, fiatAmount, groupAccounts,
+  TRange, RANGE_OPTIONS, allocation, chartPoints, fiatAmount, orderAccounts,
   useAccounts, useActivity, useBalance, useBalances, useChart, useDevice, useSummary, useTransactions,
 } from '../../data';
 import { href } from '../../routing';
@@ -194,9 +194,11 @@ const Portfolio = () => {
   );
 };
 
-type TSort = 'value' | 'name';
+// type: grouped by coin type (Bitcoin, Ethereum, Litecoin, ERC20 tokens), the default.
+type TSort = 'type' | 'value' | 'name';
 
 const SORT_OPTIONS: { value: TSort; label: string }[] = [
+  { value: 'type', label: 'Type' },
   { value: 'value', label: 'Value' },
   { value: 'name', label: 'Name' },
 ];
@@ -214,7 +216,7 @@ type TFiltersProps = {
   onAllCoins: () => void;
 };
 
-// Sort by value or name, filter by coin type: the same controls in the popover and the sheet.
+// Sort by type, value or name, filter by coin: the same controls in the popover and the sheet.
 const AccountFilters = ({ sort, onSort, action, coinTypes, selectedCoins, onToggleCoin, onAllCoins }: TFiltersProps) => (
   <div className={styles.filters}>
     <Section variant="plain" title="Sort by" action={action}>
@@ -242,12 +244,14 @@ type TAccountsListProps = {
   // sidebar: compact rows in the dark panel. page: the Accounts tab on phones, a table on desktop.
   variant: 'sidebar' | 'page';
   selected?: string;
+  // Page: the coin to filter by when it opens (an asset held in several accounts).
+  coin?: string;
 };
 
 // The account list with search, sort and coin filter, and Add account; the same list in the
 // sidebar and on the Accounts page. Lightning is listed on phones only (it has no tablet or
 // desktop navigation). Sort and filter open in a popover, or a bottom sheet on phones.
-const AccountsList = ({ variant, selected }: TAccountsListProps) => {
+const AccountsList = ({ variant, selected, coin }: TAccountsListProps) => {
   const { fiat } = usePrototype();
   const accounts = useAccounts();
   const balances = useBalances(accounts);
@@ -255,8 +259,11 @@ const AccountsList = ({ variant, selected }: TAccountsListProps) => {
   const chart = useChart();
   const [query, setQuery] = useState('');
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const [sort, setSort] = useState<TSort>('value');
-  const [selectedCoins, setSelectedCoins] = useState<string[]>([]);
+  const [sort, setSort] = useState<TSort>('type');
+  const [selectedCoins, setSelectedCoins] = useState<string[]>(coin ? [coin] : []);
+  useEffect(() => {
+    setSelectedCoins(coin ? [coin] : []);
+  }, [coin]);
   const phone = useMediaQuery('(max-width: 768px)');
   const sidebar = variant === 'sidebar';
   const desktop = useMediaQuery('(min-width: 1200px)');
@@ -267,10 +274,10 @@ const AccountsList = ({ variant, selected }: TAccountsListProps) => {
   const iconSize = sidebar ? 28 : 40;
   const needle = query.trim().toLowerCase();
   const matches = (...values: string[]) => !needle || values.some(value => value.toLowerCase().includes(needle));
-  const flat = useMemo(() => groupAccounts(accounts)?.flatMap(({ account, tokens }) => [account, ...tokens]) || [], [accounts]);
+  const ordered = useMemo(() => orderAccounts(accounts) || [], [accounts]);
   const coinTypes = useMemo(() => {
     const types: TCoinType[] = [];
-    flat.forEach(account => {
+    ordered.forEach(account => {
       const type = types.find(candidate => candidate.code === account.coinCode);
       if (type) {
         type.count++;
@@ -279,20 +286,23 @@ const AccountsList = ({ variant, selected }: TAccountsListProps) => {
       }
     });
     return types;
-  }, [flat]);
+  }, [ordered]);
   const filtered = useMemo(() => {
     const value = (code: string) => Number(balances?.[code]?.available.unformattedConversions?.[fiat as 'USD'] || 0);
-    return flat
+    const list = ordered
       .filter(account => matches(account.name, account.coinName, account.coinUnit))
-      .filter(account => selectedCoins.length === 0 || selectedCoins.includes(account.coinCode))
-      .sort((a, b) => (sort === 'name' ? a.name.localeCompare(b.name) : value(b.code) - value(a.code)));
-  }, [flat, balances, fiat, needle, selectedCoins, sort]); // eslint-disable-line react-hooks/exhaustive-deps
+      .filter(account => selectedCoins.length === 0 || selectedCoins.includes(account.coinCode));
+    if (sort === 'value') {
+      return list.sort((a, b) => value(b.code) - value(a.code));
+    }
+    return sort === 'name' ? list.sort((a, b) => a.name.localeCompare(b.name)) : list;
+  }, [ordered, balances, fiat, needle, selectedCoins, sort]); // eslint-disable-line react-hooks/exhaustive-deps
   const lightning = summary?.coinsTotalBalance.find(coin => coin.coinCode === 'lightning')?.formattedAmount;
   const accountCount = accounts ? `${accounts.length} accounts` : '';
-  const filtersActive = sort !== 'value' || selectedCoins.length > 0;
+  const filtersActive = sort !== 'type' || selectedCoins.length > 0;
   const showLightning = !sidebar && phone && matches('Lightning') && selectedCoins.length === 0;
   const resetFilters = () => {
-    setSort('value');
+    setSort('type');
     setSelectedCoins([]);
   };
   const toggleCoin = (code: string) => setSelectedCoins(current => (
@@ -396,14 +406,14 @@ const AccountsList = ({ variant, selected }: TAccountsListProps) => {
 };
 
 // Phones: the Accounts tab. From tablet up the same list lives in the sidebar; this route stays
-// reachable (e.g. from "See all") with the page header.
-const Accounts = () => (
+// reachable (e.g. from "See all", or an asset held in several accounts) with the page header.
+const Accounts = ({ coin }: { coin?: string }) => (
   <div className={styles.accounts}>
     <PhoneHeader title="Accounts" />
     <div className={`${styles.wideHeader} ${styles.onCanvas}`}>
       <PageHeader title="Accounts" />
     </div>
-    <AccountsList variant="page" />
+    <AccountsList variant="page" coin={coin} />
   </div>
 );
 
@@ -537,7 +547,7 @@ export const DirectionE = ({ screen }: TDirectionProps) => {
         <main className={styles.main}>
           <div className={styles.content}>
             {screen.name === 'portfolio' && <Portfolio />}
-            {screen.name === 'accounts' && <Accounts />}
+            {screen.name === 'accounts' && <Accounts coin={screen.coin} />}
             {screen.name === 'account' && <Account code={screen.code} txId={screen.txId} />}
             {screen.name === 'kit' && <KitPage />}
             {screen.name === 'other' && <div className={styles.onCanvas}><ComingSoon title={screen.title} /></div>}

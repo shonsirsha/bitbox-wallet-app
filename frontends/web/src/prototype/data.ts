@@ -19,6 +19,7 @@ import {
 import { getDeviceList } from '@/api/devices';
 import { getDeviceInfo, getVersion } from '@/api/bitbox02';
 import { useLoad } from '@/hooks/api';
+import { isBitcoinBased, isBitcoinOnly, isEthereumBased } from '@/utils/coin';
 import type { TChartPoint } from './kit';
 
 export const useAccounts = () => useLoad(getAccounts);
@@ -135,17 +136,24 @@ export const fiatAmount = (formatted: string, fiat: string): TAmountWithConversi
   conversions: { [fiat]: formatted },
 });
 
-// Accounts grouped for display: tokens under their parent account.
-export const groupAccounts = (accounts: TAccount[] | undefined) => {
-  if (!accounts) {
-    return undefined;
+// Account groups in list order: Bitcoin, Ethereum, Litecoin, then ERC20 tokens.
+const groupRank = (account: TAccount) => {
+  if (account.isToken) {
+    return 3;
   }
-  const parents = accounts.filter(account => !account.isToken);
-  return parents.map(parent => ({
-    account: parent,
-    tokens: accounts.filter(account => account.isToken && parent.activeTokens?.some(token => token.accountCode === account.code)),
-  }));
+  if (isBitcoinOnly(account.coinCode)) {
+    return 0;
+  }
+  if (isEthereumBased(account.coinCode)) {
+    return 1;
+  }
+  return isBitcoinBased(account.coinCode) ? 2 : 4;
 };
+
+// Accounts grouped by type for display, in the backend's order within each group.
+export const orderAccounts = (accounts: TAccount[] | undefined) => (
+  accounts ? [...accounts].sort((a, b) => groupRank(a) - groupRank(b)) : undefined
+);
 
 // Share of each coin in the portfolio, from the backend's unformatted fiat conversions.
 export const allocation = (amounts: (TAmountWithConversions | undefined)[], fiat: string) => {

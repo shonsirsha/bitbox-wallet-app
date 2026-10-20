@@ -10,7 +10,9 @@ import {
   SkeletonRows, TIconName, TNavItem, format,
 } from '../kit';
 import { PrototypeContext, usePrototype } from '../context';
-import { chartPoints, fiatAmount, RANGE_OPTIONS, TRange, useAccounts, useActivity, useBalances, useChart, useDevice } from '../data';
+import {
+  chartPoints, fiatAmount, orderAccounts, RANGE_OPTIONS, TRange, useAccounts, useActivity, useBalances, useChart, useDevice,
+} from '../data';
 import { href } from '../routing';
 import { TransactionDetails } from './transaction-details';
 import { TxRow, txSign } from './tx-row';
@@ -37,7 +39,8 @@ const TAB_NAV: TNavItem[] = [
   { key: 'settings', label: 'Settings', icon: 'settings', href: KIT },
 ];
 
-const SORT_OPTIONS: { value: 'value' | 'name'; label: string }[] = [
+const SORT_OPTIONS: { value: 'type' | 'value' | 'name'; label: string }[] = [
+  { value: 'type', label: 'Type' },
   { value: 'value', label: 'Value' },
   { value: 'name', label: 'Name' },
 ];
@@ -65,7 +68,7 @@ export const KitPage = () => {
   const activity = useActivity(accounts);
   const device = useDevice();
   const [range, setRange] = useState<TRange>('year');
-  const [sort, setSort] = useState<'value' | 'name'>('value');
+  const [sort, setSort] = useState<'type' | 'value' | 'name'>('type');
   const [selectedCoins, setSelectedCoins] = useState<string[]>(['btc']);
   const [search, setSearch] = useState('');
   const [popover, setPopover] = useState(false);
@@ -81,7 +84,7 @@ export const KitPage = () => {
   const recent = activity?.find(item => item.tx.status === 'complete');
   const coins = useMemo(() => {
     const list: { code: string; name: string; count: number }[] = [];
-    accounts?.forEach(account => {
+    orderAccounts(accounts)?.forEach(account => {
       const coin = list.find(item => item.code === account.coinCode);
       if (coin) {
         coin.count++;
