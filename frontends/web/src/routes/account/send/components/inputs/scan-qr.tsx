@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { MouseEvent, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { useBackButton } from '@/hooks/backbutton';
 import { useQRScanner } from '@/hooks/qrcodescanner';
@@ -47,6 +48,8 @@ export const ScanQR = ({
   const busyRef = useRef(false);
   const processedRef = useRef<string | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [focusPoint, setFocusPoint] = useState<{ x: number; y: number }>();
+  const focusRequest = useRef(0);
 
   useEffect(() => {
     const raf = requestAnimationFrame(() => setOpen(true));
@@ -99,13 +102,41 @@ export const ScanQR = ({
     }
   }, [onResult, requestClose]);
 
-  const { initErrorMessage, hasFlash, isFlashOn, toggleFlash } = useQRScanner(videoRef, {
+  const { native, initErrorMessage, hasFlash, hasFocus, isFlashOn, toggleFlash, focusAt } = useQRScanner(videoRef, {
     onStart: () => setCameraReady(true),
-    onResult: result => handleValue(result.data),
+    onResult: handleValue,
     onError: err => console.error(err),
     scanRegionCenterY,
     stopOnResult: false,
   });
+
+  useEffect(() => {
+    if (native) {
+      document.documentElement.classList.add(style.nativeCameraPage!);
+      return () => document.documentElement.classList.remove(style.nativeCameraPage!);
+    }
+  }, [native]);
+
+  useEffect(() => {
+    if (!focusPoint) {
+      return;
+    }
+    const timer = setTimeout(() => setFocusPoint(undefined), 1000);
+    return () => clearTimeout(timer);
+  }, [focusPoint]);
+
+  const handleFocus = async (event: MouseEvent<HTMLVideoElement>) => {
+    if (!native || !hasFocus || !cameraReady || busyRef.current || closingRef.current || guideHidden) {
+      return;
+    }
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width;
+    const y = (event.clientY - rect.top) / rect.height;
+    const request = ++focusRequest.current;
+    if (await focusAt(x, y) && request === focusRequest.current && !closingRef.current) {
+      setFocusPoint({ x, y });
+    }
+  };
 
   const handleToggleFlash = () => {
     triggerHapticFeedback();
@@ -125,9 +156,9 @@ export const ScanQR = ({
   const fullscreenClass = fullscreen ? style.fullscreen || '' : '';
   const content = typeof children === 'function' ? children(requestClose, resetLastResult) : children;
 
-  return (
+  const scanner = (
     <div
-      className={`${style.backdrop || ''} ${open ? style.backdropOpen || '' : ''} ${fullscreenClass}`}
+      className={`${style.backdrop || ''} ${open ? style.backdropOpen || '' : ''} ${fullscreenClass} ${native ? style.nativeCamera || '' : ''}`}
       onClick={handleBackdropClick}>
       <div
         className={`${style.container || ''} ${open ? style.containerOpen || '' : ''} ${fullscreenClass}`}
@@ -141,8 +172,19 @@ export const ScanQR = ({
         <video
           className={style.video}
           ref={videoRef}
-          poster="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%3E%20width=%2264%22%20height=%2248%22%3C/svg%3E"
+          onClick={native && hasFocus ? handleFocus : undefined}
+          poster={native ? undefined : `data:image/svg+xml,${encodeURIComponent(
+            '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="48"/>'
+          )}`}
         />
+
+        {focusPoint && (
+          <span
+            className={style.focusPoint}
+            style={{ left: `${focusPoint.x * 100}%`, top: `${focusPoint.y * 100}%` }}
+            aria-hidden="true"
+          />
+        )}
 
         <div className={style.overlay}>
           <div className={`${style.focus || ''} ${guideHidden ? style.focusHidden || '' : ''}`}>
@@ -162,6 +204,7 @@ export const ScanQR = ({
         <button
           type="button"
           className={style.closeButton}
+          aria-label={t('generic.close')}
           onClick={() => requestClose()}
         >
           <CloseXWhite />
@@ -193,4 +236,6 @@ export const ScanQR = ({
       </div>
     </div>
   );
+  // The native preview sits beneath WKWebView; the portal leaves only scanner UI above it.
+  return native ? createPortal(scanner, document.body) : scanner;
 };

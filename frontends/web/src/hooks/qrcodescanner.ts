@@ -3,10 +3,11 @@
 import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import QrScanner from 'qr-scanner';
 import { useTranslation } from 'react-i18next';
+import { useIOSQRScanner } from './ios-qr-scanner';
 
 type TUseQRScannerOptions = {
   onStart?: () => void;
-  onResult: (result: QrScanner.ScanResult) => void;
+  onResult: (result: string) => void;
   onError: (error: any) => void;
   scanRegionCenterY?: number;
   stopOnResult?: boolean;
@@ -22,6 +23,7 @@ export const useQRScanner = (
   }: TUseQRScannerOptions
 ) => {
   const { t } = useTranslation();
+  const iosScanner = useIOSQRScanner(videoRef, { onStart, onResult, onError, scanRegionCenterY, stopOnResult });
   const [initErrorMessage, setInitErrorMessage] = useState<string | undefined>(undefined);
   const [hasFlash, setHasFlash] = useState(false);
   const [isFlashOn, setIsFlashOn] = useState(false);
@@ -38,6 +40,9 @@ export const useQRScanner = (
   onErrorRef.current = onError;
 
   useEffect(() => {
+    if (iosScanner.native) {
+      return;
+    }
     (async () => {
       if (!videoRef.current) {
         return;
@@ -54,7 +59,7 @@ export const useQRScanner = (
             if (stopOnResult) {
               scanner.current?.stop();
             }
-            onResultRef.current(result);
+            onResultRef.current(result.data);
           }, {
             onDecodeError: err => {
               const errorString = err.toString();
@@ -121,7 +126,7 @@ export const useQRScanner = (
         }
       })();
     };
-  }, [videoRef, scanRegionCenterY, stopOnResult, t]);
+  }, [videoRef, scanRegionCenterY, stopOnResult, t, iosScanner.native]);
 
   const toggleFlash = useCallback(async () => {
     const stream = videoRef.current?.srcObject;
@@ -141,5 +146,7 @@ export const useQRScanner = (
     }
   }, [videoRef, isFlashOn]);
 
-  return { initErrorMessage, hasFlash, isFlashOn, toggleFlash };
+  return iosScanner.native ? iosScanner : {
+    native: false, initErrorMessage, hasFlash, hasFocus: false, isFlashOn, toggleFlash, focusAt: iosScanner.focusAt,
+  };
 };

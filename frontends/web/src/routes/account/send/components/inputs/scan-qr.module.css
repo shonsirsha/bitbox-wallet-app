@@ -240,3 +240,42 @@
 .contentSlot > * {
   pointer-events: auto;
 }
+.nativeCamera .contentSlot > * {
+  pointer-events: none;
+}
+
+.nativeCameraPage,
+.nativeCameraPage :global(body) {
+  background: transparent !important;
+}
+.nativeCameraPage :global(#root) {
+  opacity: 0;
+  visibility: hidden;
+}
+.backdrop.nativeCamera,
+.nativeCamera .container {
+  background: transparent;
+}
+.nativeCamera .container {
+  transform: none;
+  box-shadow: 0 0 0 100vmax var(--scan-qr-background);
+}
+.nativeCamera .video {
+  opacity: 0;
+  touch-action: manipulation;
+}
+.focusPoint {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border: 2px solid var(--scan-qr-foreground);
+  border-radius: 8px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: focusPoint 1s ease-out forwards;
+}
+@keyframes focusPoint {
+  from { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+  70% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  to { opacity: 0; }
+}

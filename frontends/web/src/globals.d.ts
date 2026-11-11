@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import type { TPayload } from './utils/transport-common';
+import type { TIOSQRScannerCommand, TIOSQRScannerEvent, TIOSQRScannerReply } from './hooks/ios-qr-scanner';
 import 'react';
 
 declare module 'react' {
@@ -10,6 +11,9 @@ declare module 'react' {
 }
 
 export declare global {
+  interface WindowEventMap {
+    'ios-qr-scanner': CustomEvent<TIOSQRScannerEvent>;
+  }
   interface Window {
     qt?: { webChannelTransport: unknown };
     android?: {
@@ -25,6 +29,9 @@ export declare global {
     onBackButtonPressed?: () => boolean;
     webkit?: {
       messageHandlers: {
+        qrScanner?: {
+          postMessage: (msg: TIOSQRScannerCommand) => Promise<TIOSQRScannerReply>;
+        };
         goCall: {
           postMessage: (msg: { queryID: number; query: string }) => void;
         };

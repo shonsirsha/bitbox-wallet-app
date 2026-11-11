@@ -192,6 +192,8 @@ struct WebView: UIViewRepresentable {
     func makeUIView(context: Context) -> some WKWebView {
         let contentController = WKUserContentController()
         let bridge = JavascriptBridge()
+        let qrScannerBridge = QRScannerBridge()
+        contentController.addScriptMessageHandler(qrScannerBridge, contentWorld: .page, name: "qrScanner")
         contentController.add(bridge, name: "goCall")
         contentController.add(bridge, name: "appReady")
         contentController.add(bridge, name: "readClipboard")
@@ -228,6 +230,7 @@ struct WebView: UIViewRepresentable {
         
         // set webView reference in bridge for appReady handling
         bridge.webView = webView
+        qrScannerBridge.webView = webView
 
         context.coordinator.attachBackSwipeGesture(to: webView)
         

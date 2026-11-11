@@ -7,14 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA0000010000000000000002 /* QRScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0000010000000000000001 /* QRScanner.swift */; };
+		FA0000010000000000000003 /* QRScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0000010000000000000001 /* QRScanner.swift */; };
 		8E1846EB2E0AFF6000802D8B /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E1846EA2E0AFF5B00802D8B /* NetworkMonitor.swift */; };
 		8E1846EC2E0AFF6000802D8B /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E1846EA2E0AFF5B00802D8B /* NetworkMonitor.swift */; };
 		9A0000010000000000000002 /* LightningEncryptionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0000010000000000000001 /* LightningEncryptionHelper.swift */; };
 		9A0000010000000000000003 /* LightningEncryptionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0000010000000000000001 /* LightningEncryptionHelper.swift */; };
-		B536195B2E4B2D1B00B3E10D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B536195A2E4B2D1B00B3E10D /* Launch Screen.storyboard */; };
-		B536195C2E4B2D1B00B3E10D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B536195A2E4B2D1B00B3E10D /* Launch Screen.storyboard */; };
 		A11AC9CA2F33A45B00AB2B88 /* BreezSdkSpark in Frameworks */ = {isa = PBXBuildFile; productRef = A11AC9C92F33A45B00AB2B88 /* BreezSdkSpark */; };
 		A11AC9CD2F33AE2300AB2B88 /* BreezSdkSpark in Frameworks */ = {isa = PBXBuildFile; productRef = A11AC9CC2F33AE2300AB2B88 /* BreezSdkSpark */; };
+		AAAA00010000000000000009 /* BitBoxAppWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAA00010000000000000001 /* BitBoxAppWidget.swift */; };
+		AAAA0001000000000000000A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAAA00010000000000000002 /* Assets.xcassets */; };
+		AAAA00010000000000000011 /* BitBoxAppWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = AAAA00010000000000000004 /* BitBoxAppWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B536195B2E4B2D1B00B3E10D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B536195A2E4B2D1B00B3E10D /* Launch Screen.storyboard */; };
+		B536195C2E4B2D1B00B3E10D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B536195A2E4B2D1B00B3E10D /* Launch Screen.storyboard */; };
+		CCCC00010000000000000001 /* WidgetShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCC00010000000000000004 /* WidgetShared.swift */; };
+		CCCC00010000000000000002 /* WidgetShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCC00010000000000000004 /* WidgetShared.swift */; };
+		CCCC00010000000000000003 /* WidgetShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCC00010000000000000004 /* WidgetShared.swift */; };
 		D700B5F62C884C34000496D4 /* Mobileserver.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D76518BB2B1F8F7400DC03A9 /* Mobileserver.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D700B5FD2CA2FFAF000496D4 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76516322B1F3D1A00DC03A9 /* WebView.swift */; };
 		D700B5FE2CA2FFAF000496D4 /* BitBoxAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76516082B1F3B1300DC03A9 /* BitBoxAppApp.swift */; };
@@ -34,12 +42,6 @@
 		D76516332B1F3D1B00DC03A9 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76516322B1F3D1A00DC03A9 /* WebView.swift */; };
 		D76518B62B1F45B300DC03A9 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = D76518B52B1F45B300DC03A9 /* assets */; };
 		D76518C22B1F911700DC03A9 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D76518C12B1F910C00DC03A9 /* libresolv.tbd */; };
-		AAAA00010000000000000009 /* BitBoxAppWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAA00010000000000000001 /* BitBoxAppWidget.swift */; };
-		AAAA0001000000000000000A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAAA00010000000000000002 /* Assets.xcassets */; };
-		AAAA00010000000000000011 /* BitBoxAppWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = AAAA00010000000000000004 /* BitBoxAppWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		CCCC00010000000000000001 /* WidgetShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCC00010000000000000004 /* WidgetShared.swift */; };
-		CCCC00010000000000000002 /* WidgetShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCC00010000000000000004 /* WidgetShared.swift */; };
-		CCCC00010000000000000003 /* WidgetShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCCC00010000000000000004 /* WidgetShared.swift */; };
 		DDDD00000000000000000001 /* WidgetModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDDD00000000000000000011 /* WidgetModels.swift */; };
 		DDDD00000000000000000002 /* WidgetCoinMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDDD00000000000000000012 /* WidgetCoinMetadata.swift */; };
 		DDDD00000000000000000003 /* WidgetAppGroupStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDDD00000000000000000013 /* WidgetAppGroupStore.swift */; };
@@ -54,6 +56,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		AAAA0001000000000000000E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D76515FD2B1F3B1300DC03A9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AAAA00010000000000000005;
+			remoteInfo = BitBoxAppWidget;
+		};
 		D76516162B1F3B1500DC03A9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D76515FD2B1F3B1300DC03A9 /* Project object */;
@@ -68,16 +77,20 @@
 			remoteGlobalIDString = D76516042B1F3B1300DC03A9;
 			remoteInfo = BitBoxApp;
 		};
-		AAAA0001000000000000000E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D76515FD2B1F3B1300DC03A9 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = AAAA00010000000000000005;
-			remoteInfo = BitBoxAppWidget;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		AAAA00010000000000000010 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				AAAA00010000000000000011 /* BitBoxAppWidget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D700B5F72C884C34000496D4 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -100,23 +113,20 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AAAA00010000000000000010 /* Embed App Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				AAAA00010000000000000011 /* BitBoxAppWidget.appex in Embed App Extensions */,
-			);
-			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		FA0000010000000000000001 /* QRScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScanner.swift; sourceTree = "<group>"; };
 		8E1846EA2E0AFF5B00802D8B /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		9A0000010000000000000001 /* LightningEncryptionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightningEncryptionHelper.swift; sourceTree = "<group>"; };
+		AAAA00010000000000000001 /* BitBoxAppWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitBoxAppWidget.swift; sourceTree = "<group>"; };
+		AAAA00010000000000000002 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AAAA00010000000000000004 /* BitBoxAppWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BitBoxAppWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAAA00010000000000000012 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B536195A2E4B2D1B00B3E10D /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		BBBB00010000000000000001 /* BitBoxApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BitBoxApp.entitlements; sourceTree = "<group>"; };
+		BBBB00010000000000000002 /* BitBoxAppWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BitBoxAppWidget.entitlements; sourceTree = "<group>"; };
+		CCCC00010000000000000004 /* WidgetShared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetShared.swift; sourceTree = "<group>"; };
 		D700B5F82C888CB9000496D4 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D700B5F92C986A3C000496D4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D700B60A2CA2FFAF000496D4 /* BitBoxApp Testnet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BitBoxApp Testnet.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,13 +144,6 @@
 		D76518B52B1F45B300DC03A9 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		D76518BB2B1F8F7400DC03A9 /* Mobileserver.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Mobileserver.xcframework; path = ../../../backend/mobileserver/Mobileserver.xcframework; sourceTree = "<group>"; };
 		D76518C12B1F910C00DC03A9 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
-		AAAA00010000000000000001 /* BitBoxAppWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitBoxAppWidget.swift; sourceTree = "<group>"; };
-		AAAA00010000000000000002 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		AAAA00010000000000000004 /* BitBoxAppWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BitBoxAppWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		AAAA00010000000000000012 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		BBBB00010000000000000001 /* BitBoxApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BitBoxApp.entitlements; sourceTree = "<group>"; };
-		BBBB00010000000000000002 /* BitBoxAppWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BitBoxAppWidget.entitlements; sourceTree = "<group>"; };
-		CCCC00010000000000000004 /* WidgetShared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetShared.swift; sourceTree = "<group>"; };
 		DDDD00000000000000000011 /* WidgetModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetModels.swift; sourceTree = "<group>"; };
 		DDDD00000000000000000012 /* WidgetCoinMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetCoinMetadata.swift; sourceTree = "<group>"; };
 		DDDD00000000000000000013 /* WidgetAppGroupStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetAppGroupStore.swift; sourceTree = "<group>"; };
@@ -154,6 +157,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		AAAA00010000000000000007 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D700B5FF2CA2FFAF000496D4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -186,16 +196,29 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AAAA00010000000000000007 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AAAA00010000000000000003 /* BitBoxAppWidget */ = {
+			isa = PBXGroup;
+			children = (
+				BBBB00010000000000000002 /* BitBoxAppWidget.entitlements */,
+				AAAA00010000000000000001 /* BitBoxAppWidget.swift */,
+				DDDD00000000000000000019 /* BitBoxAppWidgetEntryView.swift */,
+				DDDD00000000000000000018 /* SparklineView.swift */,
+				DDDD00000000000000000017 /* WidgetTimelineProvider.swift */,
+				DDDD00000000000000000016 /* WidgetIntents.swift */,
+				DDDD00000000000000000015 /* WidgetDataService.swift */,
+				DDDD00000000000000000014 /* WidgetFormatting.swift */,
+				DDDD00000000000000000013 /* WidgetAppGroupStore.swift */,
+				DDDD00000000000000000012 /* WidgetCoinMetadata.swift */,
+				DDDD00000000000000000011 /* WidgetModels.swift */,
+				AAAA00010000000000000002 /* Assets.xcassets */,
+				AAAA00010000000000000012 /* Info.plist */,
+			);
+			path = BitBoxAppWidget;
+			sourceTree = "<group>";
+		};
 		B536195D2E4B2D9E00B3E10D /* Assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -243,6 +266,7 @@
 				EEEE00000000000000000003 /* WidgetAppGroupSync.swift */,
 				CCCC00010000000000000004 /* WidgetShared.swift */,
 				D76516322B1F3D1A00DC03A9 /* WebView.swift */,
+				FA0000010000000000000001 /* QRScanner.swift */,
 				D765160C2B1F3B1500DC03A9 /* Assets.xcassets */,
 				D765160E2B1F3B1500DC03A9 /* Preview Content */,
 				D721B20C2D369EC100767080 /* Bluetooth.swift */,
@@ -283,29 +307,26 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		AAAA00010000000000000003 /* BitBoxAppWidget */ = {
-			isa = PBXGroup;
-			children = (
-				BBBB00010000000000000002 /* BitBoxAppWidget.entitlements */,
-				AAAA00010000000000000001 /* BitBoxAppWidget.swift */,
-				DDDD00000000000000000019 /* BitBoxAppWidgetEntryView.swift */,
-				DDDD00000000000000000018 /* SparklineView.swift */,
-				DDDD00000000000000000017 /* WidgetTimelineProvider.swift */,
-				DDDD00000000000000000016 /* WidgetIntents.swift */,
-				DDDD00000000000000000015 /* WidgetDataService.swift */,
-				DDDD00000000000000000014 /* WidgetFormatting.swift */,
-				DDDD00000000000000000013 /* WidgetAppGroupStore.swift */,
-				DDDD00000000000000000012 /* WidgetCoinMetadata.swift */,
-				DDDD00000000000000000011 /* WidgetModels.swift */,
-				AAAA00010000000000000002 /* Assets.xcassets */,
-				AAAA00010000000000000012 /* Info.plist */,
-			);
-			path = BitBoxAppWidget;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		AAAA00010000000000000005 /* BitBoxAppWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AAAA0001000000000000000D /* Build configuration list for PBXNativeTarget "BitBoxAppWidget" */;
+			buildPhases = (
+				AAAA00010000000000000006 /* Sources */,
+				AAAA00010000000000000007 /* Frameworks */,
+				AAAA00010000000000000008 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BitBoxAppWidget;
+			productName = BitBoxAppWidget;
+			productReference = AAAA00010000000000000004 /* BitBoxAppWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		D700B5FA2CA2FFAF000496D4 /* BitBoxApp Testnet */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D700B6072CA2FFAF000496D4 /* Build configuration list for PBXNativeTarget "BitBoxApp Testnet" */;
@@ -382,23 +403,6 @@
 			productReference = D765161F2B1F3B1500DC03A9 /* BitBoxAppUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		AAAA00010000000000000005 /* BitBoxAppWidget */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = AAAA0001000000000000000D /* Build configuration list for PBXNativeTarget "BitBoxAppWidget" */;
-			buildPhases = (
-				AAAA00010000000000000006 /* Sources */,
-				AAAA00010000000000000007 /* Frameworks */,
-				AAAA00010000000000000008 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = BitBoxAppWidget;
-			productName = BitBoxAppWidget;
-			productReference = AAAA00010000000000000004 /* BitBoxAppWidget.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -408,22 +412,22 @@
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1420;
-			TargetAttributes = {
-				AAAA00010000000000000005 = {
-					CreatedOnToolsVersion = 14.2;
+				TargetAttributes = {
+					AAAA00010000000000000005 = {
+						CreatedOnToolsVersion = 14.2;
+					};
+					D76516042B1F3B1300DC03A9 = {
+						CreatedOnToolsVersion = 14.2;
+					};
+					D76516142B1F3B1500DC03A9 = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = D76516042B1F3B1300DC03A9;
+					};
+					D765161E2B1F3B1500DC03A9 = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = D76516042B1F3B1300DC03A9;
+					};
 				};
-				D76516042B1F3B1300DC03A9 = {
-					CreatedOnToolsVersion = 14.2;
-				};
-				D76516142B1F3B1500DC03A9 = {
-					CreatedOnToolsVersion = 14.2;
-					TestTargetID = D76516042B1F3B1300DC03A9;
-				};
-				D765161E2B1F3B1500DC03A9 = {
-					CreatedOnToolsVersion = 14.2;
-					TestTargetID = D76516042B1F3B1300DC03A9;
-				};
-			};
 			};
 			buildConfigurationList = D76516002B1F3B1300DC03A9 /* Build configuration list for PBXProject "BitBoxApp" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -451,6 +455,14 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		AAAA00010000000000000008 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AAAA0001000000000000000A /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D700B6012CA2FFAF000496D4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -484,14 +496,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AAAA00010000000000000008 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				AAAA0001000000000000000A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -539,11 +543,30 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		AAAA00010000000000000006 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AAAA00010000000000000009 /* BitBoxAppWidget.swift in Sources */,
+				DDDD00000000000000000009 /* BitBoxAppWidgetEntryView.swift in Sources */,
+				DDDD00000000000000000008 /* SparklineView.swift in Sources */,
+				DDDD00000000000000000007 /* WidgetTimelineProvider.swift in Sources */,
+				DDDD00000000000000000006 /* WidgetIntents.swift in Sources */,
+				DDDD00000000000000000005 /* WidgetDataService.swift in Sources */,
+				DDDD00000000000000000004 /* WidgetFormatting.swift in Sources */,
+				DDDD00000000000000000003 /* WidgetAppGroupStore.swift in Sources */,
+				DDDD00000000000000000002 /* WidgetCoinMetadata.swift in Sources */,
+				DDDD00000000000000000001 /* WidgetModels.swift in Sources */,
+				CCCC00010000000000000003 /* WidgetShared.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D700B5FC2CA2FFAF000496D4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				D700B5FD2CA2FFAF000496D4 /* WebView.swift in Sources */,
+				FA0000010000000000000003 /* QRScanner.swift in Sources */,
 				8E1846EC2E0AFF6000802D8B /* NetworkMonitor.swift in Sources */,
 				D721B20E2D36A00000767080 /* Bluetooth.swift in Sources */,
 				D700B5FE2CA2FFAF000496D4 /* BitBoxAppApp.swift in Sources */,
@@ -558,6 +581,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D76516332B1F3D1B00DC03A9 /* WebView.swift in Sources */,
+				FA0000010000000000000002 /* QRScanner.swift in Sources */,
 				8E1846EB2E0AFF6000802D8B /* NetworkMonitor.swift in Sources */,
 				D721B20D2D369EC100767080 /* Bluetooth.swift in Sources */,
 				D76516092B1F3B1300DC03A9 /* BitBoxAppApp.swift in Sources */,
@@ -584,27 +608,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AAAA00010000000000000006 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				AAAA00010000000000000009 /* BitBoxAppWidget.swift in Sources */,
-				DDDD00000000000000000009 /* BitBoxAppWidgetEntryView.swift in Sources */,
-				DDDD00000000000000000008 /* SparklineView.swift in Sources */,
-				DDDD00000000000000000007 /* WidgetTimelineProvider.swift in Sources */,
-				DDDD00000000000000000006 /* WidgetIntents.swift in Sources */,
-				DDDD00000000000000000005 /* WidgetDataService.swift in Sources */,
-				DDDD00000000000000000004 /* WidgetFormatting.swift in Sources */,
-				DDDD00000000000000000003 /* WidgetAppGroupStore.swift in Sources */,
-				DDDD00000000000000000002 /* WidgetCoinMetadata.swift in Sources */,
-				DDDD00000000000000000001 /* WidgetModels.swift in Sources */,
-				CCCC00010000000000000003 /* WidgetShared.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		AAAA0001000000000000000F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AAAA00010000000000000005 /* BitBoxAppWidget */;
+			targetProxy = AAAA0001000000000000000E /* PBXContainerItemProxy */;
+		};
 		D76516172B1F3B1500DC03A9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D76516042B1F3B1300DC03A9 /* BitBoxApp */;
@@ -615,14 +626,63 @@
 			target = D76516042B1F3B1300DC03A9 /* BitBoxApp */;
 			targetProxy = D76516202B1F3B1500DC03A9 /* PBXContainerItemProxy */;
 		};
-		AAAA0001000000000000000F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = AAAA00010000000000000005 /* BitBoxAppWidget */;
-			targetProxy = AAAA0001000000000000000E /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		AAAA0001000000000000000B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D700B5F82C888CB9000496D4 /* Config.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = BitBoxAppWidget/BitBoxAppWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = XK248TQN88;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BitBoxAppWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "BitBoxApp Prices";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = swiss.bitbox.BitBoxApp.Widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AAAA0001000000000000000C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D700B5F82C888CB9000496D4 /* Config.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = BitBoxAppWidget/BitBoxAppWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = XK248TQN88;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BitBoxAppWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "BitBoxApp Prices";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = swiss.bitbox.BitBoxApp.Widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		D700B6082CA2FFAF000496D4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -811,6 +871,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = BitBoxApp/BitBoxApp.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"BitBoxApp/Preview Content\"";
 				DEVELOPMENT_TEAM = XK248TQN88;
@@ -832,6 +893,7 @@
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = swiss.bitbox.BitBoxApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -844,6 +906,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = BitBoxApp/BitBoxApp.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"BitBoxApp/Preview Content\"";
 				DEVELOPMENT_TEAM = XK248TQN88;
@@ -865,6 +928,7 @@
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = swiss.bitbox.BitBoxApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -947,63 +1011,18 @@
 			};
 			name = Release;
 		};
-		AAAA0001000000000000000B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = D700B5F82C888CB9000496D4 /* Config.xcconfig */;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				CODE_SIGN_ENTITLEMENTS = BitBoxAppWidget/BitBoxAppWidget.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = XK248TQN88;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = BitBoxAppWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "BitBoxApp Prices";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = swiss.bitbox.BitBoxApp.Widget;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		AAAA0001000000000000000C /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = D700B5F82C888CB9000496D4 /* Config.xcconfig */;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				CODE_SIGN_ENTITLEMENTS = BitBoxAppWidget/BitBoxAppWidget.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = XK248TQN88;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = BitBoxAppWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "BitBoxApp Prices";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = swiss.bitbox.BitBoxApp.Widget;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		AAAA0001000000000000000D /* Build configuration list for PBXNativeTarget "BitBoxAppWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AAAA0001000000000000000B /* Debug */,
+				AAAA0001000000000000000C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		D700B6072CA2FFAF000496D4 /* Build configuration list for PBXNativeTarget "BitBoxApp Testnet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1045,15 +1064,6 @@
 			buildConfigurations = (
 				D76516302B1F3B1500DC03A9 /* Debug */,
 				D76516312B1F3B1500DC03A9 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		AAAA0001000000000000000D /* Build configuration list for PBXNativeTarget "BitBoxAppWidget" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				AAAA0001000000000000000B /* Debug */,
-				AAAA0001000000000000000C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
