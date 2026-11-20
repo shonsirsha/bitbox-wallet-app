@@ -4,11 +4,13 @@
   white-space: pre;
 }
 
-/* One digit column: an invisible digit gives width and baseline, the strip rolls over it. */
+/* One digit column: an invisible digit gives width and baseline, the strip rolls over it.
+   overflow: clip hides the strip outside the column and keeps it out of the page's scrollable
+   height (unlike clip-path), without becoming a scroll container that would move the baseline. */
 .column {
   position: relative;
   display: inline-block;
-  clip-path: inset(0);
+  overflow: clip;
 }
 
 .ghost { visibility: hidden; }

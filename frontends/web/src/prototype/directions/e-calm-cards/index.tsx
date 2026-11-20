@@ -7,13 +7,13 @@
 // and Hide amounts. Phones get page headers and a floating tab bar.
 
 import { Fragment, ReactNode, useEffect, useMemo, useState } from 'react';
-import type { TAccount, TKeystore, TTransaction } from '@/api/account';
+import type { TAccount, TKeystore, TTransaction, TTransactionType } from '@/api/account';
 import { useMediaQuery } from '@/hooks/mediaquery';
 import {
   Amount, AreaChart, Badge, Button, Chip, CoinIcon, Delta, DeviceStatus, GlyphIcon, Icon, IconButton, List, ListLabel, ListRow, Logo,
   Message,
   Navigation, PageHeader, Popover, Section, SearchField, SegmentedControl, Sheet, Skeleton, SkeletonRows, TChartPoint,
-  TIconName, format,
+  TCoinBadge, TIconName, TxKindIcon, format,
 } from '../../kit';
 import { usePrototype } from '../../context';
 import {
@@ -534,6 +534,47 @@ const matchesTransaction = (tx: TTransaction, needle: string, locale: string) =>
   format.formatShortDate(tx.time, locale),
 ].some(value => value && value.toLowerCase().includes(needle));
 
+// kind: the row glyph in the filter's chips. icon: the bare arrow on an applied (blue) chip.
+type TTxType = { value: TTransactionType; label: string; kind: TCoinBadge; icon: TIconName };
+
+// Activity filter: one chip per kind of transaction, worded like the rows.
+const TX_TYPES: TTxType[] = [
+  { value: 'receive', label: 'Received', kind: 'receive', icon: 'arrowDown' },
+  { value: 'send', label: 'Sent', kind: 'send', icon: 'arrowUp' },
+  { value: 'send_to_self', label: 'Sent to self', kind: 'self', icon: 'self' },
+];
+
+type TActivityFiltersProps = {
+  // The kinds the account has, with how many of each.
+  types: (TTxType & { count: number })[];
+  selected: TTransactionType[];
+  onToggle: (type: TTransactionType) => void;
+  onAll: () => void;
+  // Shown at the top right of the panel (Reset in the popover).
+  action?: ReactNode;
+};
+
+// Filter the activity by kind of transaction: the same chips in the popover and the sheet.
+const ActivityFilters = ({ types, selected, onToggle, onAll, action }: TActivityFiltersProps) => (
+  <div className={styles.filters}>
+    <Section variant="plain" title="Type" action={action}>
+      <div className={styles.chips}>
+        <Chip selected={selected.length === 0} onClick={onAll} leading={<Icon name="swap" size={18} />}>All types</Chip>
+        {types.map(type => (
+          <Chip
+            key={type.value}
+            selected={selected.includes(type.value)}
+            onClick={() => onToggle(type.value)}
+            leading={<TxKindIcon kind={type.kind} size={20} />}
+            count={type.count}>
+            {type.label}
+          </Chip>
+        ))}
+      </div>
+    </Section>
+  </div>
+);
+
 const Account = ({ code, txId }: TAccountProps) => {
   const { locale, fiat } = usePrototype();
   const accounts = useAccounts();
@@ -555,13 +596,52 @@ const Account = ({ code, txId }: TAccountProps) => {
   const transactions = useTransactions(code);
   const selectedTx = transactions?.find(tx => tx.internalID === txId);
   const [query, setQuery] = useState('');
+  const [types, setTypes] = useState<TTransactionType[]>([]);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const phone = useMediaQuery('(max-width: 768px)');
   const needle = query.trim().toLowerCase();
-  const visibleTransactions = needle ? transactions?.filter(tx => matchesTransaction(tx, needle, locale)) : transactions;
-  // A new account starts with an empty search.
-  useEffect(() => setQuery(''), [code]);
+  const visibleTransactions = transactions?.filter(tx => (
+    (types.length === 0 || types.includes(tx.type)) && (!needle || matchesTransaction(tx, needle, locale))
+  ));
+  // Only the kinds the account has get a chip.
+  const typeCounts = useMemo(() => TX_TYPES
+    .map(type => ({ ...type, count: transactions?.filter(tx => tx.type === type.value).length || 0 }))
+    .filter(type => type.count > 0), [transactions]);
+  const appliedTypes = TX_TYPES.filter(type => types.includes(type.value));
+  const toggleType = (type: TTransactionType) => setTypes(current => (
+    current.includes(type) ? current.filter(candidate => candidate !== type) : [...current, type]
+  ));
+  // A new account starts with an empty search and no filter.
+  useEffect(() => {
+    setQuery('');
+    setTypes([]);
+    setFiltersOpen(false);
+  }, [code]);
   if (accounts && !account) {
     return <div className={styles.onCanvas}><ComingSoon title="Account not found" /></div>;
   }
+  const activityFilters = (withReset: boolean) => (
+    <ActivityFilters
+      types={typeCounts}
+      selected={types}
+      onToggle={toggleType}
+      onAll={() => setTypes([])}
+      action={withReset ? <Button variant="ghost" size="sm" onClick={() => setTypes([])} disabled={types.length === 0}>Reset</Button> : undefined} />
+  );
+  const activityTools = (
+    <div className={styles.activityTools}>
+      {/* The header sits on the canvas: the open field takes the card colour. */}
+      <div className={styles.onCanvas}>
+        <SearchField value={query} onChange={setQuery} placeholder="Search activity" />
+      </div>
+      <IconButton
+        icon="filter"
+        label="Filter activity"
+        size="sm"
+        active={filtersOpen || types.length > 0}
+        onClick={() => setFiltersOpen(open => !open)} />
+    </div>
+  );
   return (
     <>
       <PhoneHeader
@@ -580,8 +660,7 @@ const Account = ({ code, txId }: TAccountProps) => {
                 <ListRow
                   leading={account ? <CoinIcon coinCode={account.coinCode} size={48} /> : <Skeleton width={48} height={48} radius="pill" />}
                   title={account ? account.name : <Skeleton width={120} height={16} />}
-                  subtitle={account?.coinName}
-                  trailing={account && <FavouriteButton code={account.code} />} />
+                  subtitle={account?.coinName} />
               </div>
               <div className={styles.balanceHead}>
                 <Amount value={balance?.available} as="coin" size="hero" animated />
@@ -614,12 +693,21 @@ const Account = ({ code, txId }: TAccountProps) => {
         <Section
           title="Activity"
           className={`${styles.listCard} ${styles.activity}`}
-          action={(
-            // The header sits on the canvas: the open field takes the card colour.
-            <div className={styles.onCanvas}>
-              <SearchField value={query} onChange={setQuery} placeholder="Search activity" />
-            </div>
+          action={phone ? activityTools : (
+            <Popover open={filtersOpen} onClose={() => setFiltersOpen(false)} label="Filter activity" trigger={activityTools}>
+              {activityFilters(true)}
+            </Popover>
           )}>
+          {appliedTypes.length > 0 && (
+            // Applied filters stay in view; tapping one removes it.
+            <div className={styles.activityApplied}>
+              {appliedTypes.map(type => (
+                <Chip key={type.value} removable onClick={() => toggleType(type.value)} leading={<Icon name={type.icon} size={16} strokeWidth={2} />}>
+                  {type.label}
+                </Chip>
+              ))}
+            </div>
+          )}
           {visibleTransactions && account ? (
             <List>
               {visibleTransactions.map(tx => (
@@ -627,7 +715,9 @@ const Account = ({ code, txId }: TAccountProps) => {
               ))}
               {transactions?.length === 0 && <ListRow title="No transactions yet" subtitle="Receive coins to get started." />}
               {!!transactions?.length && visibleTransactions.length === 0 && (
-                <ListRow title="No matching transactions" subtitle="Try a note, an address, an amount or a date." />
+                <ListRow
+                  title="No matching transactions"
+                  subtitle={needle ? 'Try a note, an address, an amount or a date.' : 'Try another type.'} />
               )}
             </List>
           ) : <SkeletonRows count={6} />}
@@ -636,6 +726,17 @@ const Account = ({ code, txId }: TAccountProps) => {
       <Sheet open={!!(selectedTx && account)} onClose={() => closeTransaction(code)} title="Transaction">
         {selectedTx && account && <TransactionDetails tx={selectedTx} account={account} />}
       </Sheet>
+      {phone && (
+        <Sheet open={filtersOpen} onClose={() => setFiltersOpen(false)}>
+          <div className={styles.sheetFilters}>
+            {activityFilters(false)}
+            <div className={styles.sheetActions}>
+              <Button variant="primary" full onClick={() => setFiltersOpen(false)}>Apply</Button>
+              <Button variant="ghost" full onClick={() => setTypes([])} disabled={types.length === 0}>Reset</Button>
+            </div>
+          </div>
+        </Sheet>
+      )}
     </>
   );
 };
@@ -656,11 +757,19 @@ const screenTitle = (screen: TDirectionProps['screen']) => {
   }
 };
 
-// Top bar (tablet and desktop): the screen title and Hide amounts, lined up with the content
-// column below. Settings sit in the sidebar.
+// Top bar (tablet and desktop): the screen title, Hide amounts and the screen's own actions (an
+// account's favourite star, as in the phone header), lined up with the content column below.
+// Settings sit in the sidebar.
 const TopBar = ({ screen }: { screen: TDirectionProps['screen'] }) => {
   const title = screenTitle(screen);
-  const tools = <HideAmountsButton />;
+  const accounts = useAccounts();
+  const account = screen.name === 'account' ? accounts?.find(candidate => candidate.code === screen.code) : undefined;
+  const tools = (
+    <>
+      <HideAmountsButton />
+      {account && <FavouriteButton code={account.code} />}
+    </>
+  );
   return (
     <header className={`${styles.topbar} ${styles.onCanvas}`}>
       <div className={styles.topbarInner}>
@@ -687,11 +796,13 @@ export const DirectionE = ({ screen }: TDirectionProps) => {
                 <a href={href.portfolio} aria-label="Portfolio"><Logo height={19} /></a>
                 <IconButton icon="settings" label="Settings" size="sm" href={href.settings} active={activeNav(screen) === 'settings'} />
               </div>
+              {/* Clickable, without a destination yet (the device's own page). */}
               <DeviceStatus
                 name={device.name}
                 state={deviceState}
                 detail={device.firmware ? `v${device.firmware}` : undefined}
-                onDark />
+                onDark
+                onClick={() => undefined} />
             </div>
           )}>
           <AccountsList variant="sidebar" selected={selectedAccount} />

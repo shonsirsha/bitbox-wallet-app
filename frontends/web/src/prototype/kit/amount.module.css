@@ -1,4 +1,8 @@
+/* position: relative anchors the screen-reader text (.srOnly) to the amount. Otherwise it
+   attaches to the nearest positioned ancestor outside a scrolling list (the sidebar) and adds
+   blank page height below short pages. */
 .amount {
+  position: relative;
   display: inline-flex;
   unicode-bidi: isolate;
   align-items: baseline;

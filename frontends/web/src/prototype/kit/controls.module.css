@@ -26,9 +26,13 @@
 
 .segment:hover { color: var(--k-text); }
 
-/* The selected option's label sits on the sliding thumb. */
+/* The selected option's label sits on the sliding thumb: white on the app's blue. It turns white
+   once the thumb is about halfway there, so it never shows white on the light track. */
 .segmentActive,
-.segmentActive:hover { color: var(--k-text); }
+.segmentActive:hover {
+  color: var(--k-on-accent);
+  transition-delay: .12s;
+}
 
 .thumb {
   position: absolute;
@@ -36,8 +40,7 @@
   bottom: 3px;
   left: 0;
   border-radius: calc(var(--k-segmented-radius, var(--k-radius-m)) - 2px);
-  background: var(--k-surface);
-  box-shadow: 0 1px 2px rgba(29, 29, 27, .12);
+  background: var(--k-accent);
 }
 
 .thumbReady { transition: transform .28s var(--k-ease), width .28s var(--k-ease); }

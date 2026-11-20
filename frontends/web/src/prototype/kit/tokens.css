@@ -36,8 +36,6 @@
   --k-surface-2: #F5F5F5;
   --k-surface-3: #E5E5E5;
   --k-hover: rgba(29, 29, 27, .06);
-  --k-favourite: #F5A04C;
-  --k-glyph-bg: rgba(29, 29, 27, .06);
   --k-border: #E5E5E5;
   --k-border-strong: #999999;
   --k-text: #1D1D1B;
@@ -51,6 +49,10 @@
   --k-positive-soft: rgba(79, 152, 121, .14);
   --k-negative-soft: rgba(236, 100, 75, .14);
   --k-warning-soft: rgba(245, 160, 76, .16);
+  /* Neutral tint behind round icons (outgoing transactions, filled icon buttons such as Close):
+     it shows on every surface, where a surface colour can blend in. */
+  --k-neutral-soft: rgba(29, 29, 27, .06);
+  --k-neutral-soft-hover: rgba(29, 29, 27, .1);
   --k-chart-fill: rgba(94, 148, 191, .14);
   --k-overlay: rgba(29, 29, 27, .44);
   --k-shadow-1: none;
@@ -105,7 +107,6 @@
   --k-surface-2: #2c2c2a;
   --k-surface-3: #333333;
   --k-hover: rgba(255, 255, 255, .07);
-  --k-glyph-bg: rgba(255, 255, 255, .1);
   --k-border: rgba(255, 255, 255, .09);
   --k-border-strong: #777777;
   --k-text: #F5F5F5;
@@ -119,6 +120,8 @@
   --k-positive-soft: rgba(79, 152, 121, .2);
   --k-negative-soft: rgba(236, 100, 75, .2);
   --k-warning-soft: rgba(245, 160, 76, .18);
+  --k-neutral-soft: rgba(255, 255, 255, .1);
+  --k-neutral-soft-hover: rgba(255, 255, 255, .16);
   --k-chart-fill: rgba(94, 148, 191, .2);
   --k-overlay: rgba(0, 0, 0, .6);
   --k-shadow-2: 0 16px 48px rgba(0, 0, 0, .5);

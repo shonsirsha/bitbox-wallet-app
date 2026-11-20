@@ -49,3 +49,21 @@
 .onDark { color: #F5F5F5; }
 .onDark .detail { color: #999999; }
 .onDark .rowIcon { background: rgba(255, 255, 255, .08); color: #F5F5F5; }
+
+/* Clickable: highlighted on hover like the menu items. The highlight reaches 8px past the
+   content, which stays in place. */
+.interactive {
+  width: calc(100% + 16px);
+  margin: -6px -8px;
+  padding: 6px 8px;
+  border-radius: var(--k-radius-m);
+  text-align: start;
+  transition: background-color .15s var(--k-ease);
+}
+
+.interactive:hover { background: var(--k-nav-active-bg, var(--k-hover)); }
+
+/* The dot's ring cuts it out of the icon in the row's colour, with the highlight on top. */
+.interactive:hover .rowDot {
+  box-shadow: 0 0 0 2px var(--k-nav-active-bg, var(--k-hover)), 0 0 0 2px var(--k-nav-bg, var(--k-bg-elevated));
+}

@@ -73,8 +73,8 @@
 .icon-plain { color: var(--k-text-2); }
 .iconButton:hover .icon-plain { background: var(--k-hover); color: var(--k-text); }
 
-.icon-filled { background: var(--k-surface-2); color: var(--k-text); }
-.iconButton:hover .icon-filled { background: var(--k-surface-3); }
+.icon-filled { background: var(--k-neutral-soft); color: var(--k-text); }
+.iconButton:hover .icon-filled { background: var(--k-neutral-soft-hover); }
 
 .icon-accent { background: var(--k-accent); color: var(--k-on-accent); }
 .iconButton:hover .icon-accent { background: var(--k-accent-hover); }

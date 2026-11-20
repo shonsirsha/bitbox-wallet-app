@@ -26,6 +26,8 @@
   --k-text-3: #777777;
   --k-label-color: #999999;
   --k-hover: rgba(255, 255, 255, .07);
+  --k-neutral-soft: rgba(255, 255, 255, .1);
+  --k-neutral-soft-hover: rgba(255, 255, 255, .16);
   --k-scrollbar-thumb: rgba(255, 255, 255, .14);
   --k-scrollbar-thumb-hover: rgba(255, 255, 255, .28);
   --k-surface-2: #333333;
@@ -121,8 +123,8 @@
 }
 
 /* Recent activity scrolls inside its card and fades out at the bottom edge, so it reads as a
-   list that scrolls; the last row scrolls clear of the fade. On phones the page takes over at
-   either end. */
+   list that scrolls; the last row scrolls clear of the fade. Scrolling on past either end of the
+   list scrolls the page. */
 .recentList {
   --recent-h: 400px;
   max-height: var(--recent-h);
@@ -251,8 +253,9 @@
   gap: 6px;
 }
 
+/* Favourite stars (a favourite's toggle and the Favourite accounts label) use the app's blue. */
 .favouriteIcon,
-.favouriteOn svg { color: var(--k-favourite); }
+.favouriteOn svg { color: var(--k-accent-ink); }
 
 /* The sidebar is narrow: there the state is its dot alone (named on hover), so the wallet's name
    and total fit. */
@@ -365,6 +368,21 @@
 /* Activity search: widens leftwards from the header's end; on phones up to the title. */
 .activity { --k-search-w: 280px; }
 
+/* Activity header: the search, then Filter. */
+.activityTools {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Applied type filters, above the rows. */
+.activityApplied {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 4px var(--k-row-pad-x) 8px;
+}
+
 @media (max-width: 768px) {
   .activity { --k-search-w: min(260px, calc(100vw - 150px)); }
 }
@@ -464,8 +482,6 @@
   }
 
   .accountCard { --k-fs-hero: 48px; }
-
-  .recentList { overscroll-behavior: contain; }
 
   /* After the padding shorthands above: clear of a right-hand notch in landscape. */
   .topbar,

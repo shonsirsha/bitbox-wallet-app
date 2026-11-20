@@ -19,14 +19,22 @@ type TStatusProps = {
   detail?: string;
   // The row may sit on a dark panel even in light theme (the sidebar).
   onDark?: boolean;
+  // Makes the row a button (e.g. to open the device's page).
+  onClick?: () => void;
 };
 
-export const DeviceStatus = ({ name, state, detail, onDark = false }: TStatusProps) => (
-  <div className={`${styles.row} ${styles[state]} ${onDark ? styles.onDark : ''}`}>
-    <span className={styles.rowIcon}><Icon name="device" size={20} /><span className={styles.rowDot} aria-hidden="true" /></span>
-    <span className={styles.rowText}>
-      <span className={styles.name}>{name}</span>
-      <span className={styles.detail}>{STATE_LABEL[state]}{detail && <span className={styles.detailPart}>{detail}</span>}</span>
-    </span>
-  </div>
-);
+export const DeviceStatus = ({ name, state, detail, onDark = false, onClick }: TStatusProps) => {
+  const className = `${styles.row} ${styles[state]} ${onDark ? styles.onDark : ''} ${onClick ? styles.interactive : ''}`;
+  const content = (
+    <>
+      <span className={styles.rowIcon}><Icon name="device" size={20} /><span className={styles.rowDot} aria-hidden="true" /></span>
+      <span className={styles.rowText}>
+        <span className={styles.name}>{name}</span>
+        <span className={styles.detail}>{STATE_LABEL[state]}{detail && <span className={styles.detailPart}>{detail}</span>}</span>
+      </span>
+    </>
+  );
+  return onClick
+    ? <button type="button" className={className} onClick={onClick}>{content}</button>
+    : <div className={className}>{content}</div>;
+};
