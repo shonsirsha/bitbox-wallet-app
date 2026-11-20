@@ -19,6 +19,7 @@ import {
 import { getDeviceList } from '@/api/devices';
 import { getDeviceInfo, getVersion } from '@/api/bitbox02';
 import { useLoad } from '@/hooks/api';
+import { apiGet } from '@/utils/request';
 import { isBitcoinBased, isBitcoinOnly, isEthereumBased } from '@/utils/coin';
 import type { TChartPoint } from './kit';
 
@@ -32,6 +33,17 @@ export const useSummary = () => {
 export const useChart = () => {
   const response = useLoad(() => getChartData(false));
   return response?.success ? response.data : undefined;
+};
+
+type TChartDataResponse = Awaited<ReturnType<typeof getChartData>>;
+
+// One account's value over time. Served by the prototype's mock: the backend has no such endpoint.
+export const useAccountChart = (code?: string) => {
+  const response = useLoad(
+    code ? () => (apiGet(`account/${code}/chart-data`) as Promise<TChartDataResponse>).then(result => ({ code, result })) : null,
+    [code],
+  );
+  return response?.code === code && response?.result.success ? response.result.data : undefined;
 };
 
 // Responses are tagged with their account so a stale one is never shown for another account.
@@ -135,6 +147,13 @@ export const fiatAmount = (formatted: string, fiat: string): TAmountWithConversi
   estimated: false,
   conversions: { [fiat]: formatted },
 });
+
+// A value the prototype sums itself, in the backend's fiat formatting (apostrophe thousands, two
+// decimals), so it displays like the backend's own totals.
+export const formatFiatValue = (value: number) => {
+  const [integer = '0', decimals = '00'] = value.toFixed(2).split('.');
+  return `${integer.replace(/\B(?=(\d{3})+(?!\d))/g, '\'')}.${decimals}`;
+};
 
 // Account groups in list order: Bitcoin, Ethereum, Litecoin, then ERC20 tokens.
 const groupRank = (account: TAccount) => {

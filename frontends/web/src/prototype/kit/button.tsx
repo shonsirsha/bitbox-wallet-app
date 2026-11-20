@@ -44,7 +44,8 @@ type TIconButtonProps = {
   label: string;
   // Shows the label under the button (action rows) instead of only to assistive tech.
   caption?: boolean;
-  variant?: 'plain' | 'filled';
+  // accent: the brand blue with a white icon (the round actions under a balance).
+  variant?: 'plain' | 'filled' | 'accent';
   size?: 'sm' | 'md' | 'lg';
   href?: string;
   onClick?: () => void;

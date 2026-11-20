@@ -94,6 +94,8 @@
   color: var(--k-text-3);
 }
 
+.chevronSpace { visibility: hidden; }
+
 [dir='rtl'] .chevron { transform: scaleX(-1); }
 
 .header { min-height: 0; padding-block: 6px 2px; }
@@ -107,3 +109,32 @@
 }
 
 .header .chevron { visibility: hidden; }
+
+/* A group label inside a list, with room above it when it follows another group. */
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  /* --k-label-chevron: 1 when the rows end in a chevron, so the label's detail lines up with
+     their values (measured with the rows' own gap). */
+  padding: 16px calc(var(--k-row-pad-x) + var(--k-label-chevron, 0) * (18px + var(--k-row-gap, 14px))) 6px var(--k-row-pad-x);
+  font-size: var(--k-fs-small);
+}
+
+.list > .label:first-child { padding-top: 4px; }
+
+.labelTitle {
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 600;
+  color: var(--k-text-2);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.labelTrailing {
+  flex: none;
+  color: var(--k-text-3);
+  white-space: nowrap;
+}

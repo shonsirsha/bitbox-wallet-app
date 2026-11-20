@@ -69,39 +69,40 @@
   padding: 8px 20px 20px;
 }
 
+/* From tablet up: a dialog in the middle of the screen, as tall as its content up to a generous
+   limit; longer content scrolls inside it. */
 @media (min-width: 769px) {
-  .layer { justify-content: flex-end; align-items: stretch; }
+  .layer {
+    align-items: center;
+    padding: 40px 24px;
+  }
 
   .grabber { display: none; }
 
   .sheet {
-    width: min(440px, 100vw);
-    max-height: none;
-    height: 100%;
-    border-radius: 0;
-    animation: slide .3s var(--k-ease);
+    width: min(480px, 100%);
+    max-height: min(800px, 100%);
+    padding-bottom: 0;
+    border-radius: var(--k-radius-xl);
+    animation: pop .24s var(--k-ease);
   }
 
   .header { padding: 20px 24px 8px; }
   .body { padding: 8px 24px 24px; }
 }
 
-[dir='rtl'] .layer { justify-content: flex-start; }
-
-/* Leaving: the sheet slides back down (phones) or out to the side (tablet and desktop). */
+/* Leaving: the sheet slides back down (phones) or the dialog fades away (tablet and desktop). */
 .closing { pointer-events: none; }
 .closing .overlay { animation: fadeOut .22s var(--k-ease) forwards; }
 .closing .sheet { animation: sinkOut .22s var(--k-ease) forwards; }
 
 @media (min-width: 769px) {
-  .closing .sheet { animation-name: slideOut; }
+  .closing .sheet { animation-name: popOut; }
 }
-
-[dir='rtl'] .sheet { --k-slide-dir: -1; }
 
 @keyframes fade { from { opacity: 0; } }
 @keyframes rise { from { transform: translateY(100%); } }
-@keyframes slide { from { transform: translateX(calc(100% * var(--k-slide-dir, 1))); } }
+@keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.97); } }
 @keyframes fadeOut { to { opacity: 0; } }
 @keyframes sinkOut { to { transform: translateY(100%); } }
-@keyframes slideOut { to { transform: translateX(calc(100% * var(--k-slide-dir, 1))); } }
+@keyframes popOut { to { opacity: 0; transform: translateY(8px) scale(.97); } }

@@ -17,6 +17,7 @@ import {
   getAccounts,
   getBalance,
   getBalanceSummary,
+  getAccountChartData,
   getChartData,
   lightningBalance,
 } from './demo-data';
@@ -98,6 +99,10 @@ const GET: [RegExp, THandler][] = [
   [/^account\/([^/]+)\/balance$/, ([, code]) => {
     const balance = getBalance(code as string);
     return balance ? { success: true, balance } : { success: false };
+  }],
+  [/^account\/([^/]+)\/chart-data$/, ([, code]) => {
+    const data = getAccountChartData(code as string);
+    return data ? { success: true, data } : { success: false };
   }],
   [/^account\/([^/]+)\/transactions$/, ([, code]) => {
     const state = getAccountState(code as string);

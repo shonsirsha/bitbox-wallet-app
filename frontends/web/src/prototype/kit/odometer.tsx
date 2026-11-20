@@ -44,7 +44,7 @@ export const Odometer = ({ text, rollIn = true, instant = false }: TProps) => {
             <span className={styles.ghost}>{char}</span>
             <span
               className={styles.strip}
-              style={{ transform: `translateY(${-digit * 10}%)`, transition: instant ? 'none' : undefined, transitionDelay: `${i * 16}ms` }}>
+              style={{ transform: `translateY(${-digit * 10}%)`, transitionDuration: instant ? '0s' : undefined, transitionDelay: `${i * 16}ms` }}>
               {DIGITS.map(value => <span key={value} className={styles.digit}>{value}</span>)}
             </span>
           </span>

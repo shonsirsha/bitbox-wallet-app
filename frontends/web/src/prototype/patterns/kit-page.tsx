@@ -6,8 +6,8 @@
 import { CSSProperties, useMemo, useState } from 'react';
 import {
   Amount, AreaChart, Badge, Button, Chip, CoinIcon, Delta, DeviceStatus, GlyphIcon, Icon, IconButton, List,
-  ListRow, Logo, Message, Navigation, PageHeader, Popover, SearchField, Section, SegmentedControl, Sheet, Skeleton,
-  SkeletonRows, TIconName, TNavItem, format,
+  ListLabel, ListRow, Logo, Message, Navigation, PageHeader, Popover, SearchField, Section, SegmentedControl, Sheet, Skeleton,
+  SkeletonRows, TIconName, TNavItem, TxKindIcon, format,
 } from '../kit';
 import { PrototypeContext, usePrototype } from '../context';
 import {
@@ -21,7 +21,7 @@ const KIT = '#/prototype/kit';
 
 const ICONS: TIconName[] = [
   'portfolio', 'accounts', 'lightning', 'marketplace', 'settings', 'send', 'receive', 'self', 'swap', 'buy', 'plus',
-  'back', 'chevron', 'close', 'search', 'filter', 'eye', 'eyeOff', 'copy', 'external', 'note', 'check', 'info',
+  'back', 'chevron', 'close', 'search', 'filter', 'eye', 'eyeOff', 'copy', 'external', 'note', 'check', 'info', 'star', 'starFilled',
   'failed', 'clock', 'device', 'wallet', 'arrowUp', 'arrowDown',
 ];
 
@@ -121,7 +121,7 @@ export const KitPage = () => {
         <div className={styles.row}>
           <Button variant="primary" onClick={() => {}}>Apply</Button>
           <Button variant="ghost" onClick={() => {}}>Reset</Button>
-          <Button variant="ghost" size="sm" href={KIT}>See all</Button>
+          <Button variant="ghost" size="sm" href={KIT}>Reset</Button>
           <Button variant="secondary" icon="external" href={KIT}>View in block explorer</Button>
         </div>
       </Section>
@@ -133,14 +133,15 @@ export const KitPage = () => {
           <IconButton icon="filter" label="Sort and filter" />
           <IconButton icon="filter" label="Sort and filter, active" active />
           <IconButton icon="plus" label="Add account" size="sm" />
+          <IconButton icon="star" label="Add to favourites" />
           <IconButton icon="copy" label="Copy" size="sm" />
           <IconButton icon="note" label="Edit note" size="sm" />
           <IconButton icon="close" label="Close" variant="filled" size="sm" />
           <span className={styles.actionRow}>
-            <IconButton icon="send" label="Send" variant="filled" size="lg" caption />
-            <IconButton icon="receive" label="Receive" variant="filled" size="lg" caption />
-            <IconButton icon="buy" label="Buy" variant="filled" size="lg" caption />
-            <IconButton icon="swap" label="Swap" variant="filled" size="lg" caption />
+            <IconButton icon="send" label="Send" variant="accent" size="lg" caption />
+            <IconButton icon="receive" label="Receive" variant="accent" size="lg" caption />
+            <IconButton icon="buy" label="Buy" variant="accent" size="lg" caption />
+            <IconButton icon="swap" label="Swap" variant="accent" size="lg" caption />
           </span>
         </div>
       </Section>
@@ -189,12 +190,12 @@ export const KitPage = () => {
         <div className={styles.stack}>
           <List>
             <ListRow
-              href={KIT}
               leading={<GlyphIcon icon="wallet" size={40} />}
               title="All accounts"
               subtitle={accounts ? `${accounts.length} accounts` : ''}
               trailing={<Amount value={total} />}
-              chevron />
+              chevron="space" />
+            <ListLabel title={savings?.keystore.name || 'My BitBox'} trailing="Connected" />
             {savings && (
               <ListRow
                 href={KIT}
@@ -233,6 +234,7 @@ export const KitPage = () => {
           <div className={styles.row}>
             {['btc', 'eth', 'eth-erc20-usdc', 'ltc', 'lightning'].map(code => <CoinIcon key={code} coinCode={code} size={36} />)}
             {(['receive', 'send', 'self', 'pending', 'failed'] as const).map(badge => <CoinIcon key={badge} coinCode="btc" size={36} badge={badge} />)}
+            {(['receive', 'send', 'self', 'pending', 'failed'] as const).map(kind => <TxKindIcon key={kind} kind={kind} />)}
           </div>
         </div>
       </Section>
@@ -307,7 +309,7 @@ export const KitPage = () => {
 
       <Section title="Section" variant="plain">
         <div className={styles.sections}>
-          <Section title="Recent activity" action={<Button variant="ghost" size="sm" href={KIT}>See all</Button>}>
+          <Section title="Recent activity">
             <List>
               {recent && <TxRow tx={recent.tx} account={recent.account} showAccount primary="fiat" amounts="primary" link={KIT} />}
             </List>

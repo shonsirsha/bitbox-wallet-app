@@ -11,7 +11,7 @@ type TProps = {
   children: ReactNode;
 };
 
-// A bottom sheet on phones and a full-height side panel from tablet up.
+// A bottom sheet on phones and a dialog in the middle of the screen from tablet up.
 const EXIT_MS = 220;
 
 // The page behind an open sheet does not scroll; counted, so overlapping sheets unlock at the end.

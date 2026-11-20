@@ -17,6 +17,8 @@ const PATHS = {
   swap: <><path d="M7.5 4L4 7.5 7.5 11" /><path d="M4 7.5h14" /><path d="M16.5 13l3.5 3.5-3.5 3.5" /><path d="M20 16.5H6" /></>,
   buy: <><circle cx="12" cy="12" r="8.5" /><path d="M12 8.5v7" /><path d="M8.5 12h7" /></>,
   plus: <><path d="M12 5v14" /><path d="M5 12h14" /></>,
+  star: <path d="M12 3.5l2.6 5.3 5.9.9-4.25 4.1 1 5.8L12 16.9l-5.25 2.7 1-5.8L3.5 9.7l5.9-.9L12 3.5z" />,
+  starFilled: <path d="M12 3.5l2.6 5.3 5.9.9-4.25 4.1 1 5.8L12 16.9l-5.25 2.7 1-5.8L3.5 9.7l5.9-.9L12 3.5z" fill="currentColor" />,
   back: <path d="M15 18l-6-6 6-6" />,
   chevron: <path d="M9.5 18l6-6-6-6" />,
   close: <><path d="M17.5 6.5l-11 11" /><path d="M6.5 6.5l11 11" /></>,

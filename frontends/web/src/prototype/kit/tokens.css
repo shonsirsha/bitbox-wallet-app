@@ -36,6 +36,8 @@
   --k-surface-2: #F5F5F5;
   --k-surface-3: #E5E5E5;
   --k-hover: rgba(29, 29, 27, .06);
+  --k-favourite: #F5A04C;
+  --k-glyph-bg: rgba(29, 29, 27, .06);
   --k-border: #E5E5E5;
   --k-border-strong: #999999;
   --k-text: #1D1D1B;
@@ -103,6 +105,7 @@
   --k-surface-2: #2c2c2a;
   --k-surface-3: #333333;
   --k-hover: rgba(255, 255, 255, .07);
+  --k-glyph-bg: rgba(255, 255, 255, .1);
   --k-border: rgba(255, 255, 255, .09);
   --k-border-strong: #777777;
   --k-text: #F5F5F5;

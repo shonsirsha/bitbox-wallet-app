@@ -76,6 +76,9 @@
 .icon-filled { background: var(--k-surface-2); color: var(--k-text); }
 .iconButton:hover .icon-filled { background: var(--k-surface-3); }
 
+.icon-accent { background: var(--k-accent); color: var(--k-on-accent); }
+.iconButton:hover .icon-accent { background: var(--k-accent-hover); }
+
 .iconActive { background: var(--k-accent-soft); color: var(--k-accent-ink); }
 
 .caption {

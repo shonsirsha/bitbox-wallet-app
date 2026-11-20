@@ -14,6 +14,19 @@ const DIRECTION: TDirectionKey = 'E';
 // Dark is the default; the key is versioned so earlier saved "auto" choices start on dark too.
 const THEME_STORAGE_KEY = 'prototype-theme-v2';
 
+// Favourite accounts are kept in this browser; the demo starts with one account of each wallet.
+const FAVOURITES_STORAGE_KEY = 'prototype-favourites';
+const DEMO_FAVOURITES = ['v0-f2a91c07-btc-0', 'v0-7c3e19ab-btc-0'];
+
+const readFavourites = (): string[] => {
+  try {
+    const stored = window.localStorage.getItem(FAVOURITES_STORAGE_KEY);
+    return stored ? JSON.parse(stored) as string[] : DEMO_FAVOURITES;
+  } catch {
+    return DEMO_FAVOURITES;
+  }
+};
+
 const readThemeSetting = (): TThemeSetting => {
   try {
     const value = window.localStorage.getItem(THEME_STORAGE_KEY);
@@ -40,6 +53,17 @@ export const PrototypeApp = () => {
   const systemDark = useSystemDark();
   const screen = useScreen();
   const [hideAmounts, setHideAmounts] = useState(false);
+  const [favourites, setFavourites] = useState<string[]>(readFavourites);
+  const toggleFavourite = useCallback((code: string) => setFavourites(current => (
+    current.includes(code) ? current.filter(item => item !== code) : [...current, code]
+  )), []);
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(FAVOURITES_STORAGE_KEY, JSON.stringify(favourites));
+    } catch {
+      // Storage blocked (private mode): favourites last for this visit.
+    }
+  }, [favourites]);
   // Picked with the floating toggle and saved; dark by default ('auto' from earlier visits follows
   // the OS).
   const [themeSetting, setThemeSetting] = useState<TThemeSetting>(readThemeSetting);
@@ -60,7 +84,9 @@ export const PrototypeApp = () => {
     fiat: 'USD',
     hideAmounts,
     toggleHideAmounts: () => setHideAmounts(value => !value),
-  }), [theme, i18n.language, hideAmounts]);
+    favourites,
+    toggleFavourite,
+  }), [theme, i18n.language, hideAmounts, favourites, toggleFavourite]);
 
   const rootRef = useRef<HTMLDivElement>(null);
   useEffect(() => {

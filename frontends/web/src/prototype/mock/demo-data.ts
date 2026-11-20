@@ -24,6 +24,9 @@ export const ROOT_FINGERPRINT = 'f2a91c07';
 export const LIGHTNING_FINGERPRINT = 'b7e41d90';
 export const DEVICE_ID = 'bitbox02-demo';
 export const DEVICE_NAME = 'My BitBox';
+// A second BitBox the user chose to remember: its wallet stays visible (watch-only) while unplugged.
+export const REMEMBERED_FINGERPRINT = '7c3e19ab';
+export const REMEMBERED_NAME = 'Office BitBox';
 
 const DAY = 24 * 60 * 60 * 1000;
 const HOUR = 60 * 60 * 1000;
@@ -216,13 +219,23 @@ const emptyAmount = (): TAmountWithConversions => ({ amount: '', unit: '' as unk
 // ---------------------------------------------------------------------------------------------
 // Accounts
 
-const keystore = (): TKeystore => ({
-  watchonly: false,
-  rootFingerprint: ROOT_FINGERPRINT,
-  name: DEVICE_NAME,
-  lastConnected: new Date(NOW - 2 * 60 * 1000).toISOString(),
-  connected: true,
-});
+// The connected BitBox, and the remembered one: not connected, its accounts watch-only.
+const KEYSTORES: Record<string, TKeystore> = {
+  [ROOT_FINGERPRINT]: {
+    watchonly: false,
+    rootFingerprint: ROOT_FINGERPRINT,
+    name: DEVICE_NAME,
+    lastConnected: new Date(NOW - 2 * 60 * 1000).toISOString(),
+    connected: true,
+  },
+  [REMEMBERED_FINGERPRINT]: {
+    watchonly: true,
+    rootFingerprint: REMEMBERED_FINGERPRINT,
+    name: REMEMBERED_NAME,
+    lastConnected: new Date(NOW - 9 * DAY).toISOString(),
+    connected: false,
+  },
+};
 
 type TAccountDef = {
   code: AccountCode;
@@ -231,6 +244,8 @@ type TAccountDef = {
   number: number;
   parent?: AccountCode;
   seed: number;
+  // The wallet the account belongs to; the connected BitBox when left out.
+  fingerprint?: string;
 };
 
 const ETH_CODE = `v0-${ROOT_FINGERPRINT}-eth-0`;
@@ -242,6 +257,8 @@ const ACCOUNT_DEFS: TAccountDef[] = [
   { code: ETH_CODE, name: 'Business', coin: 'eth', number: 0, seed: 303 },
   { code: `${ETH_CODE}-eth-erc20-usdc`, name: 'Payroll reserve', coin: 'usdc', number: 0, parent: ETH_CODE, seed: 404 },
   { code: `v0-${ROOT_FINGERPRINT}-ltc-0`, name: 'Donations', coin: 'ltc', number: 0, seed: 505 },
+  { code: `v0-${REMEMBERED_FINGERPRINT}-btc-0`, name: 'Cold storage', coin: 'btc', number: 0, seed: 606, fingerprint: REMEMBERED_FINGERPRINT },
+  { code: `v0-${REMEMBERED_FINGERPRINT}-eth-0`, name: 'Treasury', coin: 'eth', number: 0, seed: 707, fingerprint: REMEMBERED_FINGERPRINT },
 ];
 
 export const getAccountDef = (code: AccountCode) => ACCOUNT_DEFS.find(def => def.code === code);
@@ -314,6 +331,19 @@ const TX_SPECS: Record<AccountCode, (rand: () => number) => TTxSpec[]> = {
     { ts: monthsAgo(28, 9), type: 'receive', value: 3.5, fee: 0 },
     { ts: monthsAgo(15, 13), type: 'receive', value: 1.25, fee: 0 },
     { ts: monthsAgo(4, 30), type: 'send', value: 0.5439, fee: 0.0000226 },
+  ],
+  // The remembered wallet: long-term holdings, rarely touched.
+  [`v0-${REMEMBERED_FINGERPRINT}-btc-0`]: (rand) => [
+    { ts: monthsAgo(34, 12), type: 'receive', value: 0.12, fee: 0, note: 'From exchange' },
+    { ts: monthsAgo(25, 3), type: 'receive', value: 0.06 + rand() * 0.01, fee: 0 },
+    { ts: monthsAgo(16, 20), type: 'receive', value: 0.08, fee: 0 },
+    { ts: monthsAgo(9, 7), type: 'send', value: 0.03, fee: 0.000018 },
+    { ts: monthsAgo(1, 15), type: 'receive', value: 0.02, fee: 0 },
+  ],
+  [`v0-${REMEMBERED_FINGERPRINT}-eth-0`]: () => [
+    { ts: monthsAgo(20, 8), type: 'receive', value: 1.1, fee: 0 },
+    { ts: monthsAgo(10, 18), type: 'send', value: 0.3, fee: 0.0009 },
+    { ts: monthsAgo(4, 2), type: 'receive', value: 0.4, fee: 0 },
   ],
 };
 
@@ -425,7 +455,7 @@ const buildAccountState = (def: TAccountDef): TAccountState => {
     history.push({ ts: new Date(tx.time as string).getTime(), balance: available });
   });
   const account: TAccount = {
-    keystore: keystore(),
+    keystore: KEYSTORES[def.fingerprint ?? ROOT_FINGERPRINT] as TKeystore,
     active: true,
     coinCode: coin.code,
     coinUnit: coin.unit,
@@ -436,7 +466,7 @@ const buildAccountState = (def: TAccountDef): TAccountState => {
     blockExplorerTxPrefix: coin.explorerTx,
     blockExplorerAddressPrefix: coin.explorerAddress,
     accountNumber: def.number,
-    ...(def.coin === 'eth' ? { activeTokens: [{ tokenCode: 'eth-erc20-usdc' as const, accountCode: `${ETH_CODE}-eth-erc20-usdc` }] } : {}),
+    ...(def.code === ETH_CODE ? { activeTokens: [{ tokenCode: 'eth-erc20-usdc' as const, accountCode: `${ETH_CODE}-eth-erc20-usdc` }] } : {}),
     ...(def.coin === 'usdc' ? { contractAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48' } : {}),
   };
   return { def, account, transactions, available, incoming, history };
@@ -475,6 +505,8 @@ const lightningBtc = () => LIGHTNING.sats / 1e8;
 // ---------------------------------------------------------------------------------------------
 // Summary and chart
 
+type TPriceFor = (coin: TCoinKey, ts: number) => number;
+
 const holdingsAt = (state: TAccountState, ts: number) => {
   let balance = 0;
   for (const point of state.history) {
@@ -486,17 +518,14 @@ const holdingsAt = (state: TAccountState, ts: number) => {
   return balance;
 };
 
-const portfolioValueAt = (ts: number, priceFor: (coin: TCoinKey, ts: number) => number) => (
+const portfolioValueAt = (ts: number, priceFor: TPriceFor) => (
   ACCOUNT_STATES.reduce((sum, state) => sum + holdingsAt(state, ts) * priceFor(state.def.coin, ts), 0)
   + lightningBtc() * priceFor('btc', ts) * (ts > NOW - 200 * DAY ? 1 : 0)
 );
 
-export const totalUSD = () => portfolioValueAt(NOW, (coin) => COINS[coin].priceUSD);
-
 export const getBalanceSummary = (): TAccountsBalanceSummary => {
   const byCoin = new Map<TCoinKey, number>();
   ACCOUNT_STATES.forEach(state => byCoin.set(state.def.coin, (byCoin.get(state.def.coin) || 0) + state.available));
-  const coinsBalance: TAmountsByCoin = {};
   const coinsTotalBalance: TAccountsBalanceSummary['coinsTotalBalance'] = [
     {
       coinCode: 'lightning',
@@ -506,16 +535,22 @@ export const getBalanceSummary = (): TAccountsBalanceSummary => {
   ];
   byCoin.forEach((value, coin) => {
     const formattedAmount = amountWithConversions(coin, value, COINS[coin].priceUSD);
-    coinsBalance[COINS[coin].code] = formattedAmount;
     coinsTotalBalance.push({ coinCode: COINS[coin].code, coinName: COINS[coin].name, formattedAmount });
   });
-  const keystoreTotal = ACCOUNT_STATES.reduce((sum, state) => sum + state.available * COINS[state.def.coin].priceUSD, 0);
-  return {
-    keystoresBalance: {
-      [ROOT_FINGERPRINT]: { fiatUnit: 'USD', total: formatFiat(keystoreTotal), coinsBalance },
-    },
-    coinsTotalBalance,
-  };
+  // Each wallet's own total, by coin.
+  const keystoresBalance: TAccountsBalanceSummary['keystoresBalance'] = {};
+  Object.values(KEYSTORES).forEach(keystore => {
+    const states = ACCOUNT_STATES.filter(state => state.account.keystore.rootFingerprint === keystore.rootFingerprint);
+    const coinsBalance: TAmountsByCoin = {};
+    states.forEach(state => {
+      const coin = COINS[state.def.coin];
+      const held = states.filter(other => other.def.coin === state.def.coin).reduce((sum, other) => sum + other.available, 0);
+      coinsBalance[coin.code] = amountWithConversions(state.def.coin, held, coin.priceUSD);
+    });
+    const total = states.reduce((sum, state) => sum + state.available * COINS[state.def.coin].priceUSD, 0);
+    keystoresBalance[keystore.rootFingerprint] = { fiatUnit: 'USD', total: formatFiat(total), coinsBalance };
+  });
+  return { keystoresBalance, coinsTotalBalance };
 };
 
 const hourlyPrice = (coin: TCoinKey, ts: number) => {
@@ -525,28 +560,30 @@ const hourlyPrice = (coin: TCoinKey, ts: number) => {
   return coin === 'usdc' ? base : base * (1 + wiggle * (ts > NOW - HOUR ? 0 : 1));
 };
 
-export const getChartData = (): TChartData => {
-  const firstTs = Math.min(...ACCOUNT_STATES.flatMap(state => state.history.map(point => point.ts)));
+// Chart data for a value over time: daily points over its history, hourly points for the last
+// week, and the price-only return of today's holdings over each range.
+const buildChartData = (
+  firstTs: number,
+  valueAt: (ts: number, priceFor: TPriceFor) => number,
+  holdingsNow: (coin: TCoinKey) => number,
+): TChartData => {
   const daily: TChartData['chartDataDaily'] = [];
   for (let ts = startOfDay(firstTs); ts <= startOfDay(NOW); ts += DAY) {
-    const value = portfolioValueAt(ts + DAY - 1, priceAt);
+    const value = valueAt(ts + DAY - 1, priceAt);
     daily.push({ time: (ts / 1000) as TChartData['chartDataDaily'][number]['time'], value, formattedValue: formatFiat(value) });
   }
   const hourly: TChartData['chartDataHourly'] = [];
   const hourStart = NOW - (NOW % HOUR) - 7 * DAY;
   for (let ts = hourStart; ts <= NOW; ts += HOUR) {
-    const value = portfolioValueAt(ts, hourlyPrice);
+    const value = valueAt(ts, hourlyPrice);
     hourly.push({ time: (ts / 1000) as TChartData['chartDataHourly'][number]['time'], value, formattedValue: formatFiat(value) });
   }
-  const total = totalUSD();
-  // Price-only return of today's holdings over each range.
+  const total = valueAt(NOW, coin => COINS[coin].priceUSD);
   const performance = (from: number) => {
-    const holdingsNow = (coin: TCoinKey) => ACCOUNT_STATES
-      .filter(state => state.def.coin === coin)
-      .reduce((sum, state) => sum + state.available, 0) + (coin === 'btc' ? lightningBtc() : 0);
     const valueWith = (ts: number) => (Object.keys(COINS) as TCoinKey[])
       .reduce((sum, coin) => sum + holdingsNow(coin) * priceAt(coin, ts), 0);
-    return valueWith(NOW) / valueWith(from) - 1;
+    const base = valueWith(from);
+    return base ? valueWith(NOW) / base - 1 : 0;
   };
   return {
     chartDataMissing: false,
@@ -564,6 +601,27 @@ export const getChartData = (): TChartData => {
     chartIsUpToDate: true,
     lastTimestamp: NOW,
   };
+};
+
+export const getChartData = (): TChartData => buildChartData(
+  Math.min(...ACCOUNT_STATES.flatMap(state => state.history.map(point => point.ts))),
+  portfolioValueAt,
+  coin => ACCOUNT_STATES
+    .filter(state => state.def.coin === coin)
+    .reduce((sum, state) => sum + state.available, 0) + (coin === 'btc' ? lightningBtc() : 0),
+);
+
+// One account's value over time (the account page chart; the real backend has no such endpoint).
+export const getAccountChartData = (code: AccountCode): TChartData | undefined => {
+  const state = getAccountState(code);
+  if (!state) {
+    return undefined;
+  }
+  return buildChartData(
+    state.history.length ? Math.min(...state.history.map(point => point.ts)) : NOW - DAY,
+    (ts, priceFor) => holdingsAt(state, ts) * priceFor(state.def.coin, ts),
+    coin => (coin === state.def.coin ? state.available : 0),
+  );
 };
 
 export const fiatPrice = (coinCode: string): TAmountWithConversions | undefined => {

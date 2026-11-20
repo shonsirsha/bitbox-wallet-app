@@ -58,6 +58,16 @@
   padding-block: 4px 12px;
 }
 
+/* The gear's glyph lines up with Add account and the amounts below. */
+.sidebarBrand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-inline-end: -6px;
+}
+
+.sidebarBrand > a { display: flex; }
+
 .column { min-width: 0; }
 
 .main {
@@ -109,8 +119,6 @@
   gap: 24px;
   min-width: 0;
 }
-
-.aside { min-width: 0; }
 
 /* Recent activity scrolls inside its card and fades out at the bottom edge, so it reads as a
    list that scrolls; the last row scrolls clear of the fade. On phones the page takes over at
@@ -218,6 +226,43 @@
   --k-search-focus-bg: var(--k-surface);
 }
 
+/* A wallet's state next to its name in the accounts list: a green dot while its BitBox is
+   connected, a grey one while it is remembered. */
+.walletStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.walletStatus::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--k-text-3);
+}
+
+.walletConnected::before { background: var(--k-positive); }
+
+.favouritesLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.favouriteIcon,
+.favouriteOn svg { color: var(--k-favourite); }
+
+/* The sidebar is narrow: there the state is its dot alone (named on hover), so the wallet's name
+   and total fit. */
+.sidebarAccounts .walletStatus {
+  gap: 0;
+  font-size: 0;
+}
+
+.sidebarAccounts .walletLabel { gap: 8px; }
+
 /* Sort and filter (popover from tablet up, bottom sheet on phones). */
 .filters {
   display: flex;
@@ -286,6 +331,14 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  /* Wallet totals line up with the account values (rows end in a chevron). */
+  --k-label-chevron: 1;
+}
+
+.walletLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .pageAccounts .accountsTools {
@@ -426,34 +479,19 @@
 
   .main { padding-top: 8px; }
 
-  .portfolio {
-    grid-template-columns: minmax(0, 1fr) 380px;
-    gap: 28px;
-  }
-
   .account {
     grid-template-columns: 400px minmax(0, 1fr);
     gap: 28px;
   }
 
-  /* Below the sticky top bar (plus status bar inset in webviews) with the content's top gap. */
-  .aside,
+  /* Below the sticky top bar (plus status bar inset in webviews) with the content's top gap. The
+     balance card's heading (Balance and the chart range) lines it up with the activity card. */
   .accountSide {
     position: sticky;
     top: calc(var(--k-safe-top) + var(--e-topbar-h) + 8px);
   }
 
-  /* The activity card sits under its Section header (36px with the search + 10px gap); start
-     both cards on one line, and keep the stuck card where the portfolio's activity card sticks. */
-  .accountSide {
-    padding-top: 46px;
-    top: calc(var(--k-safe-top) + var(--e-topbar-h) + 8px - 46px);
-  }
-
   .accountCard { --k-fs-hero: 44px; }
-
-  /* Beside the chart the card takes most of the window below the top bar and its heading. */
-  .recentList { --recent-h: calc(100dvh - var(--k-safe-top) - var(--e-topbar-h) - 200px); }
 
   /* The Accounts table: Balance and Value line up in fixed columns. */
   .accounts .listCard {

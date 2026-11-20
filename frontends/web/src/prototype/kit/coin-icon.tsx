@@ -37,6 +37,14 @@ export const CoinIcon = ({ coinCode, size = 36, badge }: TProps) => (
   </span>
 );
 
+// A transaction's kind as a round glyph, for rows of one account where every coin icon would be
+// the same: received in green, pending in orange, failed in red.
+export const TxKindIcon = ({ kind, size = 36 }: { kind: TCoinBadge; size?: number }) => (
+  <span className={`${styles.glyph} ${styles[`glyph-${kind}`]}`} style={{ width: size, height: size }}>
+    <Icon name={BADGE_ICONS[kind]} size={Math.round(size * .5)} strokeWidth={2} />
+  </span>
+);
+
 // Neutral round icon for non-coin rows (e.g. "All accounts").
 export const GlyphIcon = ({ icon, size = 36 }: { icon: TIconName; size?: number }) => (
   <span className={styles.glyph} style={{ width: size, height: size }}>

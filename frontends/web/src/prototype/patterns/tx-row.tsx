@@ -3,7 +3,7 @@
 // PROTOTYPE (throwaway): one transaction as a kit ListRow.
 
 import type { TAccount, TTransaction } from '@/api/account';
-import { Amount, Badge, CoinIcon, Icon, ListRow, TCoinBadge, format } from '../kit';
+import { Amount, Badge, CoinIcon, Icon, ListRow, TCoinBadge, TxKindIcon, format } from '../kit';
 import { usePrototype } from '../context';
 import { href } from '../routing';
 import styles from './patterns.module.css';
@@ -74,7 +74,8 @@ export const TxRow = ({
     <ListRow
       href={link ?? href.transaction(account.code, tx.internalID)}
       selected={selected}
-      leading={<CoinIcon coinCode={account.coinCode} size={36} badge={kind} />}
+      // Lists across accounts show the coin with the kind as a badge; one account's list the kind alone.
+      leading={showAccount ? <CoinIcon coinCode={account.coinCode} size={36} badge={kind} /> : <TxKindIcon kind={kind} />}
       title={(
         <>
           {txAction(tx)}

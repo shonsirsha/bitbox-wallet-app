@@ -15,6 +15,9 @@ export type TPrototypeContext = {
   fiat: string;
   hideAmounts: boolean;
   toggleHideAmounts: () => void;
+  // Account codes pinned to Favourite accounts, in the order they were pinned.
+  favourites: string[];
+  toggleFavourite: (code: string) => void;
 };
 
 export const PrototypeContext = createContext<TPrototypeContext>({
@@ -24,6 +27,8 @@ export const PrototypeContext = createContext<TPrototypeContext>({
   fiat: 'USD',
   hideAmounts: false,
   toggleHideAmounts: () => {},
+  favourites: [],
+  toggleFavourite: () => {},
 });
 
 export const usePrototype = () => useContext(PrototypeContext);

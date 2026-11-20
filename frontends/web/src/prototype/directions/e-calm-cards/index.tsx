@@ -1,23 +1,24 @@
 // SPDX-License-Identifier: Apache-2.0
 
-// PROTOTYPE (throwaway) · Direction E "Calm cards" (round 1 pick, refined)
-// Soft white cards on light grey, one row of four round actions under the balance, generous
-// radius. Frame: B's dark sidebar with a compact device row (desktop) or icon rail (tablet),
-// a D-style top bar with the total and Settings (no search), C's accounts list as one card.
-// Phones keep their page headers and the floating tab bar.
+// PROTOTYPE (throwaway): the redesigned UI ("Calm cards").
+// Soft cards on the canvas, one row of round actions under a balance, generous radius. From
+// tablet up: a dark sidebar (logo with Settings, the connected BitBox, Portfolio and Marketplace,
+// then the accounts, grouped by wallet when there are several) and a top bar with the screen title
+// and Hide amounts. Phones get page headers and a floating tab bar.
 
-import { ReactNode, useEffect, useMemo, useState } from 'react';
-import type { TTransaction } from '@/api/account';
+import { Fragment, ReactNode, useEffect, useMemo, useState } from 'react';
+import type { TAccount, TKeystore, TTransaction } from '@/api/account';
 import { useMediaQuery } from '@/hooks/mediaquery';
 import {
-  Amount, AreaChart, Badge, Button, Chip, CoinIcon, Delta, DeviceStatus, GlyphIcon, Icon, IconButton, List, ListRow, Logo,
+  Amount, AreaChart, Badge, Button, Chip, CoinIcon, Delta, DeviceStatus, GlyphIcon, Icon, IconButton, List, ListLabel, ListRow, Logo,
+  Message,
   Navigation, PageHeader, Popover, Section, SearchField, SegmentedControl, Sheet, Skeleton, SkeletonRows, TChartPoint,
   TIconName, format,
 } from '../../kit';
 import { usePrototype } from '../../context';
 import {
-  TRange, RANGE_OPTIONS, allocation, chartPoints, fiatAmount, orderAccounts,
-  useAccounts, useActivity, useBalance, useBalances, useChart, useDevice, useSummary, useTransactions,
+  TRange, RANGE_OPTIONS, allocation, chartPoints, fiatAmount, formatFiatValue, orderAccounts,
+  useAccountChart, useAccounts, useActivity, useBalance, useBalances, useChart, useDevice, useSummary, useTransactions,
 } from '../../data';
 import { href } from '../../routing';
 import { ComingSoon } from '../../patterns/coming-soon';
@@ -111,7 +112,7 @@ type TActionRowProps = { actions: TAction[] };
 const ActionRow = ({ actions }: TActionRowProps) => (
   <div className={`${styles.actions} ${styles.onCanvas}`}>
     {actions.map(action => (
-      <IconButton key={action.label} icon={action.icon} label={action.label} href={action.href} variant="filled" size="lg" caption />
+      <IconButton key={action.label} icon={action.icon} label={action.label} href={action.href} variant="accent" size="lg" caption />
     ))}
   </div>
 );
@@ -150,67 +151,62 @@ const Portfolio = () => {
     <>
       <PhoneHeader title="My Portfolio" />
       <div className={styles.portfolio}>
-        <div className={styles.stack}>
-          <Section
-            title={scrub ? format.formatShortDate(new Date(scrub.time * 1000).toISOString(), locale) : 'Portfolio value'}
-            action={<SegmentedControl label="Chart range" options={RANGE_OPTIONS} value={range} onChange={setRange} />}
-            className={styles.heroCard}>
-            <div className={styles.balance}>
-              <div className={styles.balanceHead}>
-                <Amount value={scrub?.label ? fiatAmount(scrub.label, fiat) : total} size="hero" animated instant={scrubbed} />
-                <span className={styles.meta}>
-                  <Delta value={performance} />
-                  <span>{RANGE_LABEL[range]}</span>
-                </span>
-              </div>
-              <div className={styles.chart}>
-                <AreaChart points={points} height={160} onScrub={onScrub} />
-              </div>
+        <Section
+          title={scrub ? format.formatShortDate(new Date(scrub.time * 1000).toISOString(), locale) : 'Portfolio value'}
+          action={<SegmentedControl label="Chart range" options={RANGE_OPTIONS} value={range} onChange={setRange} />}
+          className={styles.heroCard}>
+          <div className={styles.balance}>
+            <div className={styles.balanceHead}>
+              <Amount value={scrub?.label ? fiatAmount(scrub.label, fiat) : total} size="hero" animated instant={scrubbed} />
+              <span className={styles.meta}>
+                <Delta value={performance} />
+                <span>{RANGE_LABEL[range]}</span>
+              </span>
             </div>
-          </Section>
-          <ActionRow actions={[
-            { icon: 'send', label: 'Send', href: '#/accounts/select-receive' },
-            { icon: 'receive', label: 'Receive', href: '#/accounts/select-receive' },
-            { icon: 'buy', label: 'Buy', href: href.market },
-            { icon: 'swap', label: 'Swap', href: '#/market/swap' },
-          ]} />
-          <Section variant="plain" title="Assets">
-            <div className={styles.cardGrid}>
-              {assets ? assets.map(({ coin, share }) => (
-                <Section key={coin.coinCode} className={styles.rowCard}>
-                  <ListRow
-                    href={coinHref(accounts, coin.coinCode)}
-                    leading={<CoinIcon coinCode={coin.coinCode} size={40} />}
-                    title={coin.coinName}
-                    subtitle={<Amount value={coin.formattedAmount} as="coin" size="sm" tone="muted" />}
-                    trailing={<Amount value={coin.formattedAmount} />}
-                    trailingSub={formatShare(share, locale)} />
-                </Section>
-              )) : <Section><SkeletonRows count={3} /></Section>}
+            <div className={styles.chart}>
+              <AreaChart points={points} height={160} onScrub={onScrub} />
             </div>
-          </Section>
-        </div>
-        <div className={styles.aside}>
-          <Section
-            title="Recent activity"
-            className={styles.listCard}
-            action={<Button variant="ghost" size="sm" href={href.accounts}>See all</Button>}>
-            {activity ? (
-              <div className={styles.recentList}>
-                <List>
-                  {activity.slice(0, RECENT_COUNT).map(({ account, tx }) => (
-                    <TxRow key={`${account.code}:${tx.internalID}`} tx={tx} account={account} showAccount primary="fiat" amounts="primary" />
-                  ))}
-                  {activity.length === 0 && <ListRow title="No activity yet" subtitle="Received and sent coins show up here." />}
-                </List>
-              </div>
-            ) : (
-              <div className={`${styles.recentList} ${styles.recentLoading}`} aria-busy="true">
-                <SkeletonRows count={16} />
-              </div>
-            )}
-          </Section>
-        </div>
+          </div>
+        </Section>
+        <ActionRow actions={[
+          { icon: 'send', label: 'Send', href: '#/accounts/select-receive' },
+          { icon: 'receive', label: 'Receive', href: '#/accounts/select-receive' },
+          { icon: 'buy', label: 'Buy', href: href.market },
+          { icon: 'swap', label: 'Swap', href: '#/market/swap' },
+        ]} />
+        <Section variant="plain" title="Assets">
+          <div className={styles.cardGrid}>
+            {assets ? assets.map(({ coin, share }) => (
+              <Section key={coin.coinCode} className={styles.rowCard}>
+                <ListRow
+                  href={coinHref(accounts, coin.coinCode)}
+                  leading={<CoinIcon coinCode={coin.coinCode} size={40} />}
+                  title={coin.coinName}
+                  subtitle={<Amount value={coin.formattedAmount} as="coin" size="sm" tone="muted" />}
+                  trailing={<Amount value={coin.formattedAmount} />}
+                  trailingSub={formatShare(share, locale)} />
+              </Section>
+            )) : <Section><SkeletonRows count={3} /></Section>}
+          </div>
+        </Section>
+        <Section
+          title="Recent activity"
+          className={styles.listCard}>
+          {activity ? (
+            <div className={styles.recentList}>
+              <List>
+                {activity.slice(0, RECENT_COUNT).map(({ account, tx }) => (
+                  <TxRow key={`${account.code}:${tx.internalID}`} tx={tx} account={account} showAccount primary="fiat" amounts="primary" />
+                ))}
+                {activity.length === 0 && <ListRow title="No activity yet" subtitle="Received and sent coins show up here." />}
+              </List>
+            </div>
+          ) : (
+            <div className={`${styles.recentList} ${styles.recentLoading}`} aria-busy="true">
+              <SkeletonRows count={16} />
+            </div>
+          )}
+        </Section>
       </div>
     </>
   );
@@ -262,6 +258,25 @@ const AccountFilters = ({ sort, onSort, action, coinTypes, selectedCoins, onTogg
   </div>
 );
 
+// Pins the account to Favourite accounts (sidebar; the Accounts tab on phones).
+const FavouriteButton = ({ code }: { code: string }) => {
+  const { favourites, toggleFavourite } = usePrototype();
+  const favourite = favourites.includes(code);
+  return (
+    <IconButton
+      icon={favourite ? 'starFilled' : 'star'}
+      label={favourite ? 'Remove from favourites' : 'Add to favourites'}
+      onClick={() => toggleFavourite(code)}
+      className={favourite ? styles.favouriteOn : ''} />
+  );
+};
+
+// A wallet's state: its BitBox connected, or remembered (its accounts stay visible while unplugged).
+const WalletStatus = ({ keystore }: { keystore: TKeystore }) => {
+  const label = keystore.connected ? 'Connected' : 'Remembered';
+  return <span className={`${styles.walletStatus} ${keystore.connected ? styles.walletConnected : ''}`} title={label}>{label}</span>;
+};
+
 type TAccountsListProps = {
   // sidebar: compact rows in the dark panel. page: the Accounts tab on phones, a table on desktop.
   variant: 'sidebar' | 'page';
@@ -274,7 +289,7 @@ type TAccountsListProps = {
 // sidebar and on the Accounts page. Lightning is listed on phones only (it has no tablet or
 // desktop navigation). Sort and filter open in a popover, or a bottom sheet on phones.
 const AccountsList = ({ variant, selected, coin }: TAccountsListProps) => {
-  const { fiat } = usePrototype();
+  const { fiat, favourites } = usePrototype();
   const accounts = useAccounts();
   const balances = useBalances(accounts);
   const summary = useSummary();
@@ -312,13 +327,54 @@ const AccountsList = ({ variant, selected, coin }: TAccountsListProps) => {
   const filtered = useMemo(() => {
     const value = (code: string) => Number(balances?.[code]?.available.unformattedConversions?.[fiat as 'USD'] || 0);
     const list = ordered
-      .filter(account => matches(account.name, account.coinName, account.coinUnit))
+      .filter(account => matches(account.name, account.coinName, account.coinUnit, account.keystore.name))
       .filter(account => selectedCoins.length === 0 || selectedCoins.includes(account.coinCode));
     if (sort === 'value') {
       return list.sort((a, b) => value(b.code) - value(a.code));
     }
     return sort === 'name' ? list.sort((a, b) => a.name.localeCompare(b.name)) : list;
   }, [ordered, balances, fiat, needle, selectedCoins, sort]); // eslint-disable-line react-hooks/exhaustive-deps
+  // One group per wallet, the connected BitBox first, each in the list's order; labelled only when
+  // there is more than one wallet.
+  const wallets = useMemo(() => {
+    const groups: { keystore: TKeystore; accounts: TAccount[] }[] = [];
+    filtered.forEach(account => {
+      const group = groups.find(item => item.keystore.rootFingerprint === account.keystore.rootFingerprint);
+      if (group) {
+        group.accounts.push(account);
+      } else {
+        groups.push({ keystore: account.keystore, accounts: [account] });
+      }
+    });
+    return groups.sort((a, b) => Number(b.keystore.connected) - Number(a.keystore.connected));
+  }, [filtered]);
+  const severalWallets = new Set(ordered.map(account => account.keystore.rootFingerprint)).size > 1;
+  // Favourite accounts, in the order they were pinned and as far as the search and filter allow.
+  // They lead the sidebar and the phone Accounts tab; each also stays in its wallet's group.
+  const favouriteAccounts = useMemo(
+    () => favourites
+      .map(favourite => filtered.find(account => account.code === favourite))
+      .filter((account): account is TAccount => !!account),
+    [favourites, filtered],
+  );
+  const showFavourites = (sidebar || phone) && favouriteAccounts.length > 0;
+  // Wallet labels separate the groups whenever there is more than one group.
+  const labelled = severalWallets || showFavourites;
+  const filtering = !!needle || selectedCoins.length > 0;
+  // While searching or filtering, totals are the sum of the accounts shown (the backend only has
+  // whole-wallet and overall totals).
+  const shownValue = (shown: TAccount[]) => (balances ? fiatAmount(formatFiatValue(shown.reduce((total, account) => (
+    total + Number(balances[account.code]?.available.unformattedConversions?.[fiat as 'USD'] || 0)
+  ), 0)), fiat) : undefined);
+  const walletTotal = (wallet: { keystore: TKeystore; accounts: TAccount[] }) => {
+    if (filtering) {
+      return shownValue(wallet.accounts);
+    }
+    const total = summary?.keystoresBalance[wallet.keystore.rootFingerprint]?.total;
+    return total ? fiatAmount(total, fiat) : undefined;
+  };
+  const chartTotal = chart?.formattedChartTotal ? fiatAmount(chart.formattedChartTotal, fiat) : undefined;
+  const listedTotal = filtering ? shownValue(filtered) : chartTotal;
   const lightning = summary?.coinsTotalBalance.find(coin => coin.coinCode === 'lightning')?.formattedAmount;
   const accountCount = accounts ? `${accounts.length} accounts` : '';
   const filtersActive = sort !== 'type' || selectedCoins.length > 0;
@@ -365,34 +421,51 @@ const AccountsList = ({ variant, selected, coin }: TAccountsListProps) => {
       </div>
     </div>
   );
+  const accountRow = (account: TAccount, keyPrefix = '') => {
+    const available = balances?.[account.code]?.available;
+    return (
+      <ListRow
+        key={`${keyPrefix}${account.code}`}
+        href={href.account(account.code)}
+        selected={account.code === selected}
+        leading={<CoinIcon coinCode={account.coinCode} size={iconSize} />}
+        title={account.name}
+        subtitle={columns ? account.coinName : <Amount value={available} as={compactRows ? 'fiat' : 'coin'} size="sm" tone="muted" animated />}
+        cells={columns ? [<Amount value={available} as="coin" animated />] : undefined}
+        trailing={compactRows ? undefined : <Amount value={available} size={sidebar ? 'sm' : 'md'} animated />}
+        chevron={!sidebar} />
+    );
+  };
   const list = !accounts ? <SkeletonRows count={5} /> : (
     <List>
       {columns && <ListRow header title="Account" cells={['Balance']} trailing="Value" chevron />}
-      {!sidebar && !needle && selectedCoins.length === 0 && (
+      {!sidebar && filtered.length > 0 && (
+        // The total of everything listed: all accounts, or what the search and filter leave.
         <ListRow
-          href={href.portfolio}
           leading={<GlyphIcon icon="wallet" size={iconSize} />}
-          title="All accounts"
-          subtitle={accountCount}
+          title={filtering ? 'Total' : 'All accounts'}
+          subtitle={filtering ? `${filtered.length} of ${accounts.length} accounts` : accountCount}
           cells={columns ? [null] : undefined}
-          trailing={<Amount value={chart?.formattedChartTotal ? fiatAmount(chart.formattedChartTotal, fiat) : undefined} />}
-          chevron />
+          trailing={<Amount value={listedTotal} />}
+          chevron="space" />
       )}
-      {filtered.map(account => {
-        const available = balances?.[account.code]?.available;
-        return (
-          <ListRow
-            key={account.code}
-            href={href.account(account.code)}
-            selected={account.code === selected}
-            leading={<CoinIcon coinCode={account.coinCode} size={iconSize} />}
-            title={account.name}
-            subtitle={columns ? account.coinName : <Amount value={available} as={compactRows ? 'fiat' : 'coin'} size="sm" tone="muted" animated />}
-            cells={columns ? [<Amount value={available} as="coin" animated />] : undefined}
-            trailing={compactRows ? undefined : <Amount value={available} size={sidebar ? 'sm' : 'md'} animated />}
-            chevron={!sidebar} />
-        );
-      })}
+      {showFavourites && (
+        <>
+          <ListLabel title={<span className={styles.favouritesLabel}><Icon name="starFilled" size={12} className={styles.favouriteIcon} />Favourite accounts</span>} />
+          {favouriteAccounts.map(account => accountRow(account, 'favourite-'))}
+        </>
+      )}
+      {labelled
+        ? wallets.map(wallet => (
+          <Fragment key={wallet.keystore.rootFingerprint}>
+            {/* Each wallet: its name and state, and its total in line with the account values. */}
+            <ListLabel
+              title={<span className={styles.walletLabel}>{wallet.keystore.name}<WalletStatus keystore={wallet.keystore} /></span>}
+              trailing={<Amount value={walletTotal(wallet)} size="sm" tone="muted" />} />
+            {wallet.accounts.map(account => accountRow(account))}
+          </Fragment>
+        ))
+        : filtered.map(account => accountRow(account))}
       {showLightning && (
         <ListRow
           href={href.lightning}
@@ -439,7 +512,7 @@ const AccountsList = ({ variant, selected, coin }: TAccountsListProps) => {
 };
 
 // Phones: the Accounts tab. From tablet up the same list lives in the sidebar; this route stays
-// reachable (e.g. from "See all", or an asset held in several accounts) under the top bar title.
+// reachable (e.g. from an asset held in several accounts) under the top bar title.
 const Accounts = ({ coin }: { coin?: string }) => (
   <div className={styles.accounts}>
     <PhoneHeader title="Accounts" />
@@ -462,10 +535,23 @@ const matchesTransaction = (tx: TTransaction, needle: string, locale: string) =>
 ].some(value => value && value.toLowerCase().includes(needle));
 
 const Account = ({ code, txId }: TAccountProps) => {
-  const { locale } = usePrototype();
+  const { locale, fiat } = usePrototype();
   const accounts = useAccounts();
   const account = accounts?.find(candidate => candidate.code === code);
   const balance = useBalance(code);
+  const chart = useAccountChart(code);
+  const [range, setRange] = useState<TRange>('year');
+  const [scrub, setScrub] = useState<TChartPoint | null>(null);
+  // As on Portfolio: the value rolls in once; values read off the chart replace each other at once.
+  const [scrubbed, setScrubbed] = useState(false);
+  const onScrub = (point: TChartPoint | null) => {
+    setScrub(point);
+    if (point) {
+      setScrubbed(true);
+    }
+  };
+  const points = useMemo(() => chartPoints(chart, range), [chart, range]);
+  const performance = chart?.chartPerformance[range].moneyWeightedReturn;
   const transactions = useTransactions(code);
   const selectedTx = transactions?.find(tx => tx.internalID === txId);
   const [query, setQuery] = useState('');
@@ -481,25 +567,35 @@ const Account = ({ code, txId }: TAccountProps) => {
       <PhoneHeader
         title={account?.name || ' '}
         subtitle={account?.coinName}
-        back={href.accounts} />
+        back={href.accounts}
+        actions={account && <FavouriteButton code={account.code} />} />
       <div className={styles.account}>
         <div className={`${styles.stack} ${styles.accountSide}`}>
-          <Section className={`${styles.heroCard} ${styles.accountCard}`}>
+          <Section
+            title={scrub ? format.formatShortDate(new Date(scrub.time * 1000).toISOString(), locale) : 'Balance'}
+            action={<SegmentedControl label="Chart range" options={RANGE_OPTIONS} value={range} onChange={setRange} />}
+            className={`${styles.heroCard} ${styles.accountCard}`}>
             <div className={styles.accountBody}>
               <div className={styles.identity}>
                 <ListRow
                   leading={account ? <CoinIcon coinCode={account.coinCode} size={48} /> : <Skeleton width={48} height={48} radius="pill" />}
                   title={account ? account.name : <Skeleton width={120} height={16} />}
-                  subtitle={account?.coinName} />
+                  subtitle={account?.coinName}
+                  trailing={account && <FavouriteButton code={account.code} />} />
               </div>
               <div className={styles.balanceHead}>
                 <Amount value={balance?.available} as="coin" size="hero" animated />
                 <span className={styles.meta}>
-                  <Amount value={balance?.available} size="lg" tone="muted" animated />
+                  <Amount value={scrub?.label ? fiatAmount(scrub.label, fiat) : balance?.available} size="lg" tone="muted" animated instant={scrubbed} />
+                  <Delta value={performance} />
+                  <span>{RANGE_LABEL[range]}</span>
                   {balance?.hasIncoming && (
                     <Badge tone="warning" icon="clock">Incoming <Amount value={balance.incoming} as="coin" size="sm" sign="+" /></Badge>
                   )}
                 </span>
+              </div>
+              <div className={styles.chart}>
+                <AreaChart points={points} height={120} onScrub={onScrub} />
               </div>
             </div>
           </Section>
@@ -509,6 +605,11 @@ const Account = ({ code, txId }: TAccountProps) => {
             { icon: 'swap', label: 'Swap', href: '#/market/swap' },
             { icon: 'info', label: 'Info', href: `#/account/${encodeURIComponent(code)}/info` },
           ]} />
+          {account && !account.keystore.connected && (
+            <Message title="Remembered wallet">
+              {account.keystore.name} isn't connected. Connect it to send from this account.
+            </Message>
+          )}
         </div>
         <Section
           title="Activity"
@@ -555,16 +656,11 @@ const screenTitle = (screen: TDirectionProps['screen']) => {
   }
 };
 
-// Top bar (tablet and desktop): the screen title, then Hide amounts and Settings, lined up with
-// the content column below.
+// Top bar (tablet and desktop): the screen title and Hide amounts, lined up with the content
+// column below. Settings sit in the sidebar.
 const TopBar = ({ screen }: { screen: TDirectionProps['screen'] }) => {
   const title = screenTitle(screen);
-  const tools = (
-    <>
-      <HideAmountsButton />
-      <IconButton icon="settings" label="Settings" href={href.settings} active={activeNav(screen) === 'settings'} />
-    </>
-  );
+  const tools = <HideAmountsButton />;
   return (
     <header className={`${styles.topbar} ${styles.onCanvas}`}>
       <div className={styles.topbarInner}>
@@ -586,7 +682,11 @@ export const DirectionE = ({ screen }: TDirectionProps) => {
           items={navItems(screen, SIDE_NAV)}
           header={(
             <div className={styles.sidebarHeader}>
-              <a href={href.portfolio} aria-label="Portfolio"><Logo height={19} /></a>
+              {/* Settings belong to the app, so they sit with the logo rather than on a screen. */}
+              <div className={styles.sidebarBrand}>
+                <a href={href.portfolio} aria-label="Portfolio"><Logo height={19} /></a>
+                <IconButton icon="settings" label="Settings" size="sm" href={href.settings} active={activeNav(screen) === 'settings'} />
+              </div>
               <DeviceStatus
                 name={device.name}
                 state={deviceState}
